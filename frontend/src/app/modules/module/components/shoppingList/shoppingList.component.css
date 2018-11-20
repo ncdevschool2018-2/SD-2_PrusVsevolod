@@ -1,0 +1,19 @@
+/* ---------------------------------------------------
+    OTHER STYLE
+----------------------------------------------------- */
+tr td div div img{
+  width: 100px;
+  height: 100px;
+}
+
+
+.table td, .table th {
+  vertical-align: middle;
+}
+input.ng-dirty.ng-valid {
+  border:solid green 2px;
+}
+
+input.ng-dirty.ng-invalid{
+  border:solid red 2px;
+}

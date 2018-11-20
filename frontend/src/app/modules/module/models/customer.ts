@@ -1,0 +1,27 @@
+import {User} from "./user";
+import {Ba} from "./ba";
+
+export class Customer {
+  id: string;
+  name: string;
+  address: string;
+  user: User = new User();
+  ba: Ba;
+
+  constructor(){
+    if (localStorage.getItem('wallet')){
+      this.ba = new Ba();
+    }
+  }
+
+  static cloneCustomer(customer: Customer): Customer{
+    let cloneCustomer: Customer = new Customer();
+    cloneCustomer.id = customer.id;
+    cloneCustomer.name = customer.name;
+    cloneCustomer.address = customer.address;
+    cloneCustomer.user = customer.user;
+    cloneCustomer.ba = customer.ba;
+    cloneCustomer.user = User.cloneUser(customer.user);
+    return cloneCustomer;
+  }
+}

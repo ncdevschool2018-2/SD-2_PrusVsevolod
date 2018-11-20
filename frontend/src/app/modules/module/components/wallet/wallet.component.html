@@ -1,0 +1,57 @@
+<div class="modal-header">
+  <h4 class="modal-title">Credit card registration</h4>
+</div>
+
+<div class="modal-body text-center">
+  <form [formGroup] = "walletForm">
+  <div class="payment">
+    <div class="row">
+      <div class="col-md-8 text-left">
+        <label>Card number</label>
+        <input type="text" class="form-control" formControlName="number" [(ngModel)]="newBa.number" minlength="16" maxlength="16" pattern="^[0-9]+$" placeholder="1111222233334444">
+        <div class="alert alert-danger"
+             *ngIf="walletForm.controls['number'].dirty && walletForm.controls['number'].invalid && walletForm.controls['number'].touched">
+          Wrong card number.
+        </div>
+      </div>
+      <div class="col-md-4 text-left">
+        <label>CVV</label>
+        <input type="text" class="form-control" formControlName="cvv" [(ngModel)]="newBa.cvv" placeholder="660" minlength="3" maxlength="3">
+        <div class="alert alert-danger"
+             *ngIf="walletForm.controls['cvv'].dirty && walletForm.controls['cvv'].invalid && walletForm.controls['cvv'].touched">
+          Wrong CVV.
+        </div>
+      </div>
+    </div>
+    <div class="row pb-3">
+
+      <div class="col-md-5 text-left">
+        <label>Validity</label>
+        <select class="form-control" formControlName="month">
+          <option [value]="mon" *ngFor="let mon of month">{{mon}}</option>
+        </select>
+      </div>
+      <div class="col-md-5 text-left align-self-end">
+
+        <select class="form-control" formControlName="year">
+          <option [value]="chosenYear" *ngFor="let chosenYear of year">{{chosenYear}}</option>
+        </select>
+      </div>
+
+    </div>
+    <div class="modal-footer form-group px-0">
+      <div class="container-fluid px-0">
+      <div class="row justify-content-between">
+        <div class="col-md-auto">
+          <button type="submit" class="btn btn-primary" [disabled]="walletForm.invalid" (click)="register()">Register wallet</button>
+        </div>
+        <div class="col-md-auto">
+          <button type="button" class="btn btn-secondary" (click)="bsModalRef.hide()">Close</button>
+        </div>
+      </div>
+    </div>
+    </div>
+
+  </div>
+  </form>
+</div>

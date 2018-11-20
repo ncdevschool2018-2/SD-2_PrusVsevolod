@@ -1,0 +1,36 @@
+/* ---------------------------------------------------
+    OTHER STYLE
+----------------------------------------------------- */
+
+#register{
+  margin-top: 30px;
+  width: 300px;
+}
+
+h4.mb-3{
+  margin-top: 30px;
+}
+
+div.col-6{
+  margin-top: 20px;
+  padding-left: 0px;
+}
+
+/*form.ng-invalid.ng-dirty.ng-touched input.ng-touched{*/
+  /*border:solid red 2px;*/
+/*}*/
+input.ng-dirty.ng-valid {
+  border:solid green 2px;
+}
+
+input.ng-dirty.ng-invalid{
+  border:solid red 2px;
+}
+
+form.ng-invalid.ng-dirty #confirm.ng-dirty{
+  border:solid red 2px;
+}
+
+/*a.btn.btn-link{*/
+  /*position: absolute;*/
+/*}*/

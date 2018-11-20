@@ -1,0 +1,51 @@
+<ng4-loading-spinner> </ng4-loading-spinner>
+
+<app-header></app-header>
+
+<div class="container">
+  <table class="table table-hover mt-2">
+    <thead>
+    <tr>
+      <th style="width:50%">Product</th>
+      <th style="width:10%">Price</th>
+      <th style="width:8%">Quantity</th>
+      <th style="width:22%" class="text-center">Subtotal</th>
+      <th style="width:10%"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let shoppingItem of shoppingBasket">
+      <td>
+        <div class="row align-items-center">
+          <div class="col-3"><img src="{{shoppingItem.subscription.imageUrl}}" class="rounded mx-auto d-block" /></div>
+          <div class="col-9">
+            <h4>{{shoppingItem.subscription.name}}</h4>
+            <p>{{shoppingItem.subscription.description}}</p>
+          </div>
+        </div>
+      </td>
+      <td>{{shoppingItem.subscription.price}} $</td>
+      <td>
+        {{shoppingItem.quantity}}
+      </td>
+      <td class="text-center">{{shoppingItem.quantity*shoppingItem.subscription.price}} $</td>
+      <td class="actions" data-th="">
+        <div class="row justify-content-center">
+          <div class="col-md-auto">
+            <button class="btn btn-danger btn-sm" (click)="deleteSbItem(shoppingItem.id)"><i class="fa fa-trash"></i></button>
+          </div>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+    <tfoot>
+
+    <tr>
+      <td><a href="" class="btn btn-warning"><i class="fa fa-angle-left"></i> Continue Shopping</a></td>
+      <td colspan="2" class="hidden-xs"></td>
+      <td class="hidden-xs text-center"><strong>Total {{total}} $ per day</strong></td>
+      <td><a href="#" class="btn btn-success btn-block">Checkout <i class="fa fa-angle-right"></i></a></td>
+    </tr>
+    </tfoot>
+  </table>
+</div>

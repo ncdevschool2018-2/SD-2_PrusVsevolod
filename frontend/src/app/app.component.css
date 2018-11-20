@@ -1,0 +1,20 @@
+/* ---------------------------------------------------
+    CONTENT STYLE
+----------------------------------------------------- */
+
+#content {
+  width: 100%;
+  padding: 20px;
+  min-height: 100vh;
+  transition: all 0.3s;
+}
+
+.footer {
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  min-height: 5vh;
+  background-color: #343a40;
+  color: white;
+}
+

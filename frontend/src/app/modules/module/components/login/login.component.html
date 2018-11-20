@@ -1,0 +1,26 @@
+<div class="modal-body text-center">
+
+  <div class="container">
+    <img class="mb-4"
+         src="https://pbs.twimg.com/profile_images/378800000095820479/c7b2e53c69f3dcbc8966fd52d234ace4_400x400.png"
+         alt="" width="72" height="72">
+    <h1 class="h3 mb-3 font-weight-normal">Please, enter</h1>
+    <input type="email" class="form-control" placeholder="Login" [(ngModel)]="loginUser.login"
+           required autofocus maxlength="25">
+    <input type="password" class="form-control" placeholder="Password" [(ngModel)]="loginUser.password"
+           required maxlength="25">
+    <div class="alert alert-danger" *ngIf="isNotHidden">
+      Wrong login or password.
+    </div>
+    <!--<div class="checkbox mb-3">-->
+      <!--<label>-->
+        <!--<input type="checkbox" value="remember-me"> Remember me-->
+      <!--</label>-->
+    <!--</div>-->
+    <button class="btn btn-lg btn-primary btn-block" type="submit" (click)="login()">Login</button>
+    <a id="regButton" href="registration">Registration</a>
+  </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="bsModalRef.hide()">Close</button>
+</div>

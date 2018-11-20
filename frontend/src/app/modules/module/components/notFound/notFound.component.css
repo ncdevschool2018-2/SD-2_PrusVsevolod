@@ -1,0 +1,9 @@
+div {
+  background: #dedede;
+}
+.page-wrap {
+  min-height: 100vh;
+}
+
+a {color: #6f77d5;}
+a:hover {transform: scaleX(1.1);}

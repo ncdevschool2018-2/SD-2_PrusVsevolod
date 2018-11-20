@@ -1,0 +1,57 @@
+/* ---------------------------------------------------
+    OTHER STYLE
+----------------------------------------------------- */
+
+#submit {
+  position: absolute; /* Абсолютное позиционирование */
+  bottom: 36px; /* Положение от нижнего края */
+}
+
+.col-md-auto .imgdiv{
+  position: relative;
+  /* Оверфлов для того, чтобы анимация исходила из картинки */
+  overflow: hidden;
+}
+
+.imgdiv:hover .descr{
+  /* box-shadow: inset 0 0 0 23px #2a5d7a; */
+  opacity: 1;
+  top: 0;
+}
+
+.row.justify-content-center{
+  margin: 30px;
+}
+
+footer.text-muted {
+  margin-top: 100px;
+}
+
+.row.align-items-center input{
+  margin-right: 30px;
+
+}
+
+.descr{
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(27, 23, 23, 0.623);
+  color: white;
+  padding-top: 40%;
+  text-align: center;
+  /* Состояние до транзишона  */
+  opacity: 0;
+  top: 100%;
+  -webkit-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  transition: all 0.5s;
+}
+
+/*div {*/
+  /*text-align: center;*/
+/*}*/
+/*#submitSubs{*/
+  /*position: absolute;*/
+/*}*/

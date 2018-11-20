@@ -1,0 +1,22 @@
+<table class="table table-striped table-bordered table-list">
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Login</th>
+    <th>Email</th>
+    <th>Address</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td><input class="form-control" [(ngModel)]="editableCustomer.name"></td>
+    <td><input class="form-control" [(ngModel)]="editableCustomer.user.login"></td>
+    <td><input class="form-control" [(ngModel)]="editableCustomer.user.email"></td>
+    <td><input class="form-control" [(ngModel)]="editableCustomer.address"></td>
+  </tr>
+  </tbody>
+</table>
+<div class="modal-footer">
+  <button type="button" class="btn btn-primary" (click)="saveCustomer(); bsModalRef.hide()">Submit</button>
+</div>
+

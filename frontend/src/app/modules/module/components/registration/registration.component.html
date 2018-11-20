@@ -1,0 +1,145 @@
+<ng4-loading-spinner></ng4-loading-spinner>
+
+<app-header></app-header>
+
+<div class="container">
+
+  <div class="row justify-content-center">
+    <h4 class="mb-3">New User Registration</h4>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-6" #collapseName="bs-collapse"
+         [collapse]="isOpen">
+      <label>First name</label>
+      <form [formGroup]="othersForm">
+        <input class="form-control" formControlName="firstName" placeholder="Alan" minlength="6" maxlength="20"
+               [(ngModel)]="newCustomer.name" pattern="^[A-z]+$" [required]="radioModel == 'Customer'"></form>
+      <div class="alert alert-danger"
+           *ngIf="othersForm.controls['firstName'].invalid && othersForm.controls['firstName'].touched && othersForm.controls['firstName'].dirty">
+        Incorrect name.
+      </div>
+    </div>
+    <div class="col-6" #collapseOrgName="bs-collapse" [collapse]="!isOpen">
+      <label>Organization name</label>
+      <form [formGroup]="othersForm">
+        <input class="form-control" formControlName="orgName" placeholder="Microsoft" minlength="6"
+               maxlength="20" pattern="^[A-z]+$"
+               [(ngModel)]="newOwner.name" [required]="radioModel == 'Owner'">
+      </form>
+      <div class="alert alert-danger"
+           *ngIf="othersForm.controls['orgName'].invalid && othersForm.controls['orgName'].touched && othersForm.controls['orgName'].dirty">
+        Incorrect organization name.
+      </div>
+    </div>
+  </div>
+  <div class="row justify-content-center">
+    <div class="col-6">
+      <div class="row">
+        <div class="col-12"><label>Login</label>
+        </div>
+        <div class="col-1 pr-0">
+          <span class="input-group-text">@</span></div>
+        <div class="col-11 pl-0">
+          <form [formGroup]="othersForm">
+            <input class="form-control" formControlName="login" placeholder="Login" maxlength="20"
+                   [(ngModel)]="newUser.login"
+                   minlength="6" pattern="^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]+$">
+          </form>
+          <div class="alert alert-danger"
+               *ngIf="othersForm.controls['login'].invalid && othersForm.controls['login'].touched && othersForm.controls['login'].dirty">
+            Incorrect email.
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <div class="row justify-content-center">
+    <div class="col-6">
+      <label>Email</label>
+      <form [formGroup]="othersForm">
+        <input class="form-control" formControlName="email" placeholder="you@example.com" minlength="6" maxlength="25"
+               [(ngModel)]="newUser.email" email>
+      </form>
+      <div class="alert alert-danger"
+           *ngIf="othersForm.controls['email'].invalid && othersForm.controls['email'].touched && othersForm.controls['email'].dirty">
+        Incorrect email.
+      </div>
+    </div>
+  </div>
+  <form [formGroup]="passwordForm">
+    <div class="row justify-content-center">
+      <div class="col-6">
+        <label>Password</label>
+        <div style="position: relative">
+          <div style="position: absolute; margin-left: 92%"><a class="btn btn-link" (click)="showPassword()"><i
+            class="fa fa-eye"></i></a></div>
+          <input [type]="password" class="form-control" formControlName="password" [(ngModel)]="newUser.password"
+                 pattern="^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]+$"
+                 minlength="6" maxlength="20" placeholder="123456789a">
+          <div class="alert alert-danger"
+               *ngIf="passwordForm.controls['password'].dirty && passwordForm.controls['password'].touched && passwordForm.controls['password'].invalid">
+            Bad password.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-6">
+        <label>Confirm password</label>
+        <div style="position: relative">
+          <div style="position: absolute; margin-left: 92%"><a class="btn btn-link" (click)="showConfirmPassword()"><i
+            class="fa fa-eye"></i></a></div>
+          <input [type]="confirmPassword" id="confirm" class="form-control" formControlName="confirmPassword"
+                 minlength="6" maxlength="20" placeholder="123456789a">
+        </div>
+        <div class="alert alert-danger"
+             *ngIf="passwordForm.controls['confirmPassword'].dirty && passwordForm.invalid && passwordForm.controls['confirmPassword'].touched">
+          Passwords do not match.
+        </div>
+      </div>
+    </div>
+  </form>
+  <div class="row justify-content-center">
+    <div class="col-6" #collapseAddr="bs-collapse" [collapse]="isOpen">
+      <label>Address</label>
+      <form [formGroup]="othersForm">
+        <input class="form-control" formControlName="address" placeholder="1234 Main st." minlength="6" maxlength="25"
+               [(ngModel)]="newCustomer.address" [required]="radioModel == 'Customer'"
+               pattern="^[a-zA-Z0-9_]+( [a-zA-Z0-9_]+)*$"></form>
+      <div class="alert alert-danger"
+           *ngIf="othersForm.controls['address'].dirty && othersForm.controls['address'].invalid && othersForm.controls['address'].touched">
+        Invalid address.
+      </div>
+    </div>
+
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-6 mt-0">
+      <hr>
+    </div>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-md-2">
+      <div class="btn-group">
+        <label class="btn btn-primary" [(ngModel)]="radioModel"
+               btnRadio="Customer" tabindex="0"
+               (click)="collapseAddr.show(); collapseName.show(); collapseOrgName.hide()">Customer</label>
+        <label class="btn btn-primary" [(ngModel)]="radioModel"
+               btnRadio="Owner" tabindex="0"
+               (click)="collapseAddr.hide(); collapseName.hide(); collapseOrgName.show()">Owner</label>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <button class="btn btn-primary" type="button" [disabled]="passwordForm.invalid || othersForm.invalid"
+              (click)="radioModel == 'Owner' ? _addOwner() : _addCustomer();">
+        Register
+      </button>
+    </div>
+  </div>
+
+</div>
+

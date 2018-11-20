@@ -1,0 +1,133 @@
+<app-header></app-header>
+
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-8">
+      <div class="card">
+        <div class="card-body">
+          <div class="card-title mb-4">
+            <div class="d-flex justify-content-start">
+              <div class="userData ml-3">
+                <h2 class="d-block" style="font-size: 1.5rem; font-weight: bold">{{customer.user.login}}</h2>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <tabset>
+                <tab class="mt-4" heading="Account info" id="tab1">
+                  <div class="row">
+                    <div class="col-sm-3 col-md-3 col-5">
+                      <label style="font-weight:bold;">Name</label>
+                    </div>
+                    <div class="col-md-8 col-6">
+                      {{customer.name}}
+                    </div>
+                  </div>
+                  <hr/>
+
+                  <div class="row">
+                    <div class="col-sm-3 col-md-3 col-5">
+                      <label style="font-weight:bold;">Email</label>
+                    </div>
+                    <div class="col-md-8 col-6">
+                      {{customer.user.email}}
+                    </div>
+                  </div>
+                  <hr/>
+
+
+                  <div class="row">
+                    <div class="col-sm-3 col-md-3 col-5">
+                      <label style="font-weight:bold;">Address</label>
+                    </div>
+                    <div class="col-md-8 col-6">
+                      {{customer.address}}
+                    </div>
+                  </div>
+                  <hr/>
+                </tab>
+                <tab class="mt-4" heading="Subscriptions">
+                  <p class="font-weight-light">Subscription status: <span style="color: crimson">active</span></p>
+
+                  <table class="table">
+                    <thead>
+                    <tr>
+                      <th>Service name</th>
+                      <th>Number of days signed</th>
+                      <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                      <td>Microsoft Word</td>
+                      <td>11</td>
+                      <td>
+                        <button type="button" class="btn btn-danger">Delete</button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Microsoft Excel</td>
+                      <td>5</td>
+                      <td>
+                        <button type="button" class="btn btn-danger">Delete</button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Microsoft Access</td>
+                      <td>8</td>
+                      <td>
+                        <button type="button" class="btn btn-danger">Delete</button>
+                      </td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </tab>
+                <tab class="mt-4" heading="Wallet" *ngIf="walletIsPresent()">
+                  <div class="row">
+                    <div class="col-sm-3 col-md-3 col-5">
+                      <label style="font-weight:bold;">Number</label>
+                    </div>
+                    <div class="col-md-8 col-6">
+                      {{customer.ba.number}}
+                    </div>
+                  </div>
+                  <hr/>
+                  <div class="row">
+                    <div class="col-sm-3 col-md-3 col-5">
+                      <label style="font-weight:bold;">Balance</label>
+                    </div>
+                    <div class="col-md-8 col-6">
+                      {{customer.ba.balance}}$
+                    </div>
+                  </div>
+
+                  <hr/>
+                  <button type="button" class="btn btn-primary" (click)="openModal(template)">
+                    Fill up a balance
+                  </button>
+                </tab>
+              </tabset>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #template>
+  <div class="modal-body text-center">
+    <div class="container">
+
+      <input type="number" class="form-control" placeholder="Refill amount" min="0"
+             required autofocus [(ngModel)]="amount">
+
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-primary" [disabled]="amountIsNegative()" (click)="fillUp()">Fill up</button>
+    <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Close</button>
+  </div>
+</ng-template>
+
