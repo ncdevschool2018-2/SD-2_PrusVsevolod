@@ -15,25 +15,25 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { Ng4LoadingSpinnerModule } from "ng4-loading-spinner";
 
 import { AppComponent } from './app.component';
-import { MainComponent } from './modules/module/components/main/main.component';
-import { notFoundComponent } from './modules/module/components/notFound/notFound.component';
-import { RegistrationComponent } from "./modules/module/components/registration/registration.component";
-import { HeaderComponent } from "./modules/module/components/header/header.component";
-import { LoginModalComponent } from "./modules/module/components/login/login.component";
-import { EditCustomerModalComponent } from "./modules/module/components/editCustomerModal/editCustomerModal.component";
-import { EditSubscriptionModalComponent } from "./modules/module/components/editSubscriptionModal/editSubscriptionModal.component";
-import { EditOwnerModalComponent } from "./modules/module/components/editOwnerModal/editOwnerModal.component";
-import { ShoppingListComponent } from "./modules/module/components/shoppingList/shoppingList.component";
-import { AdminPanelComponent } from "./modules/module/components/adminPanel/adminPanel.component";
-import { WalletModalComponent } from "./modules/module/components/wallet/wallet.component";
-import { OwnerAccountInfoComponent } from "./modules/module/components/ownerAccountInfo/ownerAccountInfo.component";
-import { CustomerAccountInfoComponent } from "./modules/module/components/customerAccountInfo/customerAccountInfo.component";
+import { MainComponent } from './MainModule/Components/main/main.component';
+import { notFoundComponent } from './MainModule/Components/notFound/notFound.component';
+import { RegistrationComponent } from "./MainModule/Components/registration/registration.component";
+import { HeaderComponent } from "./MainModule/Components/header/header.component";
+import { LoginModalComponent } from "./MainModule/Components/login/login.component";
+import { EditCustomerModalComponent } from "./MainModule/Components/editCustomerModal/editCustomerModal.component";
+import { EditSubscriptionModalComponent } from "./MainModule/Components/editSubscriptionModal/editSubscriptionModal.component";
+import { EditOwnerModalComponent } from "./MainModule/Components/editOwnerModal/editOwnerModal.component";
+import { ShoppingListComponent } from "./MainModule/Components/shoppingList/shoppingList.component";
+import { AdminPanelComponent } from "./MainModule/Components/adminPanel/adminPanel.component";
+import { WalletModalComponent } from "./MainModule/Components/wallet/wallet.component";
+import { OwnerAccountInfoComponent } from "./MainModule/Components/ownerAccountInfo/ownerAccountInfo.component";
+import { CustomerAccountInfoComponent } from "./MainModule/Components/customerAccountInfo/customerAccountInfo.component";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TokenStorage } from "./services/token.storage";
 import { Interceptor } from "./services/interceptor.service.";
 
 //Guards
-import { AdminPanelGuard } from "./modules/module/components/adminPanel/adminPanel.guard";
+import { AdminPanelGuard } from "./MainModule/Components/adminPanel/adminPanel.guard";
 
 // определение маршрутов
 const appRoutes: Routes =[

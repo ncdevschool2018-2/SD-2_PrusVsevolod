@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {SubscriptionModel} from "../modules/module/models/subscriptionModel";
-import {Content} from "../modules/module/models/content";
+import {SubscriptionModel} from "../MainModule/models/subscriptionModel";
+import {Content} from "../MainModule/models/content";
 
 @Injectable({
   providedIn: 'root'

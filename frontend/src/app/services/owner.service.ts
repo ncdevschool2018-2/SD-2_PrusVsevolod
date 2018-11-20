@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {Owner} from "../modules/module/models/owner";
-import {Ba} from "../modules/module/models/ba";
-import {Customer} from "../modules/module/models/customer";
+import {Owner} from "../MainModule/models/owner";
+import {Ba} from "../MainModule/models/ba";
+import {Customer} from "../MainModule/models/customer";
 
 @Injectable({
   providedIn: 'root'

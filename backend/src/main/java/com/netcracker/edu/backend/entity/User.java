@@ -13,7 +13,7 @@ public class User {
     private String login;
     private String email;
     private String password;
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
 

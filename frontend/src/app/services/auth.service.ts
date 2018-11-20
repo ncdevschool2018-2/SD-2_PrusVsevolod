@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {LoginUser} from "../modules/module/models/loginUser";
+import {LoginUser} from "../MainModule/models/loginUser";
 import {TokenStorage} from "./token.storage";
 
 @Injectable({

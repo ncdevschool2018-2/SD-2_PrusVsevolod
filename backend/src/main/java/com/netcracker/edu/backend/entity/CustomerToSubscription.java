@@ -10,7 +10,7 @@ public class CustomerToSubscription {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String activation_date;
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "subscription_id", nullable = false)
     private Subscription subscription;
     @ManyToOne
