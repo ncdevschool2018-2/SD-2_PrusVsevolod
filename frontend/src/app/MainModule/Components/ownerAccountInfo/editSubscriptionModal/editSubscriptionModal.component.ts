@@ -1,8 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {BsModalRef} from "ngx-bootstrap";
-import {SubscriptionModel} from "../../models/subscriptionModel";
-import {SubscriptionService} from "../../../services/subscription.service";
-import {Owner} from "../../models/owner";
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {SubscriptionModel} from "../../../models/subscriptionModel";
+import {SubscriptionService} from "../../../../services/subscription.service";
+import {Owner} from "../../../models/owner";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
@@ -14,28 +13,33 @@ export class EditSubscriptionModalComponent implements OnInit{
 
   subscriptionForm: FormGroup;
 
-  public editableSubscription: SubscriptionModel = new SubscriptionModel();
+  @Input() editableSubscription: SubscriptionModel = new SubscriptionModel();
+  @Output() onChanged = new EventEmitter();
 
   // private subOwner: Subscription[] = [];
 
-  constructor(private subscriptionsService: SubscriptionService, public bsModalRef: BsModalRef, private formBuilder: FormBuilder) {
+  constructor(private subscriptionsService: SubscriptionService, private formBuilder: FormBuilder) {
   }
 
-  Submit(): void {
+  submit(): void {
     if (this.editableSubscription.owner == null) {
       this.editableSubscription.owner = new Owner();
       this.editableSubscription.owner.id = localStorage.getItem('ownerId');
     }
     this.subscriptionsService.saveSubscription(this.editableSubscription).subscribe(() => {
+      this.onChanged.emit();
     });
-    this.bsModalRef.hide()
+  }
+
+  close(){
+    this.onChanged.emit();
   }
 
   ngOnInit(): void {
     this.subscriptionForm = this.formBuilder.group({
       name: ['', Validators.required],
       price: ['', Validators.required],
-      image_url: ['', Validators.required],
+      imageUrl: ['', Validators.required],
       description: ['', Validators.required]
     });
   }

@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {BsModalRef, BsModalService} from "ngx-bootstrap";
-import {LoginModalComponent} from "../login/login.component";
-import {WalletModalComponent} from "../wallet/wallet.component";
+import {LoginModalComponent} from "./login/login.component";
+import {WalletModalComponent} from "./wallet/wallet.component";
 import {AuthService} from "../../../services/auth.service";
 import {User} from "../../models/user";
 import {Router} from "@angular/router";

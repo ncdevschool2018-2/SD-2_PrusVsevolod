@@ -1,12 +1,12 @@
 import {Component} from '@angular/core';
 import {BsModalRef} from "ngx-bootstrap";
-import {LoginUser} from "../../models/loginUser";
+import {LoginUser} from "../../../models/loginUser";
 import {Router} from "@angular/router";
-import {AuthService} from "../../../services/auth.service";
-import {TokenStorage} from "../../../services/token.storage";
-import {UserService} from "../../../services/user.service";
-import {OwnerService} from "../../../services/owner.service";
-import {CustomerService} from "../../../services/customer.service";
+import {AuthService} from "../../../../services/auth.service";
+import {TokenStorage} from "../../../../services/token.storage";
+import {UserService} from "../../../../services/user.service";
+import {OwnerService} from "../../../../services/owner.service";
+import {CustomerService} from "../../../../services/customer.service";
 
 @Component({
   selector: 'modal-login',

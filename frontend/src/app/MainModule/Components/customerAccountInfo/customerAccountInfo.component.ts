@@ -14,13 +14,11 @@ import {BaService} from "../../../services/ba.service";
 })
 export class CustomerAccountInfoComponent implements OnInit{
 
-  id: string;
   amount: number = 0;
   modalRef: BsModalRef;
   public customer: Customer = new Customer();
   private subCustomer: Subscription[] = [];
-  constructor(private modalService: BsModalService, private activateRoute: ActivatedRoute, private loadingService: Ng4LoadingSpinnerService, private customersService: CustomerService, private baService: BaService) {
-    this.id = activateRoute.snapshot.params['id'];
+  constructor(private modalService: BsModalService, private loadingService: Ng4LoadingSpinnerService, private customersService: CustomerService, private baService: BaService) {
   }
 
   openModal(template: TemplateRef<any>) {

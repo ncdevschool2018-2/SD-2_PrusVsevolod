@@ -36,6 +36,9 @@ export class OwnerService {
   saveBa(ba: Ba): Observable<Ba> {
     return this.http.post<Ba>('/api/owners/ba', ba);
   }
+  // getBa(): Observable<Ba> {
+  //   return this.http.get<Ba>('/api/owners/ba');
+  // }
 
   getOwnerByUserId(): Observable<Customer> {
     return this.http.get<Customer>('/api/owners/user/');

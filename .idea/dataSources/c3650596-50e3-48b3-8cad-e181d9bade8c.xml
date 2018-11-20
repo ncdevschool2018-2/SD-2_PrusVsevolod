@@ -1393,12 +1393,16 @@
       <RefSchemaName>be</RefSchemaName>
       <RefTableName>user</RefTableName>
       <RefColNames>id</RefColNames>
+      <OnUpdate>cascade</OnUpdate>
+      <OnDelete>cascade</OnDelete>
     </foreign-key>
     <foreign-key id="340" parent="283" name="o_ba_id_fk">
       <ColNames>ba_id</ColNames>
       <RefSchemaName>be</RefSchemaName>
       <RefTableName>billing_account</RefTableName>
       <RefColNames>id</RefColNames>
+      <OnUpdate>cascade</OnUpdate>
+      <OnDelete>set-null</OnDelete>
     </foreign-key>
     <column id="341" parent="284" name="id">
       <Position>1</Position>

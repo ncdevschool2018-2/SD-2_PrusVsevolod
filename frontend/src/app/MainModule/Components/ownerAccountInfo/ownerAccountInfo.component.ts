@@ -8,15 +8,15 @@ import {OwnerService} from "../../../services/owner.service";
 import {User} from "../../models/user";
 import {SubscriptionService} from "../../../services/subscription.service";
 import {SubscriptionModel} from "../../models/subscriptionModel";
-import {EditSubscriptionModalComponent} from "../editSubscriptionModal/editSubscriptionModal.component";
 import {BaService} from "../../../services/ba.service";
+import {EditSubscriptionModalComponent} from "./editSubscriptionModal/editSubscriptionModal.component";
 
 @Component({
   selector: 'app-ownerAccountInfo',
   templateUrl: './ownerAccountInfo.component.html',
   styleUrls: ['./ownerAccountInfo.component.css']
 })
-export class OwnerAccountInfoComponent implements OnInit{
+export class OwnerAccountInfoComponent implements OnInit {
 
   id: string;
   modalRef: BsModalRef;
@@ -25,6 +25,7 @@ export class OwnerAccountInfoComponent implements OnInit{
   public subscriptions: SubscriptionModel[] = [];
   private subOwner: Subscription[] = [];
   private subs: Subscription[] = [];
+  public editableSubscription: SubscriptionModel;
 
   constructor(private modalService: BsModalService, private activateRoute: ActivatedRoute, private loadingService: Ng4LoadingSpinnerService, private ownersService: OwnerService, private subscriptionsService: SubscriptionService, private baService: BaService) {
     this.id = activateRoute.snapshot.params['id'];
@@ -36,12 +37,11 @@ export class OwnerAccountInfoComponent implements OnInit{
 
   // Calls on component init
   ngOnInit() {
-    this.loadingService.show();
     this.loadOwner();
-    this.loadingService.hide();
   }
 
   private loadOwner(): void {
+    this.loadingService.show();
     this.owner.user = new User();
     this.subOwner.push(this.ownersService.getOwnerByUserId().subscribe(owner => {
       // Parse json response into local array
@@ -53,42 +53,48 @@ export class OwnerAccountInfoComponent implements OnInit{
   private loadSubscriptions(): void {
     this.subs.push(this.subscriptionsService.getSubscriptionsByOwnerId(this.owner.id).subscribe(subscriptions => {
         this.subscriptions = subscriptions as SubscriptionModel[];
+        this.loadingService.hide();
       }
     ))
   }
 
-  walletIsPresent(): boolean{
+  walletIsPresent(): boolean {
     if (localStorage.getItem('wallet')) {
-      // console.log(localStorage.getItem('wallet'));
       return true;
     }
     return false;
   }
 
-  openAddSubscriptionModal():void{
-    this.modalRef = this.modalService.show(EditSubscriptionModalComponent,{class: 'modal-lg'});
-  }
-  openEditSubscriptionModal(subscription: SubscriptionModel):void{
-    const initialState = {
-      editableSubscription: SubscriptionModel.cloneSubscription(subscription)
-    };
-    this.modalRef = this.modalService.show(EditSubscriptionModalComponent,{initialState, class: 'modal-lg'});
+  openAddSubscriptionModal(template: TemplateRef<any>): void {
+    this.editableSubscription = new SubscriptionModel();
+    this.modalRef = this.modalService.show(template, {class: 'modal-lg'});
   }
 
-  deleteSubscription(id: string):void{
-    this.subscriptionsService.deleteSubscription(id).subscribe(()=>{
+  openEditSubscriptionModal(template: TemplateRef<any>, subscription: SubscriptionModel): void {
+    this.editableSubscription = SubscriptionModel.cloneSubscription(subscription);
+    this.modalRef = this.modalService.show(template, {class: 'modal-lg'});
+  }
+
+  closeEditSubscriptionModal(): void {
+    this.loadSubscriptions();
+    this.modalRef.hide();
+  }
+
+  deleteSubscription(id: string): void {
+    this.subscriptionsService.deleteSubscription(id).subscribe(() => {
       this.loadSubscriptions();
     })
   }
 
-  fillUp():void{
+  fillUp(): void {
     this.owner.ba.balance += this.amount;
-    this.baService.saveEditedBa(this.owner.ba).subscribe(()=>{
+    this.baService.saveEditedBa(this.owner.ba).subscribe(() => {
       this.loadOwner();
       this.modalRef.hide()
     });
   }
-  amountIsNegative(): boolean{
+
+  amountIsNegative(): boolean {
     return this.amount < 0;
   }
 }

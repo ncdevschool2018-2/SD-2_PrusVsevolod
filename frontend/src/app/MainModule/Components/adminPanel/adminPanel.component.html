@@ -1,3 +1,5 @@
+<ng4-loading-spinner> </ng4-loading-spinner>
+
 <div class="wrapper">
   <!-- Слайдбар  -->
   <nav id="sidebar" [collapse]="isCollapsed">
@@ -76,13 +78,13 @@
                 <tbody>
                 <tr *ngFor="let customer of customers">
                   <td class="hidden-xs">{{customer.id}}</td>
-                  <td><a class="s8" href="customerAccountInfo/ + {{customer.id}}">{{customer.name}}</a></td>
+                  <td>{{customer.name}}</td>
                   <td>{{customer.address}}</td>
                   <td>{{customer.user.login}}</td>
                   <td>{{customer.user.email}}</td>
                   <td>
                     <a class="btn btn-danger mx-1" (click)="deleteCustomer(customer.id)"><i class="fa fa-trash"></i></a>
-                    <a class="btn btn-info mx-1"><i class="fa fa-edit " (click)="openCustomerEditModal(customer)"></i></a>
+                    <a class="btn btn-info mx-1"><i class="fa fa-edit " (click)="openCustomerEditModal(editCustoemr,customer)"></i></a>
                   </td>
                 </tr>
                 </tbody>
@@ -117,12 +119,12 @@
                 <tbody>
                 <tr *ngFor="let owner of owners">
                   <td class="hidden-xs">{{owner.id}}</td>
-                  <td><a class="s8" href="ownerAccountInfo/ + {{owner.id}}">{{owner.name}}</a></td>
+                  <td>{{owner.name}}</td>
                   <td>{{owner.user.login}}</td>
                   <td>{{owner.user.email}}</td>
                   <td>
                     <a class="btn btn-danger mx-1" (click)="deleteOwner(owner.id)"><i class="fa fa-trash"></i></a>
-                    <a class="btn btn-info mx-1" (click)="openOwnerEditModal(owner)"><i class="fa fa-edit"></i></a>
+                    <a class="btn btn-info mx-1" (click)="openOwnerEditModal(editOwner,owner)"><i class="fa fa-edit"></i></a>
                   </td>
                 </tr>
                 </tbody>
@@ -137,3 +139,11 @@
     </div>
   </div>
 </div>
+
+<ng-template #editOwner>
+  <modal-editOwnerMenu [editableOwner]="editableOwner" (onChanged)="closeEditOwnerModal()"></modal-editOwnerMenu>
+</ng-template>
+
+<ng-template #editCustoemr>
+  <modal-editCustomerMenu [editableCustomer]="editableCustomer" (onChanged)="closeEditCustomerModal()"></modal-editCustomerMenu>
+</ng-template>

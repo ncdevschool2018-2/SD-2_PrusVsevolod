@@ -56,13 +56,12 @@ export class MainComponent implements OnInit, OnDestroy {
     let i: number = 0;
     for (let sub of this.subs) {
       if (this.value[i] > 0) {
-        // console.log(sub);
         this.shoppingList.push(new Sb(localStorage.getItem('customerId'), sub, this.value[i]));
       }
       i++;
     }
     this.sbService.saveSb(this.shoppingList).subscribe(() => {
-    })
+    });
     this.value = [];
     this.loadingService.hide();
   }
@@ -74,7 +73,6 @@ export class MainComponent implements OnInit, OnDestroy {
   cantAdd():boolean{
     if (localStorage.getItem('wallet') == null) return true;
     for (let value of this.value){
-      // console.log(value);
       if(value > 0) return false;
     }
     return true;

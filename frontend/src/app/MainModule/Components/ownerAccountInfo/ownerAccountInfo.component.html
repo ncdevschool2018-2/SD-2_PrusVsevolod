@@ -1,3 +1,5 @@
+<ng4-loading-spinner> </ng4-loading-spinner>
+
 <app-header></app-header>
 
 <div class="container">
@@ -8,7 +10,7 @@
           <div class="card-title mb-4">
             <div class="d-flex justify-content-start">
               <div class="userData ml-3">
-                <h2 class="d-block" style="font-size: 1.5rem; font-weight: bold">{{owner.user.login}}</h2>
+                <h2 class="d-block" style="font-size: 1.5rem; font-weight: bold">Owner login: {{owner.user.login}}</h2>
               </div>
             </div>
           </div>
@@ -51,13 +53,13 @@
                     <tr *ngFor="let sub of subscriptions">
                       <td>{{sub.name}}</td>
                       <td>
-                        <button type="button" class="btn btn-secondary mx-1" (click)="openEditSubscriptionModal(sub)">Edit</button>
+                        <button type="button" class="btn btn-secondary mx-1" (click)="openEditSubscriptionModal(editSubscription, sub)">Edit</button>
                         <button type="button" class="btn btn-danger mx-1" (click)="deleteSubscription(sub.id)">Delete</button>
                       </td>
                     </tr>
                     </tbody>
                   </table>
-                  <button type="button" class="btn btn-primary mx-1" (click)="openAddSubscriptionModal()">Add subscription</button>
+                  <button type="button" class="btn btn-primary mx-1" (click)="openAddSubscriptionModal(editSubscription)">Add subscription</button>
                 </tab>
                 <tab class="mt-4" heading="Wallet" *ngIf="walletIsPresent()">
                   <div class="row">
@@ -79,7 +81,7 @@
                   </div>
 
                   <hr/>
-                  <button type="button" class="btn btn-primary" (click)="openModal(template)">
+                  <button type="button" class="btn btn-primary" (click)="openModal(refill)">
                     Fill up a balance
                   </button>
                 </tab>
@@ -92,7 +94,7 @@
   </div>
 </div>
 
-<ng-template #template>
+<ng-template #refill>
   <div class="modal-body text-center">
     <div class="container">
 
@@ -107,3 +109,6 @@
   </div>
 </ng-template>
 
+<ng-template #editSubscription>
+  <modal-editSubscriptionMenu [editableSubscription]="editableSubscription" (onChanged)="closeEditSubscriptionModal()"></modal-editSubscriptionMenu>
+</ng-template>

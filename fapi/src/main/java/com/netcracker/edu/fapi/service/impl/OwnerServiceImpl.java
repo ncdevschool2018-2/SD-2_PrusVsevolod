@@ -52,6 +52,7 @@ public class OwnerServiceImpl implements OwnerDataService {
     @Override
     public void deleteOwner(Long id) {
         RestTemplate restTemplate = new RestTemplate();
+//        System.out.println("qwe");
         restTemplate.delete(backendServerUrl + "/api/owners/" + id);
     }
 

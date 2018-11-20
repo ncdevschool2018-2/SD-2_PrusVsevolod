@@ -2,6 +2,7 @@ package com.netcracker.edu.fapi.controller;
 
 import com.netcracker.edu.fapi.model.BaViewModel;
 import com.netcracker.edu.fapi.model.OwnerViewModel;
+import com.netcracker.edu.fapi.service.BaDataService;
 import com.netcracker.edu.fapi.service.OwnerDataService;
 import com.netcracker.edu.fapi.service.UserDataService;
 import com.netcracker.edu.fapi.transfer.Exist;
@@ -40,6 +41,7 @@ public class OwnerDataController {
         return ResponseEntity.notFound().build();
     }
 
+    @PreAuthorize("hasAnyAuthority('admin')")
     @RequestMapping(method = RequestMethod.PUT)
     public ResponseEntity<OwnerViewModel> saveEditedOwner(@Validated(Exist.class) @RequestBody OwnerViewModel owner) {
         ownerDataService.saveEditedOwner(owner);
@@ -84,4 +86,13 @@ public class OwnerDataController {
         }
         return ResponseEntity.notFound().build();
     }
+//    @PreAuthorize("hasAnyAuthority('owner')")
+//    @RequestMapping(value = "/ba", method = RequestMethod.GET)
+//    public ResponseEntity<BaViewModel> getBa() {
+//        OwnerViewModel owner = ownerDataService.getOwnerByUserId(Long.valueOf(userDataService.findByLogin(SecurityContextHolder.getContext().getAuthentication().getName()).getId()));
+//        if (owner.getBa() != null) {
+//            return ResponseEntity.ok(owner.getBa());
+//        }
+//        return ResponseEntity.notFound().build();
+//    }
 }

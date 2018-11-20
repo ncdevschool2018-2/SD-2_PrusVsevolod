@@ -1,15 +1,11 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, TemplateRef} from '@angular/core';
 import {Ng4LoadingSpinnerService} from "ng4-loading-spinner";
 import {Subscription} from "rxjs";
-import {UserService} from "../../../services/user.service";
 import {Customer} from "../../models/customer";
 import {Owner} from "../../models/owner";
 import {CustomerService} from "../../../services/customer.service";
 import {OwnerService} from "../../../services/owner.service";
-import {User} from "../../models/user";
 import {BsModalRef, BsModalService} from "ngx-bootstrap";
-import {EditOwnerModalComponent} from "../editOwnerModal/editOwnerModal.component";
-import {EditCustomerModalComponent} from "../editCustomerModal/editCustomerModal.component";
 
 @Component({
   selector: 'app-adminPanel',
@@ -23,7 +19,8 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
 
   public customers: Customer[] = [];
   public owners: Owner[] = [];
-
+  public editableOwner: Owner;
+  public editableCustomer: Customer;
   private subUsers: Subscription[] = [];
 
   constructor(private loadingService: Ng4LoadingSpinnerService, private customersService: CustomerService, private ownersService: OwnerService, private modalService: BsModalService) {
@@ -65,17 +62,22 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
     }));
   }
 
-  openOwnerEditModal(owner: Owner) {
-    const initialState = {
-      editableOwner: Owner.cloneOwner(owner)
-    };
-    this.bsModalRef = this.modalService.show(EditOwnerModalComponent, {initialState, class: 'modal-lg'});
+  openOwnerEditModal(template: TemplateRef<any>, owner: Owner) {
+    this.editableOwner = Owner.cloneOwner(owner);
+    this.bsModalRef = this.modalService.show(template, {class:'modal-lg'});
   }
-  openCustomerEditModal(customer: Customer) {
-    const initialState = {
-      editableCustomer: Customer.cloneCustomer(customer)
-    };
-    this.bsModalRef = this.modalService.show(EditCustomerModalComponent, {initialState, class: 'modal-lg'});
+
+  closeEditOwnerModal():void{
+    this.loadOwners();
+    this.bsModalRef.hide();
+  }
+  openCustomerEditModal(template: TemplateRef<any>, customer: Customer) {
+    this.editableCustomer = Customer.cloneCustomer(customer);
+    this.bsModalRef = this.modalService.show(template, { class: 'modal-lg'});
+  }
+  closeEditCustomerModal():void{
+    this.loadCustomers();
+    this.bsModalRef.hide();
   }
 
   ngOnDestroy(): void {

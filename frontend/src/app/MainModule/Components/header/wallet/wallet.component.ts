@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {BsModalRef} from "ngx-bootstrap";
-import {Ba} from "../../models/ba";
-import {CustomerService} from "../../../services/customer.service";
-import {OwnerService} from "../../../services/owner.service";
+import {Ba} from "../../../models/ba";
+import {CustomerService} from "../../../../services/customer.service";
+import {OwnerService} from "../../../../services/owner.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({
