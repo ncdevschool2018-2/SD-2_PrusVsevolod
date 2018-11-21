@@ -18,14 +18,19 @@ public class Customer {
     @OneToOne
     @JoinColumn(name = "ba_id")
     private BillingAccount ba;
+    @OneToOne
+    @JoinColumn(name = "status_id")
+    private Status status;
 
-    public Customer(String name, String address, User user) {
+    public Customer() {
+    }
+
+    public Customer(String name, String address, User user, BillingAccount ba, Status status) {
         this.name = name;
         this.address = address;
         this.user = user;
-    }
-
-    public Customer() {
+        this.ba = ba;
+        this.status = status;
     }
 
     public long getId() {
@@ -68,6 +73,14 @@ public class Customer {
         this.ba = ba;
     }
 
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -77,12 +90,13 @@ public class Customer {
                 Objects.equals(name, customer.name) &&
                 Objects.equals(address, customer.address) &&
                 Objects.equals(user, customer.user) &&
-                Objects.equals(ba, customer.ba);
+                Objects.equals(ba, customer.ba) &&
+                Objects.equals(status, customer.status);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, address, user, ba);
+        return Objects.hash(id, name, address, user, ba, status);
     }
 
     @Override
@@ -93,6 +107,7 @@ public class Customer {
                 ", address='" + address + '\'' +
                 ", user=" + user +
                 ", ba=" + ba +
+                ", status=" + status +
                 '}';
     }
 }

@@ -12,7 +12,7 @@ import {BsModalRef, BsModalService} from "ngx-bootstrap";
   templateUrl: './adminPanel.component.html',
   styleUrls: ['./adminPanel.component.css']
 })
-export class AdminPanelComponent implements OnInit, OnDestroy {
+export class AdminPanelComponent implements OnInit {
 
   public bsModalRef: BsModalRef;
   isCollapsed = false;
@@ -21,13 +21,14 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
   public owners: Owner[] = [];
   public editableOwner: Owner;
   public editableCustomer: Customer;
-  private subUsers: Subscription[] = [];
+
+  // private subUsers: Subscription[] = [];
 
   constructor(private loadingService: Ng4LoadingSpinnerService, private customersService: CustomerService, private ownersService: OwnerService, private modalService: BsModalService) {
   }
 
   // Calls on component init
-  ngOnInit(){
+  ngOnInit() {
     this.loadCustomers();
     this.loadOwners();
   }
@@ -35,55 +36,51 @@ export class AdminPanelComponent implements OnInit, OnDestroy {
 
   private loadCustomers(): void {
     this.loadingService.show();
-    this.subUsers.push(this.customersService.getCustomers().subscribe(customer => {
+    this.customersService.getCustomers().subscribe(customer => {
       // Parse json response into local array
       this.customers = customer as Customer[];
       this.loadingService.hide();
-    }));
+    });
   }
 
   private loadOwners(): void {
     this.loadingService.show();
-    this.subUsers.push(this.ownersService.getOwners().subscribe(owner => {
+    this.ownersService.getOwners().subscribe(owner => {
       this.owners = owner as Owner[];
       this.loadingService.hide();
-    }))
+    });
   }
 
   public deleteOwner(id: string): void {
-    this.subUsers.push(this.ownersService.deleteOwner(id).subscribe(() => {
+    this.ownersService.deleteOwner(id).subscribe(() => {
       this.loadOwners();
-    }));
+    });
   }
 
   public deleteCustomer(id: string): void {
-    this.subUsers.push(this.customersService.deleteCustomer(id).subscribe(() => {
+    this.customersService.deleteCustomer(id).subscribe(() => {
       this.loadCustomers();
-    }));
+    });
   }
 
   openOwnerEditModal(template: TemplateRef<any>, owner: Owner) {
     this.editableOwner = Owner.cloneOwner(owner);
-    this.bsModalRef = this.modalService.show(template, {class:'modal-lg'});
+    this.bsModalRef = this.modalService.show(template, {class: 'modal-lg'});
   }
 
-  closeEditOwnerModal():void{
+  closeEditOwnerModal(): void {
     this.loadOwners();
     this.bsModalRef.hide();
   }
+
   openCustomerEditModal(template: TemplateRef<any>, customer: Customer) {
     this.editableCustomer = Customer.cloneCustomer(customer);
-    this.bsModalRef = this.modalService.show(template, { class: 'modal-lg'});
-  }
-  closeEditCustomerModal():void{
-    this.loadCustomers();
-    this.bsModalRef.hide();
+    this.bsModalRef = this.modalService.show(template, {class: 'modal-lg'});
   }
 
-  ngOnDestroy(): void {
-    this.subUsers.forEach(user =>{
-      user.unsubscribe();
-    })
+  closeEditCustomerModal(): void {
+    this.loadCustomers();
+    this.bsModalRef.hide();
   }
 
 }

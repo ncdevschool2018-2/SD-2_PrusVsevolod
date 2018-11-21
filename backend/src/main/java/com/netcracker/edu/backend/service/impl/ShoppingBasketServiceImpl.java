@@ -6,6 +6,7 @@ import com.netcracker.edu.backend.service.ShoppingBasketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -29,10 +30,10 @@ public class ShoppingBasketServiceImpl implements ShoppingBasketService {
     @Override
     public Iterable<ShoppingBasket> saveSb(List<ShoppingBasket> Sb) {
         List<ShoppingBasket> sameItems = new ArrayList<>();
-        List<ShoppingBasket> basket = repository.findAll();
+        List<ShoppingBasket> basket = (List<ShoppingBasket>)repository.findByCustomerId(Sb.get(0).getCustomerId());
         for(ShoppingBasket basketItem: basket){
             for(ShoppingBasket sbItem: Sb){
-                if(sbItem.getSubscription().getId() == basketItem.getSubscription().getId()){
+                if(sbItem.getSubscription().getId() == basketItem.getSubscription().getId() && sbItem.getCustomerId() == basketItem.getCustomerId()){
 
                     basketItem.setQuantity(basketItem.getQuantity()+sbItem.getQuantity());
                     repository.save(basketItem);
@@ -53,5 +54,11 @@ public class ShoppingBasketServiceImpl implements ShoppingBasketService {
     @Override
     public void deleteShoppingItem(Long id) {
         repository.deleteById(id);
+    }
+
+    @Transactional// Все методы кроме read(find) которые мы переопределяем должны быть transactional0
+    @Override
+    public void deleteAllShoppingItemsByCustomerId(Long id) {
+        repository.deleteByCustomerId(id);
     }
 }

@@ -27,7 +27,11 @@ public class SbDataController {
     @PreAuthorize("hasAnyAuthority('customer', 'admin')")
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<List<ShoppingBasketViewModel>> saveSb(@RequestBody List<ShoppingBasketViewModel> Sb) {
-        return ResponseEntity.ok(shoppingBasketDataService.saveSb(Sb));
+        CustomerViewModel customer = customerDataService.getCustomerByUserId(Long.valueOf(userDataService.findByLogin(SecurityContextHolder.getContext().getAuthentication().getName()).getId()));
+        if (customer.getId().equals(Sb.get(0).getCustomerId())) {//Для случая если недобросовестный кастомер захочет добавить в корзину товар другому кастомеру
+            return ResponseEntity.ok(shoppingBasketDataService.saveSb(Sb));
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @PreAuthorize("hasAnyAuthority('admin')")
@@ -55,12 +59,18 @@ public class SbDataController {
 
     @PreAuthorize("hasAnyAuthority('admin', 'customer')")
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public void deleteCustomer(@PathVariable String id) {
+    public void deleteSb(@PathVariable Long id) {
         CustomerViewModel customer = customerDataService.getCustomerByUserId(Long.valueOf(userDataService.findByLogin(SecurityContextHolder.getContext().getAuthentication().getName()).getId()));
-        ShoppingBasketViewModel basketItem = shoppingBasketDataService.getSbById(Long.valueOf(id));
+        ShoppingBasketViewModel basketItem = shoppingBasketDataService.getSbById(id);
         if (basketItem.getCustomerId().equals(customer.getId())) {//КАСТОМЕР МОЖЕТ УДАЛЯТЬ ТОЛЬКО СВОИ ПОДПИСКИ В КОРЗИНЕ
-            shoppingBasketDataService.deleteShoppingBasketItem(Long.valueOf(id));
+            shoppingBasketDataService.deleteShoppingBasketItem(id);
         }
     }
 
+    @PreAuthorize("hasAnyAuthority('customer')")
+    @RequestMapping(value = "/customer",method = RequestMethod.DELETE)
+    public void deleteSbByCustomerId() {
+        CustomerViewModel customer = customerDataService.getCustomerByUserId(Long.valueOf(userDataService.findByLogin(SecurityContextHolder.getContext().getAuthentication().getName()).getId()));
+        shoppingBasketDataService.deleteSBByCustomerId(customer.getId());
+    }
 }

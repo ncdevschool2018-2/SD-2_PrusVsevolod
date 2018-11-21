@@ -61,25 +61,11 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                      <td>Microsoft Word</td>
-                      <td>11</td>
+                    <tr *ngFor="let activeSub of activeSubs">
+                      <td>{{activeSub.subscription.name}}</td>
+                      <td>{{activeSub.quantity}}</td>
                       <td>
-                        <button type="button" class="btn btn-danger">Delete</button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Microsoft Excel</td>
-                      <td>5</td>
-                      <td>
-                        <button type="button" class="btn btn-danger">Delete</button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Microsoft Access</td>
-                      <td>8</td>
-                      <td>
-                        <button type="button" class="btn btn-danger">Delete</button>
+                        <button type="button" class="btn btn-danger" (click)="delete(activeSub.id)">Delete</button>
                       </td>
                     </tr>
                     </tbody>

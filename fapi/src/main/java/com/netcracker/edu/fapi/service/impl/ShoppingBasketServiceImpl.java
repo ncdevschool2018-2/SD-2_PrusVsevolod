@@ -2,6 +2,7 @@ package com.netcracker.edu.fapi.service.impl;
 
 import com.netcracker.edu.fapi.model.ShoppingBasketViewModel;
 import com.netcracker.edu.fapi.service.ShoppingBasketDataService;
+import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -38,4 +39,12 @@ public class ShoppingBasketServiceImpl implements ShoppingBasketDataService {
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.delete(backendServerUrl + "/api/sb/" + id);
     }
+
+    @Override
+    public void deleteSBByCustomerId(Long id) {
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.delete(backendServerUrl + "/api/sb/customer/" + id);
+    }
+
+
 }

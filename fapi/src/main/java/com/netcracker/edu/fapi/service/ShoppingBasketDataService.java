@@ -10,4 +10,5 @@ public interface ShoppingBasketDataService {
     List<ShoppingBasketViewModel> saveSb(List<ShoppingBasketViewModel> Sb);
     ShoppingBasketViewModel getSbById(Long id);
     void deleteShoppingBasketItem(Long id);
+    void deleteSBByCustomerId(Long id);
 }

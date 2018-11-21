@@ -27,16 +27,18 @@ public class CustomerViewModel {
     @Valid
     private UserViewModel user;
     private BaViewModel ba;
+    private StatusViewModel status;
 
     public CustomerViewModel() {
     }
 
-    public CustomerViewModel(Long id, String name, String address, UserViewModel user, BaViewModel ba) {
+    public CustomerViewModel(Long id,  String name, String address, UserViewModel user, BaViewModel ba, StatusViewModel status) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.user = user;
         this.ba = ba;
+        this.status = status;
     }
 
     public Long getId() {
@@ -77,5 +79,13 @@ public class CustomerViewModel {
 
     public void setBa(BaViewModel ba) {
         this.ba = ba;
+    }
+
+    public StatusViewModel getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusViewModel status) {
+        this.status = status;
     }
 }

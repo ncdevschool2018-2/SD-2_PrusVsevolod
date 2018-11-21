@@ -1,11 +1,11 @@
 import {Component, OnInit, TemplateRef} from '@angular/core';
 import {BsModalRef, BsModalService} from "ngx-bootstrap";
-import {ActivatedRoute} from "@angular/router";
-import {Subscription} from "rxjs";
 import {Ng4LoadingSpinnerService} from "ng4-loading-spinner";
 import {CustomerService} from "../../../services/customer.service";
 import {Customer} from "../../models/customer";
 import {BaService} from "../../../services/ba.service";
+import {ActiveSubscription} from "../../models/activeSubscription";
+import {ActiveSubscriptionService} from "../../../services/activeSubscription.service";
 
 @Component({
   selector: 'app-customerAccountInfo',
@@ -17,8 +17,8 @@ export class CustomerAccountInfoComponent implements OnInit{
   amount: number = 0;
   modalRef: BsModalRef;
   public customer: Customer = new Customer();
-  private subCustomer: Subscription[] = [];
-  constructor(private modalService: BsModalService, private loadingService: Ng4LoadingSpinnerService, private customersService: CustomerService, private baService: BaService) {
+  public activeSubs: ActiveSubscription[] = [];
+  constructor(private modalService: BsModalService, private loadingService: Ng4LoadingSpinnerService, private customersService: CustomerService, private baService: BaService, private ASService: ActiveSubscriptionService) {
   }
 
   openModal(template: TemplateRef<any>) {
@@ -28,16 +28,25 @@ export class CustomerAccountInfoComponent implements OnInit{
   // Calls on component init
   ngOnInit() {
     this.loadCustomer();
-
+    this.loadActiveSubs();
   }
 
   private loadCustomer(): void {
     this.loadingService.show();
-    this.subCustomer.push(this.customersService.getCustomerByUserId().subscribe(customer => {
+    this.customersService.getCustomerByUserId().subscribe(customer => {
       // Parse json response into local array
       this.customer = customer as Customer;
       this.loadingService.hide();
-    }));
+    });
+  }
+
+  private loadActiveSubs():void{
+    this.loadingService.show();
+    this.ASService.getASByCustomerId().subscribe(activeSubscriptions =>{
+      this.activeSubs = activeSubscriptions as ActiveSubscription[];
+      this.loadingService.hide();
+    });
+
   }
 
   walletIsPresent(): boolean{
@@ -49,7 +58,6 @@ export class CustomerAccountInfoComponent implements OnInit{
 
   fillUp():void{
     this.customer.ba.balance += this.amount;
-    // console.log(this.customer.ba.cvv);
     this.baService.saveEditedBa(this.customer.ba).subscribe(()=>{
       this.loadCustomer();
       this.modalRef.hide()
@@ -58,5 +66,11 @@ export class CustomerAccountInfoComponent implements OnInit{
 
   amountIsNegative(): boolean{
     return this.amount < 0;
+  }
+
+  delete(id: string):void{
+    this.ASService.deleteAS(id).subscribe(()=>{
+      this.loadActiveSubs();
+    })
   }
 }

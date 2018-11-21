@@ -23,5 +23,7 @@ export class SbService {
     return this.http.delete<Sb>('/api/sb/' + id);
   }
 
-
+  deleteAllSbByCustomerId():Observable<void>{
+    return this.http.delete<void>('/api/sb/customer');
+  }
 }

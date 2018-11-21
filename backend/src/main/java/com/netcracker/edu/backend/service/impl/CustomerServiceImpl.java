@@ -1,7 +1,9 @@
 package com.netcracker.edu.backend.service.impl;
 
 import com.netcracker.edu.backend.entity.Customer;
+import com.netcracker.edu.backend.entity.Status;
 import com.netcracker.edu.backend.repository.CustomerRepository;
+import com.netcracker.edu.backend.repository.StatusRepository;
 import com.netcracker.edu.backend.repository.UserRepository;
 import com.netcracker.edu.backend.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +16,13 @@ public class CustomerServiceImpl implements CustomerService {
 
     private UserRepository userRepository;
     private CustomerRepository customerRepository;
+    private StatusRepository statusRepository;
 
     @Autowired
-    public CustomerServiceImpl(UserRepository userRepository, CustomerRepository repository) {
+    public CustomerServiceImpl(UserRepository userRepository, CustomerRepository repository, StatusRepository statusRepository) {
         this.userRepository = userRepository;
         this.customerRepository = repository;
+        this.statusRepository = statusRepository;
     }
 
 
@@ -34,6 +38,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer saveCustomer(Customer customer) {
+        customer.setStatus(statusRepository.findById(Long.valueOf(1)).get());
         userRepository.save(customer.getUser());
         return customerRepository.save(customer);
     }

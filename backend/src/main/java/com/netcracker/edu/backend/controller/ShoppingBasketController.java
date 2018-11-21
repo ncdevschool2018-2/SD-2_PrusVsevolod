@@ -50,5 +50,9 @@ public class ShoppingBasketController {
         shoppingBasketService.deleteShoppingItem(id);
         return ResponseEntity.noContent().build();
     }
-
+    @RequestMapping(value = "/customer/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity deleteAllSbByCustomerId(@PathVariable(name = "id") Long id){
+        shoppingBasketService.deleteAllShoppingItemsByCustomerId(id);
+        return ResponseEntity.noContent().build();
+    }
 }

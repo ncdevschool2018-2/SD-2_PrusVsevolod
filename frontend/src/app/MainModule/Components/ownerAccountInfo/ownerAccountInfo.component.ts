@@ -23,8 +23,8 @@ export class OwnerAccountInfoComponent implements OnInit {
   amount: number = 0;
   public owner: Owner = new Owner();
   public subscriptions: SubscriptionModel[] = [];
-  private subOwner: Subscription[] = [];
-  private subs: Subscription[] = [];
+  // private subOwner: Subscription[] = [];
+  // private subs: Subscription[] = [];
   public editableSubscription: SubscriptionModel;
 
   constructor(private modalService: BsModalService, private activateRoute: ActivatedRoute, private loadingService: Ng4LoadingSpinnerService, private ownersService: OwnerService, private subscriptionsService: SubscriptionService, private baService: BaService) {
@@ -43,19 +43,19 @@ export class OwnerAccountInfoComponent implements OnInit {
   private loadOwner(): void {
     this.loadingService.show();
     this.owner.user = new User();
-    this.subOwner.push(this.ownersService.getOwnerByUserId().subscribe(owner => {
+    this.ownersService.getOwnerByUserId().subscribe(owner => {
       // Parse json response into local array
       this.owner = owner as Owner;
       this.loadSubscriptions();
-    }));
+    });
   }
 
   private loadSubscriptions(): void {
-    this.subs.push(this.subscriptionsService.getSubscriptionsByOwnerId(this.owner.id).subscribe(subscriptions => {
+    this.subscriptionsService.getSubscriptionsByOwnerId(this.owner.id).subscribe(subscriptions => {
         this.subscriptions = subscriptions as SubscriptionModel[];
         this.loadingService.hide();
       }
-    ))
+    );
   }
 
   walletIsPresent(): boolean {

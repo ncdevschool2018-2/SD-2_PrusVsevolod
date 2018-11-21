@@ -1,6 +1,5 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {SubscriptionService} from "../../../services/subscription.service";
-import {Subscription} from "rxjs/internal/Subscription";
 import {Ng4LoadingSpinnerService} from "ng4-loading-spinner";
 import {SubscriptionModel} from "../../models/subscriptionModel";
 import {PageChangedEvent} from "ngx-bootstrap";
@@ -12,11 +11,11 @@ import {Sb} from "../../models/sb";
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.css']
 })
-export class MainComponent implements OnInit, OnDestroy {
+export class MainComponent implements OnInit {
   // public  content: Content;
   public shoppingList: Sb[] = [];
   public subs: SubscriptionModel[];
-  private subscriptions: Subscription[] = [];
+  // private subscriptions: Subscription[] = [];
   public value: number[] = [];
   public size: number = 12;
   public totalElements: number;
@@ -31,24 +30,18 @@ export class MainComponent implements OnInit, OnDestroy {
 
   private loadSubscriptions(page: number): void {
     this.loadingService.show();
-    this.subscriptions.push(this.subscriptionsService.getSubscriptionsPaged(page, this.size).subscribe(source => {
+    this.subscriptionsService.getSubscriptionsPaged(page, this.size).subscribe(source => {
       // console.log(source.content);
       // Parse json response into local array
       this.subs = source.content as SubscriptionModel[];
       this.totalElements = source.totalElements;
       // Check data in console
       this.loadingService.hide();
-    }));
+    });
   }
 
   pageChanged(event: PageChangedEvent): void {
     this.loadSubscriptions(event.page - 1);
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach(subscription => {
-      subscription.unsubscribe();//Отписываемся при удалении компонента
-    })
   }
 
   addToSb(): void {

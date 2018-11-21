@@ -11,4 +11,5 @@ public interface ShoppingBasketRepository extends CrudRepository<ShoppingBasket,
 
     Iterable<ShoppingBasket> findByCustomerId(Long id);
     List<ShoppingBasket> findAll();
+    void deleteByCustomerId(Long id);
 }

@@ -1,26 +1,22 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Ng4LoadingSpinnerService} from "ng4-loading-spinner";
 import {Sb} from "../../models/sb";
-import {Subscription} from "rxjs";
 import {SbService} from "../../../services/sb.service";
+import {ActiveSubscription} from "../../models/activeSubscription";
+import {ActiveSubscriptionService} from "../../../services/activeSubscription.service";
+
 @Component({
   selector: 'app-shoppingList',
   templateUrl: './shoppingList.component.html',
   styleUrls: ['./shoppingList.component.css']
 })
-export class ShoppingListComponent implements OnInit, OnDestroy{
+export class ShoppingListComponent implements OnInit{
 
   public shoppingBasket: Sb[] = [];
-  private subShoppingBasket: Subscription[] = [];
+  private subscriptions: ActiveSubscription[] = [];
   public total: number = 0;
 
-  constructor(private loadingService: Ng4LoadingSpinnerService, private sbService: SbService) {
-  }
-
-  ngOnDestroy(): void {
-    this.subShoppingBasket.forEach(shoppingItem =>{
-      shoppingItem.unsubscribe();
-    })
+  constructor(private loadingService: Ng4LoadingSpinnerService, private sbService: SbService, private activeSubscriptionService: ActiveSubscriptionService) {
   }
 
   ngOnInit(): void {
@@ -28,25 +24,37 @@ export class ShoppingListComponent implements OnInit, OnDestroy{
   }
 
 
-  loadShoppingBasket():void{
+  loadShoppingBasket(): void {
     this.loadingService.show();
-    this.subShoppingBasket.push(this.sbService.getSbByCustomerId().subscribe(shoppingBasket =>{
+    this.sbService.getSbByCustomerId().subscribe(shoppingBasket => {
       this.shoppingBasket = shoppingBasket as Sb[];
       this.totalCount();
       this.loadingService.hide();
-    }));
+    });
   }
 
-  totalCount():void{
+  totalCount(): void {
     this.total = 0;
-    for (let shoppingItem of this.shoppingBasket){
-      this.total += shoppingItem.quantity*shoppingItem.subscription.price;
+    for (let shoppingItem of this.shoppingBasket) {
+      this.total += shoppingItem.quantity * shoppingItem.subscription.price;
     }
   }
 
-  deleteSbItem(id: string):void{
-    this.sbService.deleteSbById(id).subscribe(()=>{
+  deleteSbItem(id: string): void {
+    this.sbService.deleteSbById(id).subscribe(() => {
       this.loadShoppingBasket();
+    });
+  }
+
+  checkout(): void {
+    this.shoppingBasket.forEach(item => {
+      this.subscriptions.push(new ActiveSubscription(item.subscription, item.quantity));
+    });
+    this.activeSubscriptionService.saveAS(this.subscriptions).subscribe(() => {
+      this.subscriptions = [];
+      this.sbService.deleteAllSbByCustomerId().subscribe(() => {
+        this.loadShoppingBasket();
+      });
     });
   }
 }
