@@ -56,6 +56,11 @@ public class ActiveSubscriptionServiceImpl implements ActiveSubscriptionService 
     }
 
     @Override
+    public ActiveSubscription saveActiveSubscription(ActiveSubscription activeSubscription) {
+        return repository.save(activeSubscription);
+    }
+
+    @Override
     public void deleteActiveSubscriptionById(Long id) {
         repository.deleteById(id);
     }

@@ -18,7 +18,7 @@ public class Customer {
     @OneToOne
     @JoinColumn(name = "ba_id")
     private BillingAccount ba;
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "status_id")
     private Status status;
 

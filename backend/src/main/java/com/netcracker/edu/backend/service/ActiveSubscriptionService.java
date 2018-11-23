@@ -11,5 +11,6 @@ public interface ActiveSubscriptionService {
     Iterable<ActiveSubscription> getAllActiveSubscriptionsByCustomerId(Long id);
     Iterable<ActiveSubscription> getAllActiveSubscriptions();
     Iterable<ActiveSubscription> saveActiveSubscriptions(List<ActiveSubscription> activeSubscription);
+    ActiveSubscription saveActiveSubscription(ActiveSubscription activeSubscription);
     void deleteActiveSubscriptionById (Long id);
 }
