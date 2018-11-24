@@ -24,12 +24,13 @@ public class SbDataController {
     @Autowired
     private UserDataService userDataService;
 
-    @PreAuthorize("hasAnyAuthority('customer', 'admin')")
+    @PreAuthorize("hasAnyAuthority('customer')")
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<List<ShoppingBasketViewModel>> saveSb(@RequestBody List<ShoppingBasketViewModel> Sb) {
+    public ResponseEntity saveSb(@RequestBody List<ShoppingBasketViewModel> Sb) {
         CustomerViewModel customer = customerDataService.getCustomerByUserId(Long.valueOf(userDataService.findByLogin(SecurityContextHolder.getContext().getAuthentication().getName()).getId()));
         if (customer.getId().equals(Sb.get(0).getCustomerId())) {//Для случая если недобросовестный кастомер захочет добавить в корзину товар другому кастомеру
-            return ResponseEntity.ok(shoppingBasketDataService.saveSb(Sb));
+            shoppingBasketDataService.saveSb(Sb);
+            return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();
     }
@@ -46,6 +47,13 @@ public class SbDataController {
     }
 
     @PreAuthorize("hasAnyAuthority('customer')")
+    @RequestMapping(value = "/count", method = RequestMethod.GET)
+    public ResponseEntity<Long> getCount() {
+        CustomerViewModel customer = customerDataService.getCustomerByUserId(Long.valueOf(userDataService.findByLogin(SecurityContextHolder.getContext().getAuthentication().getName()).getId()));
+        return ResponseEntity.ok(shoppingBasketDataService.getCount(customer.getId()));
+    }
+
+    @PreAuthorize("hasAnyAuthority('customer')")
     @RequestMapping(value = "/customer", method = RequestMethod.GET)
     public ResponseEntity<List<ShoppingBasketViewModel>> getSbByCustomerId() {
         CustomerViewModel customer = customerDataService.getCustomerByUserId(Long.valueOf(userDataService.findByLogin(SecurityContextHolder.getContext().getAuthentication().getName()).getId()));
@@ -57,7 +65,7 @@ public class SbDataController {
         }
     }
 
-    @PreAuthorize("hasAnyAuthority('admin', 'customer')")
+    @PreAuthorize("hasAnyAuthority('customer')")
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public void deleteSb(@PathVariable Long id) {
         CustomerViewModel customer = customerDataService.getCustomerByUserId(Long.valueOf(userDataService.findByLogin(SecurityContextHolder.getContext().getAuthentication().getName()).getId()));

@@ -1,10 +1,10 @@
-import {Component} from '@angular/core';
+import {Component, Input, TemplateRef} from '@angular/core';
 import {BsModalRef, BsModalService} from "ngx-bootstrap";
-import {LoginModalComponent} from "./login/login.component";
 import {WalletModalComponent} from "./wallet/wallet.component";
 import {AuthService} from "../../../services/auth.service";
 import {User} from "../../models/user";
 import {Router} from "@angular/router";
+import {SbService} from "../../../services/sb.service";
 
 @Component({
   selector: 'app-header',
@@ -15,12 +15,13 @@ export class HeaderComponent{
 
   public bsModalRef: BsModalRef;
   currentUser: User;
+  @Input() itemsCounter: number;
 
-  constructor(private modalService: BsModalService, private authService: AuthService, private router: Router) {
+  constructor(private modalService: BsModalService, private authService: AuthService, private router: Router, private sbService: SbService) {
   }
 
-  openModalWithLogin() {
-    this.bsModalRef = this.modalService.show(LoginModalComponent);
+  openModalWithLogin(template: TemplateRef<any>) {
+    this.bsModalRef = this.modalService.show(template);
   }
 
   openModalWithWallet() {
@@ -32,6 +33,12 @@ export class HeaderComponent{
     this.router.navigateByUrl('/');
   }
 
+  closeLoginModal():void{
+    this.sbService.getCount().subscribe(count => {
+      this.itemsCounter = count;
+    });
+    this.bsModalRef.hide();
+  }
   userIsPresent(): boolean{
     return (localStorage.getItem('currentUser') != null);
   }
@@ -60,4 +67,5 @@ export class HeaderComponent{
       }
     }
   }
+
 }

@@ -2,7 +2,6 @@ package com.netcracker.edu.fapi.controller;
 
 import com.netcracker.edu.fapi.model.BaViewModel;
 import com.netcracker.edu.fapi.model.OwnerViewModel;
-import com.netcracker.edu.fapi.service.BaDataService;
 import com.netcracker.edu.fapi.service.OwnerDataService;
 import com.netcracker.edu.fapi.service.UserDataService;
 import com.netcracker.edu.fapi.transfer.Exist;
@@ -11,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +25,8 @@ public class OwnerDataController {
     private OwnerDataService ownerDataService;
     @Autowired
     private UserDataService userDataService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @PreAuthorize("hasAnyAuthority('admin')")
     @RequestMapping
@@ -35,6 +37,8 @@ public class OwnerDataController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<OwnerViewModel> saveOwner(@Validated(New.class) @RequestBody OwnerViewModel owner) {
+        owner.getUser().setPassword(passwordEncoder.encode(owner.getUser().getPassword()));
+//        System.out.println(owner.getUser().getPassword());
         if (owner != null) {
             return ResponseEntity.ok(ownerDataService.saveOwner(owner));
         }

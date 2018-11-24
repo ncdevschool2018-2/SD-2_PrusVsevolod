@@ -7,8 +7,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ShoppingBasketService {
+    Long getCount(Long id);
     Iterable<ShoppingBasket> findByCustomerId(Long id);
-    Iterable<ShoppingBasket> saveSb(List<ShoppingBasket> Sb);
+    void saveSb(List<ShoppingBasket> Sb);
     Optional<ShoppingBasket> getShoppingBasketById(Long id);
     void deleteShoppingItem(Long id);
     @Transactional

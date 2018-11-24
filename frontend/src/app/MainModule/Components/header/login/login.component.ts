@@ -1,7 +1,5 @@
-import {Component} from '@angular/core';
-import {BsModalRef} from "ngx-bootstrap";
+import {Component, EventEmitter, Output} from '@angular/core';
 import {LoginUser} from "../../../models/loginUser";
-import {Router} from "@angular/router";
 import {AuthService} from "../../../../services/auth.service";
 import {TokenStorage} from "../../../../services/token.storage";
 import {UserService} from "../../../../services/user.service";
@@ -16,10 +14,11 @@ import {CustomerService} from "../../../../services/customer.service";
 export class LoginModalComponent {
 
   isNotHidden = false;
+  @Output() onChange = new EventEmitter();
 
   loginUser: LoginUser = new LoginUser();
 
-  constructor(public bsModalRef: BsModalRef, private router: Router, private authService: AuthService, private token: TokenStorage, private userService: UserService,
+  constructor(private authService: AuthService, private token: TokenStorage, private userService: UserService,
               private ownersService: OwnerService, private customersService: CustomerService) {
   }
 
@@ -53,7 +52,8 @@ export class LoginModalComponent {
           }
 
         });
-        this.bsModalRef.hide()
+        this.onChange.emit();
+        // this.bsModalRef.hide()
       },
       () => {
         this.isNotHidden = true;
@@ -62,5 +62,8 @@ export class LoginModalComponent {
 
   }
 
+  close(){
+    this.onChange.emit();
+  }
 
 }

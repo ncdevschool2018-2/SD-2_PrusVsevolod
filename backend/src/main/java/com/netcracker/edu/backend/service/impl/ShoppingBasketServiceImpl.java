@@ -23,12 +23,17 @@ public class ShoppingBasketServiceImpl implements ShoppingBasketService {
 
 
     @Override
+    public Long getCount(Long id) {
+        return repository.countByCustomerId(id);
+    }
+
+    @Override
     public Iterable<ShoppingBasket> findByCustomerId(Long id) {
         return repository.findByCustomerId(id);
     }
 
     @Override
-    public Iterable<ShoppingBasket> saveSb(List<ShoppingBasket> Sb) {
+    public void saveSb(List<ShoppingBasket> Sb) {
         List<ShoppingBasket> sameItems = new ArrayList<>();
         List<ShoppingBasket> basket = (List<ShoppingBasket>)repository.findByCustomerId(Sb.get(0).getCustomerId());
         for(ShoppingBasket basketItem: basket){
@@ -43,7 +48,7 @@ public class ShoppingBasketServiceImpl implements ShoppingBasketService {
             }
         }
         Sb.removeAll(sameItems);
-        return repository.saveAll(Sb);
+        repository.saveAll(Sb);
     }
 
     @Override

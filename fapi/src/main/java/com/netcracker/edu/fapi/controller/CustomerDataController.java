@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +24,8 @@ public class CustomerDataController {
     private CustomerDataService customerDataService;
     @Autowired
     private UserDataService userDataService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @PreAuthorize("hasAnyAuthority('admin')")
     @RequestMapping
@@ -32,6 +35,7 @@ public class CustomerDataController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<CustomerViewModel> saveCustomer(@Validated(New.class) @RequestBody CustomerViewModel customer) {
+        customer.getUser().setPassword(passwordEncoder.encode(customer.getUser().getPassword()));
         if (customer != null) {
             return ResponseEntity.ok(customerDataService.saveCustomer(customer));
         }

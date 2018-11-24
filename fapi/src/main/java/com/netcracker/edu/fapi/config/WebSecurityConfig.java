@@ -1,7 +1,6 @@
 package com.netcracker.edu.fapi.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,16 +11,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.session.SessionManagementFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
 
 import javax.annotation.Resource;
-import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -59,10 +53,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .addFilterBefore(corsFilter(), SessionManagementFilter.class) //adds your custom CorsFilter
-//                .cors().and()
-                .csrf().disable().
-                authorizeRequests()
+                .addFilterBefore(corsFilter(), SessionManagementFilter.class) //adds my custom CORSFilter
+                .csrf().disable()
+                .authorizeRequests()
                 .antMatchers("/api/token/*", "/api/subscriptions/**", "/api/users", "/api/owners", "/api/customers").permitAll()
                 .anyRequest().authenticated()
                 .and()
@@ -73,7 +66,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public PasswordEncoder encode() {
-        return new PasswordEncoderTest();
+    public BCryptPasswordEncoder encode() {
+        return new BCryptPasswordEncoder();
     }
 }

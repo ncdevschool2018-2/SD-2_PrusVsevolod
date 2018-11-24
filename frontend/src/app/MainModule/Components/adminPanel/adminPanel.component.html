@@ -84,7 +84,7 @@
                   <td>{{customer.user.email}}</td>
                   <td>
                     <a class="btn btn-danger mx-1" (click)="deleteCustomer(customer.id)"><i class="fa fa-trash"></i></a>
-                    <a class="btn btn-info mx-1"><i class="fa fa-edit " (click)="openCustomerEditModal(editCustoemr,customer)"></i></a>
+                    <a class="btn btn-info mx-1"><i class="fa fa-edit " (click)="openCustomerEditModal(editCustomer,customer)"></i></a>
                   </td>
                 </tr>
                 </tbody>
@@ -144,6 +144,6 @@
   <modal-editOwnerMenu [editableOwner]="editableOwner" (onChanged)="closeEditOwnerModal()"></modal-editOwnerMenu>
 </ng-template>
 
-<ng-template #editCustoemr>
+<ng-template #editCustomer>
   <modal-editCustomerMenu [editableCustomer]="editableCustomer" (onChanged)="closeEditCustomerModal()"></modal-editCustomerMenu>
 </ng-template>

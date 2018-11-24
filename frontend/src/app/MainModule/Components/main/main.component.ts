@@ -19,6 +19,7 @@ export class MainComponent implements OnInit {
   public value: number[] = [];
   public size: number = 12;
   public totalElements: number;
+  itemsCounter: number;
 
   constructor(private loadingService: Ng4LoadingSpinnerService, private subscriptionsService: SubscriptionService, private sbService: SbService) {
   }
@@ -26,6 +27,15 @@ export class MainComponent implements OnInit {
   // Calls on component init
   ngOnInit() {
     this.loadSubscriptions(0);
+    if (localStorage.getItem('currentUser')) {
+      this.updateItemsCounter();
+    }
+  }
+
+  private updateItemsCounter(): void {
+    this.sbService.getCount().subscribe(count => {
+      this.itemsCounter = count;
+    });
   }
 
   private loadSubscriptions(page: number): void {
@@ -42,6 +52,7 @@ export class MainComponent implements OnInit {
 
   pageChanged(event: PageChangedEvent): void {
     this.loadSubscriptions(event.page - 1);
+    this.value = [];
   }
 
   addToSb(): void {
@@ -53,20 +64,23 @@ export class MainComponent implements OnInit {
       }
       i++;
     }
+
     this.sbService.saveSb(this.shoppingList).subscribe(() => {
+      this.updateItemsCounter();
     });
     this.value = [];
+
     this.loadingService.hide();
   }
 
-  adminOrOwner(): boolean{
+  adminOrOwner(): boolean {
     return (localStorage.getItem('currentUserRole') == 'admin' || localStorage.getItem('currentUserRole') == 'owner');
   }
 
-  cantAdd():boolean{
+  cantAdd(): boolean {
     if (localStorage.getItem('wallet') == null) return true;
-    for (let value of this.value){
-      if(value > 0) return false;
+    for (let value of this.value) {
+      if (value > 0) return false;
     }
     return true;
   }

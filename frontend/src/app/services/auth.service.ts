@@ -21,15 +21,6 @@ export class AuthService {
     // remove user from local storage to log user out
     this.token.signOut();
     localStorage.clear();
-    // localStorage.removeItem('currentUser');
-    // if(localStorage.getItem('currentUserRole') == 'owner'){
-    //   localStorage.removeItem('ownerId')
-    // }
-    // if(localStorage.getItem('currentUserRole') == 'customer'){
-    //   localStorage.removeItem('customerId');
-    // }
-    // localStorage.removeItem('currentUserRole');
-    // localStorage.removeItem('wallet');
   }
 
 }

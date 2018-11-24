@@ -4,6 +4,7 @@ import {Sb} from "../../models/sb";
 import {SbService} from "../../../services/sb.service";
 import {ActiveSubscription} from "../../models/activeSubscription";
 import {ActiveSubscriptionService} from "../../../services/activeSubscription.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-shoppingList',
@@ -15,19 +16,26 @@ export class ShoppingListComponent implements OnInit{
   public shoppingBasket: Sb[] = [];
   private subscriptions: ActiveSubscription[] = [];
   public total: number = 0;
+  itemsCounter: number;
 
-  constructor(private loadingService: Ng4LoadingSpinnerService, private sbService: SbService, private activeSubscriptionService: ActiveSubscriptionService) {
+  constructor(private loadingService: Ng4LoadingSpinnerService, private sbService: SbService, private activeSubscriptionService: ActiveSubscriptionService, private router: Router) {
   }
 
   ngOnInit(): void {
     this.loadShoppingBasket();
   }
 
+  private updateItemsCounter():void{
+    this.sbService.getCount().subscribe(count => {
+      this.itemsCounter = count;
+    });
+  }
 
   loadShoppingBasket(): void {
     this.loadingService.show();
     this.sbService.getSbByCustomerId().subscribe(shoppingBasket => {
       this.shoppingBasket = shoppingBasket as Sb[];
+      this.updateItemsCounter();
       this.totalCount();
       this.loadingService.hide();
     });
@@ -42,6 +50,7 @@ export class ShoppingListComponent implements OnInit{
 
   deleteSbItem(id: string): void {
     this.sbService.deleteSbById(id).subscribe(() => {
+      this.updateItemsCounter();
       this.loadShoppingBasket();
     });
   }
@@ -53,7 +62,8 @@ export class ShoppingListComponent implements OnInit{
     this.activeSubscriptionService.saveAS(this.subscriptions).subscribe(() => {
       this.subscriptions = [];
       this.sbService.deleteAllSbByCustomerId().subscribe(() => {
-        this.loadShoppingBasket();
+        // this.loadShoppingBasket();
+        this.router.navigateByUrl('/');
       });
     });
   }

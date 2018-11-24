@@ -20,6 +20,11 @@ public class ShoppingBasketController {
         this.shoppingBasketService = shoppingBasketService;
     }
 
+    @RequestMapping(value = "/count/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Long> getCount(@PathVariable(name = "id") Long id) {
+        return ResponseEntity.ok(shoppingBasketService.getCount(id));
+    }
+
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public ResponseEntity<ShoppingBasket> getSbById(@PathVariable(name = "id") Long id) {
         Optional<ShoppingBasket> sb = shoppingBasketService.getShoppingBasketById(id);
@@ -31,8 +36,10 @@ public class ShoppingBasketController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public Iterable<ShoppingBasket> saveSb(@RequestBody List<ShoppingBasket> Sb){
-        return shoppingBasketService.saveSb(Sb);
+    public ResponseEntity saveSb(@RequestBody List<ShoppingBasket> Sb){
+        shoppingBasketService.saveSb(Sb);
+        return ResponseEntity.noContent().build();
+
     }
 
     @RequestMapping(value = "/customer/{id}", method = RequestMethod.GET)

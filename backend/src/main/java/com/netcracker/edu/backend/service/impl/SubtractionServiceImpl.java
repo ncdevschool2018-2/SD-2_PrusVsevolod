@@ -18,7 +18,7 @@ import java.util.Optional;
 @Component
 public class SubtractionServiceImpl {
 
-    private static final int CYCLE_TIME = 60000/3;//В миллисекундах, 1 минута
+    private static final int CYCLE_TIME = 60000*4;//В миллисекундах, 1 минута
 
     @Autowired
     private ActiveSubscriptionService activeSubscriptionService;
@@ -36,8 +36,9 @@ public class SubtractionServiceImpl {
     public void Subtract() {
         Iterable<ActiveSubscription> activeSubscriptions = activeSubscriptionService.getAllActiveSubscriptions();
         for (ActiveSubscription subscription : activeSubscriptions) {//Цикл переборки всех активных подписок
-            double deltaTime = System.currentTimeMillis() - subscription.getActivationDate().getTime(); //Находится разница во времени
+            long deltaTime = System.currentTimeMillis()+1000 - subscription.getActivationDate().getTime();//Находится разница во времени (1000 - погрешность, почему-то иногда время между циклами бывает и 19500 ms)
             int amount = (int) deltaTime / CYCLE_TIME; //Находится количество условных единиц которые мы должны вычесть с quantity и умножить на price и вычесть с кошелька.
+            log.info("Разница во времени: " + ((Long)deltaTime).toString());
             if (amount > 0) {
                 Optional<Customer> customer = customerService.getCustomerById(subscription.getCustomerId());
                 if (customer.get().getStatus().getStatus().equals("valid")) {//Если аккаунт не заблокирован
@@ -63,7 +64,7 @@ public class SubtractionServiceImpl {
                             subscription.setActivationDate(new Date());
 
                             customer.get().getBa().setBalance(balance);
-                            log.info(customer.get().getBa().getBalance().toString());
+                            log.info("Amount: " + customer.get().getBa().getBalance().toString());
                             billingAccountService.addAmountOnBa(customer.get().getBa());
                             activeSubscriptionService.saveActiveSubscription(subscription);
                         }

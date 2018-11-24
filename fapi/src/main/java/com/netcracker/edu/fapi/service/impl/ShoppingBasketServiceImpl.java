@@ -2,7 +2,6 @@ package com.netcracker.edu.fapi.service.impl;
 
 import com.netcracker.edu.fapi.model.ShoppingBasketViewModel;
 import com.netcracker.edu.fapi.service.ShoppingBasketDataService;
-import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -23,9 +22,15 @@ public class ShoppingBasketServiceImpl implements ShoppingBasketDataService {
     }
 
     @Override
-    public List<ShoppingBasketViewModel> saveSb(List<ShoppingBasketViewModel> Sb) {
+    public Long getCount(Long id) {
         RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.postForEntity(backendServerUrl + "/api/sb", Sb , List.class).getBody();
+        return restTemplate.getForObject(backendServerUrl + "/api/sb/count/" + id, Long.class);
+    }
+
+    @Override
+    public void saveSb(List<ShoppingBasketViewModel> Sb) {
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.postForEntity(backendServerUrl + "/api/sb", Sb , List.class);
     }
 
     @Override

@@ -11,12 +11,16 @@ export class SbService {
   constructor(private http: HttpClient) {
   }
 
-  saveSb(sb: Sb[]): Observable<Sb[]> {
-    return this.http.post<Sb[]>('/api/sb', sb);
+  saveSb(sb: Sb[]): Observable<void> {
+    return this.http.post<void>('/api/sb', sb);
   }
 
   getSbByCustomerId(): Observable<Sb[]> {
     return this.http.get<Sb[]>('/api/sb/customer');
+  }
+
+  getCount(): Observable<number> {
+    return this.http.get<number>('/api/sb/count');
   }
 
   deleteSbById(id: string): Observable<Sb>{

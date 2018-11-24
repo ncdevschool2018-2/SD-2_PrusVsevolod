@@ -10,6 +10,7 @@ import java.util.List;
 public interface ShoppingBasketRepository extends CrudRepository<ShoppingBasket, Long> {
 
     Iterable<ShoppingBasket> findByCustomerId(Long id);
+    Long countByCustomerId(Long id);
     List<ShoppingBasket> findAll();
     void deleteByCustomerId(Long id);
 }

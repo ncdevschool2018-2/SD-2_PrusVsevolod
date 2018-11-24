@@ -1,8 +1,13 @@
 <ng4-loading-spinner> </ng4-loading-spinner>
 
-<app-header></app-header>
+<app-header [itemsCounter] = "itemsCounter"></app-header>
 
-<div class="container-fluid">
+<div class="container-fluid" style="position: relative;">
+  <div class="row justify-content-end" style="position: absolute; margin-left: 90%">
+    <div class="col-md-auto">
+      <button id="submitSubs" class="btn btn-primary" (click)="addToSb()" [hidden]="adminOrOwner()" [disabled]="cantAdd()">Add to Cart</button>
+    </div>
+  </div>
   <div class="row mt-2">
     <div class="col-auto">
       <pagination [totalItems]="totalElements" [itemsPerPage]="size" (pageChanged)="pageChanged($event)"></pagination>
@@ -44,9 +49,5 @@
       <div class="w-100" *ngIf="(i+1)%4==0"></div>
     </ng-container>
   </div>
-  <div class="row justify-content-end">
-    <div class="col-md-auto">
-      <button id="submitSubs" class="btn btn-primary" (click)="addToSb()" [hidden]="adminOrOwner()" [disabled]="cantAdd()">Add to Cart</button>
-    </div>
-  </div>
+
 </div>
