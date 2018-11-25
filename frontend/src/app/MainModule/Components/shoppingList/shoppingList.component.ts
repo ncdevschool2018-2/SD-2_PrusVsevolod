@@ -1,10 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, TemplateRef} from '@angular/core';
 import {Ng4LoadingSpinnerService} from "ng4-loading-spinner";
 import {Sb} from "../../models/sb";
 import {SbService} from "../../../services/sb.service";
 import {ActiveSubscription} from "../../models/activeSubscription";
 import {ActiveSubscriptionService} from "../../../services/activeSubscription.service";
 import {Router} from "@angular/router";
+import {BsModalRef, BsModalService} from "ngx-bootstrap";
 
 @Component({
   selector: 'app-shoppingList',
@@ -17,8 +18,9 @@ export class ShoppingListComponent implements OnInit{
   private subscriptions: ActiveSubscription[] = [];
   public total: number = 0;
   itemsCounter: number;
+  public bsModalRef: BsModalRef;
 
-  constructor(private loadingService: Ng4LoadingSpinnerService, private sbService: SbService, private activeSubscriptionService: ActiveSubscriptionService, private router: Router) {
+  constructor(private loadingService: Ng4LoadingSpinnerService, private sbService: SbService, private activeSubscriptionService: ActiveSubscriptionService, private router: Router, private modalService: BsModalService) {
   }
 
   ngOnInit(): void {
@@ -66,5 +68,18 @@ export class ShoppingListComponent implements OnInit{
         this.router.navigateByUrl('/');
       });
     });
+  }
+
+  confirm() {
+    this.checkout();
+    this.bsModalRef.hide();
+  }
+
+  decline() {
+    this.bsModalRef.hide();
+  }
+
+  openConfirmModal(template: TemplateRef<any>){
+    this.bsModalRef = this.modalService.show(template, {class: 'modal-sm'});
   }
 }

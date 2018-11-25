@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, TemplateRef} from '@angular/core';
 import {SubscriptionService} from "../../../services/subscription.service";
 import {Ng4LoadingSpinnerService} from "ng4-loading-spinner";
 import {SubscriptionModel} from "../../models/subscriptionModel";
-import {PageChangedEvent} from "ngx-bootstrap";
+import {BsModalRef, BsModalService, PageChangedEvent} from "ngx-bootstrap";
 import {SbService} from "../../../services/sb.service";
 import {Sb} from "../../models/sb";
 
@@ -15,19 +15,19 @@ export class MainComponent implements OnInit {
   // public  content: Content;
   public shoppingList: Sb[] = [];
   public subs: SubscriptionModel[];
-  // private subscriptions: Subscription[] = [];
+  public bsModalRef: BsModalRef;
   public value: number[] = [];
   public size: number = 12;
   public totalElements: number;
   itemsCounter: number;
 
-  constructor(private loadingService: Ng4LoadingSpinnerService, private subscriptionsService: SubscriptionService, private sbService: SbService) {
+  constructor(private loadingService: Ng4LoadingSpinnerService, private subscriptionsService: SubscriptionService, private sbService: SbService, private modalService: BsModalService) {
   }
 
   // Calls on component init
   ngOnInit() {
     this.loadSubscriptions(0);
-    if (localStorage.getItem('currentUser')) {
+    if (localStorage.getItem('currentUser') == 'customer') {
       this.updateItemsCounter();
     }
   }
@@ -83,6 +83,19 @@ export class MainComponent implements OnInit {
       if (value > 0) return false;
     }
     return true;
+  }
+
+  confirm() {
+    this.addToSb();
+    this.bsModalRef.hide();
+  }
+
+  decline() {
+    this.bsModalRef.hide();
+  }
+
+  openConfirmModal(template: TemplateRef<any>){
+      this.bsModalRef = this.modalService.show(template, {class: 'modal-sm'});
   }
 
 }

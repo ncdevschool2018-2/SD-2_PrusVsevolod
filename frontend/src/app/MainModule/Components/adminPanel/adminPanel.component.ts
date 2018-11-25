@@ -1,6 +1,5 @@
-import {Component, OnDestroy, OnInit, TemplateRef} from '@angular/core';
+import {Component, OnInit, TemplateRef} from '@angular/core';
 import {Ng4LoadingSpinnerService} from "ng4-loading-spinner";
-import {Subscription} from "rxjs";
 import {Customer} from "../../models/customer";
 import {Owner} from "../../models/owner";
 import {CustomerService} from "../../../services/customer.service";
@@ -81,6 +80,25 @@ export class AdminPanelComponent implements OnInit {
   closeEditCustomerModal(): void {
     this.loadCustomers();
     this.bsModalRef.hide();
+  }
+
+  confirmDeleteCustomer(id: string) {
+    this.deleteCustomer(id);
+    this.bsModalRef.hide();
+  }
+
+
+  confirmDeleteOwner(id: string) {
+    this.deleteOwner(id);
+    this.bsModalRef.hide();
+  }
+
+  decline() {
+    this.bsModalRef.hide();
+  }
+
+  openConfirmModal(template: TemplateRef<any>){
+    this.bsModalRef = this.modalService.show(template, {class: 'modal-sm'});
   }
 
 }

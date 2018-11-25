@@ -29,6 +29,7 @@ import {EditSubscriptionModalComponent} from "./MainModule/Components/ownerAccou
 import {EditOwnerModalComponent} from "./MainModule/Components/adminPanel/editOwnerModal/editOwnerModal.component";
 import {ShoppingListComponent} from "./MainModule/Components/shoppingList/shoppingList.component";
 import {AdminPanelComponent} from "./MainModule/Components/adminPanel/adminPanel.component";
+import {ConfirmModalComponent} from "./MainModule/Components/confirmModal/confirmModal.component";
 import {WalletModalComponent} from "./MainModule/Components/header/wallet/wallet.component";
 import {OwnerAccountInfoComponent} from "./MainModule/Components/ownerAccountInfo/ownerAccountInfo.component";
 import {CustomerAccountInfoComponent} from "./MainModule/Components/customerAccountInfo/customerAccountInfo.component";
@@ -65,7 +66,8 @@ const appRoutes: Routes =[
     AdminPanelComponent,
     WalletModalComponent,
     OwnerAccountInfoComponent,
-    CustomerAccountInfoComponent
+    CustomerAccountInfoComponent,
+    ConfirmModalComponent
   ],
   imports: [
     BrowserModule,

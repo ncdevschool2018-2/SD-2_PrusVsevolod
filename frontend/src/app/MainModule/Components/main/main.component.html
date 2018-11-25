@@ -5,7 +5,7 @@
 <div class="container-fluid" style="position: relative;">
   <div class="row justify-content-end" style="position: absolute; margin-left: 90%">
     <div class="col-md-auto">
-      <button id="submitSubs" class="btn btn-primary" (click)="addToSb()" [hidden]="adminOrOwner()" [disabled]="cantAdd()">Add to Cart</button>
+      <button id="submitSubs" class="btn btn-primary" (click)="openConfirmModal(confirmDialog)" [hidden]="adminOrOwner()" [disabled]="cantAdd()">Add to Cart</button>
     </div>
   </div>
   <div class="row mt-2">
@@ -51,3 +51,7 @@
   </div>
 
 </div>
+
+<ng-template #confirmDialog>
+  <modal-confirm (onConfirm)="confirm()" (onDecline)="decline()"></modal-confirm>
+</ng-template>

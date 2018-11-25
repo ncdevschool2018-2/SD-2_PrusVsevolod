@@ -1,5 +1,6 @@
 import {User} from "./user";
 import {Ba} from "./ba";
+import {Status} from "./status";
 
 export class Customer {
   id: string;
@@ -7,6 +8,7 @@ export class Customer {
   address: string;
   user: User = new User();
   ba: Ba;
+  status: Status = new Status();
 
   constructor(){
     if (localStorage.getItem('wallet')){
@@ -22,6 +24,7 @@ export class Customer {
     cloneCustomer.user = customer.user;
     cloneCustomer.ba = customer.ba;
     cloneCustomer.user = User.cloneUser(customer.user);
+    cloneCustomer.status = Status.cloneStatus(customer.status);
     return cloneCustomer;
   }
 }
