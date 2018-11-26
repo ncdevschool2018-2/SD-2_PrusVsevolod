@@ -1,6 +1,6 @@
 <ng4-loading-spinner> </ng4-loading-spinner>
 
-<app-header></app-header>
+<app-header [itemsCounter] = "itemsCounter"></app-header>
 
 <div class="container">
   <div class="row justify-content-center">
@@ -11,7 +11,7 @@
             <div class="d-flex justify-content-start">
               <div class="userData ml-3">
                 <h2 class="d-block" style="font-size: 1.5rem; font-weight: bold">Customer login: {{customer.user.login}}</h2>
-                <p class="font-weight-light">Account status: <span style="color: crimson">{{customer.status.status}}</span></p>
+                <p class="font-weight-light">Account status: <span style="color: crimson">{{customer.status.name}}</span></p>
               </div>
             </div>
           </div>

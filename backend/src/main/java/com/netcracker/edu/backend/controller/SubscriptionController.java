@@ -29,12 +29,6 @@ public class SubscriptionController {
         }
     }
 
-//    @RequestMapping(value = "", method = RequestMethod.GET)
-//    public Iterable<Subscription> getAllSubscriptions() {
-//        return subscriptionService.getAllSubscriptions();
-//    }
-
-
     @RequestMapping(params = { "page", "size" },method = RequestMethod.GET)
     public Iterable<Subscription> findSubscriptions(@RequestParam( "page" ) int page, @RequestParam( "size" ) int size) {
         return subscriptionService.findAll(page,size);
@@ -60,4 +54,5 @@ public class SubscriptionController {
         subscriptionService.deleteSubscription(id);
         return ResponseEntity.noContent().build();
     }
+
 }

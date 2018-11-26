@@ -27,7 +27,7 @@ export class MainComponent implements OnInit {
   // Calls on component init
   ngOnInit() {
     this.loadSubscriptions(0);
-    if (localStorage.getItem('currentUser') == 'customer') {
+    if (localStorage.getItem('currentUserRole') == 'customer') {
       this.updateItemsCounter();
     }
   }
@@ -41,11 +41,9 @@ export class MainComponent implements OnInit {
   private loadSubscriptions(page: number): void {
     this.loadingService.show();
     this.subscriptionsService.getSubscriptionsPaged(page, this.size).subscribe(source => {
-      // console.log(source.content);
       // Parse json response into local array
       this.subs = source.content as SubscriptionModel[];
       this.totalElements = source.totalElements;
-      // Check data in console
       this.loadingService.hide();
     });
   }

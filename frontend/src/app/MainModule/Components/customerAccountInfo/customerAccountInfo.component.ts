@@ -6,6 +6,7 @@ import {Customer} from "../../models/customer";
 import {BaService} from "../../../services/ba.service";
 import {ActiveSubscription} from "../../models/activeSubscription";
 import {ActiveSubscriptionService} from "../../../services/activeSubscription.service";
+import {SbService} from "../../../services/sb.service";
 
 @Component({
   selector: 'app-customerAccountInfo',
@@ -16,9 +17,10 @@ export class CustomerAccountInfoComponent implements OnInit{
 
   amount: number = 0;
   modalRef: BsModalRef;
+  itemsCounter: number;
   public customer: Customer = new Customer();
   public activeSubs: ActiveSubscription[] = [];
-  constructor(private modalService: BsModalService, private loadingService: Ng4LoadingSpinnerService, private customersService: CustomerService, private baService: BaService, private ASService: ActiveSubscriptionService) {
+  constructor(private modalService: BsModalService, private loadingService: Ng4LoadingSpinnerService,  private sbService: SbService, private customersService: CustomerService, private baService: BaService, private ASService: ActiveSubscriptionService) {
   }
 
   openModal(template: TemplateRef<any>) {
@@ -29,6 +31,7 @@ export class CustomerAccountInfoComponent implements OnInit{
   ngOnInit() {
     this.loadCustomer();
     this.loadActiveSubs();
+    this.updateItemsCounter();
   }
 
   private loadCustomer(): void {
@@ -72,5 +75,11 @@ export class CustomerAccountInfoComponent implements OnInit{
     this.ASService.deleteAS(id).subscribe(()=>{
       this.loadActiveSubs();
     })
+  }
+
+  private updateItemsCounter(): void {
+    this.sbService.getCount().subscribe(count => {
+      this.itemsCounter = count;
+    });
   }
 }

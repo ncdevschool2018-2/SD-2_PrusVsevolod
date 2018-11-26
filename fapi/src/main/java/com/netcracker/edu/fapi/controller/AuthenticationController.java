@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import static com.netcracker.edu.fapi.model.Constants.TOKEN_PREFIX;
 
 @RestController
-//2 часа - время жизни токена
+//час - время жизни токена
 @RequestMapping("/api/token")
 public class AuthenticationController {
 
@@ -39,7 +39,8 @@ public class AuthenticationController {
     @RequestMapping(value = "/expDate", method = RequestMethod.GET)
     public ResponseEntity<?> GetExpDate(@RequestHeader(name = "authorization")String token){
         token = token.replace(TOKEN_PREFIX, "");
-//        System.out.println(System.currentTimeMillis());
+//        System.out.println(new Date());
+//        System.out.println(jwtTokenUtil.getExpirationDateFromToken(token));
         return ResponseEntity.ok(jwtTokenUtil.getExpirationDateFromToken(token));
     }
 

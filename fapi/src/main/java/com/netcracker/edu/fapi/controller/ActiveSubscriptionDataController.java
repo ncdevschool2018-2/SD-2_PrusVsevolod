@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -27,9 +26,8 @@ public class ActiveSubscriptionDataController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<List<ActiveSubscriptionModel>> saveActiveSubscription(@RequestBody List<ActiveSubscriptionModel> activeSubscriptionsModel) {
         CustomerViewModel customer = customerDataService.getCustomerByUserId(Long.valueOf(userDataService.findByLogin(SecurityContextHolder.getContext().getAuthentication().getName()).getId()));
-        Date currentTime = new Date(System.currentTimeMillis());
         for (ActiveSubscriptionModel subscription : activeSubscriptionsModel) {
-            subscription.setActivationDate(currentTime);
+            subscription.setLastEditDate(System.currentTimeMillis());
             subscription.setCustomerId(customer.getId());
         }
         return ResponseEntity.ok(activeSubscriptionDataService.saveActiveSubscriptions(activeSubscriptionsModel));

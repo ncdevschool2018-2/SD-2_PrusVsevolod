@@ -1,12 +1,12 @@
 export class Status {
 
   id: string;
-  status: string;
+  name: string;
 
   static cloneStatus(status: Status): Status{
     let cloneStatus: Status = new Status();
     cloneStatus.id = status.id;
-    cloneStatus.status = status.status;
+    cloneStatus.name = status.name;
     return cloneStatus;
   }
 }

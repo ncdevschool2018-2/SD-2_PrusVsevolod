@@ -1,8 +1,6 @@
 package com.netcracker.edu.backend.entity;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -11,8 +9,8 @@ public class ActiveSubscription {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Column(name = "activation_date")
-    private Date activationDate;
+    @Column(name = "last_edit_date")
+    private long lastEditDate;
 //    @ManyToOne
 //    @JoinColumn(name = "customer_id", nullable = false)
     @Column(name = "customer_id")
@@ -25,8 +23,8 @@ public class ActiveSubscription {
     public ActiveSubscription() {
     }
 
-    public ActiveSubscription(Date activationDate, long customerId, Subscription subscription, int quantity) {
-        this.activationDate = activationDate;
+    public ActiveSubscription(long lastEditDate, long customerId, Subscription subscription, int quantity) {
+        this.lastEditDate = lastEditDate;
         this.customerId = customerId;
         this.subscription = subscription;
         this.quantity = quantity;
@@ -40,12 +38,12 @@ public class ActiveSubscription {
         this.id = id;
     }
 
-    public Date getActivationDate() {
-        return activationDate;
+    public long getLastEditDate() {
+        return lastEditDate;
     }
 
-    public void setActivationDate(Date activationDate) {
-        this.activationDate = activationDate;
+    public void setLastEditDate(long lastEditDate) {
+        this.lastEditDate = lastEditDate;
     }
 
     public long getCustomerId() {
@@ -78,22 +76,22 @@ public class ActiveSubscription {
         if (o == null || getClass() != o.getClass()) return false;
         ActiveSubscription that = (ActiveSubscription) o;
         return id == that.id &&
+                lastEditDate == that.lastEditDate &&
                 customerId == that.customerId &&
                 quantity == that.quantity &&
-                Objects.equals(activationDate, that.activationDate) &&
                 Objects.equals(subscription, that.subscription);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, activationDate, customerId, subscription, quantity);
+        return Objects.hash(id, lastEditDate, customerId, subscription, quantity);
     }
 
     @Override
     public String toString() {
         return "ActiveSubscription{" +
                 "id=" + id +
-                ", activationDate=" + activationDate +
+                ", lastEditDate=" + lastEditDate +
                 ", customerId=" + customerId +
                 ", subscription=" + subscription +
                 ", quantity=" + quantity +

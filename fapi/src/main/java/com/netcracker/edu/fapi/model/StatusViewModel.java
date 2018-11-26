@@ -6,14 +6,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class StatusViewModel {
 
     private int id;
-    private String status;
+    private String name;
 
     public StatusViewModel() {
     }
 
-    public StatusViewModel(int id, String status) {
+    public StatusViewModel(int id, String name) {
         this.id = id;
-        this.status = status;
+        this.name = name;
     }
 
     public int getId() {
@@ -24,11 +24,11 @@ public class StatusViewModel {
         this.id = id;
     }
 
-    public String getStatus() {
-        return status;
+    public String getName() {
+        return name;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setName(String name) {
+        this.name = name;
     }
 }

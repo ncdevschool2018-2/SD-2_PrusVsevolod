@@ -1,11 +1,9 @@
 package com.netcracker.edu.fapi.model;
 
-import java.util.Date;
-
 public class ActiveSubscriptionModel {
 
     private Long id;
-    private Date activationDate;
+    private Long lastEditDate;
     private Long customerId;
     private SubscriptionViewModel subscription;
     private Integer quantity;
@@ -13,9 +11,9 @@ public class ActiveSubscriptionModel {
     public ActiveSubscriptionModel() {
     }
 
-    public ActiveSubscriptionModel(Long id, Date activationDate, Long customerId, SubscriptionViewModel subscription, Integer quantity) {
+    public ActiveSubscriptionModel(Long id, Long lastEditDate, Long customerId, SubscriptionViewModel subscription, Integer quantity) {
         this.id = id;
-        this.activationDate = activationDate;
+        this.lastEditDate = lastEditDate;
         this.customerId = customerId;
         this.subscription = subscription;
         this.quantity = quantity;
@@ -29,12 +27,12 @@ public class ActiveSubscriptionModel {
         this.id = id;
     }
 
-    public Date getActivationDate() {
-        return activationDate;
+    public Long getLastEditDate() {
+        return lastEditDate;
     }
 
-    public void setActivationDate(Date activationDate) {
-        this.activationDate = activationDate;
+    public void setLastEditDate(Long lastEditDate) {
+        this.lastEditDate = lastEditDate;
     }
 
     public Long getCustomerId() {

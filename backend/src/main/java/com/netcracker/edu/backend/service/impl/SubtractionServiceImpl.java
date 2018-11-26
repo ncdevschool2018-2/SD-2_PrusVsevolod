@@ -12,13 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
 import java.util.Optional;
 
 @Component
 public class SubtractionServiceImpl {
 
-    private static final int CYCLE_TIME = 60000*4;//В миллисекундах, 1 минута
+    private static final int CYCLE_TIME = 60000;//В миллисекундах, 1 минута
 
     @Autowired
     private ActiveSubscriptionService activeSubscriptionService;
@@ -31,17 +30,18 @@ public class SubtractionServiceImpl {
 
     private static final Logger log = LoggerFactory.getLogger(SubscriptionServiceImpl.class);
 
-    @Scheduled(fixedRate = CYCLE_TIME)
-    //Выполняется каждую минуту, fixedDelay - выполняется через интервал после завершения работы прошлого треда.
+    @Scheduled(fixedDelay = CYCLE_TIME)
+    //fixedRate выполняется каждую минуту, fixedDelay - выполняется через интервал после завершения работы прошлого треда.
     public void Subtract() {
         Iterable<ActiveSubscription> activeSubscriptions = activeSubscriptionService.getAllActiveSubscriptions();
         for (ActiveSubscription subscription : activeSubscriptions) {//Цикл переборки всех активных подписок
-            long deltaTime = System.currentTimeMillis()+1000 - subscription.getActivationDate().getTime();//Находится разница во времени (1000 - погрешность, почему-то иногда время между циклами бывает и 19500 ms)
+            long newEditedDate = System.currentTimeMillis();
+            long deltaTime = newEditedDate - subscription.getLastEditDate();//Находится разница во времени
             int amount = (int) deltaTime / CYCLE_TIME; //Находится количество условных единиц которые мы должны вычесть с quantity и умножить на price и вычесть с кошелька.
             log.info("Разница во времени: " + ((Long)deltaTime).toString());
             if (amount > 0) {
                 Optional<Customer> customer = customerService.getCustomerById(subscription.getCustomerId());
-                if (customer.get().getStatus().getStatus().equals("valid")) {//Если аккаунт не заблокирован
+                if (customer.get().getStatus().getName().equals("valid")) {//Если аккаунт не заблокирован
                     int subtractMoney = amount * subscription.getSubscription().getPrice();
                     Integer balance = customer.get().getBa().getBalance() - subtractMoney;
 
@@ -51,7 +51,7 @@ public class SubtractionServiceImpl {
                         customerService.saveEditedCustomer(customer.get());
                     } else {
 
-                        Integer quantity = subscription.getQuantity() - amount;
+                        int quantity = subscription.getQuantity() - amount;
 
                         if (quantity < 1) {//Если у нас сервис не запускался долгое время то кол-во дней может быть отрицательным, в таком случае надо просто вычесть все оставшиеся дни
                             customer.get().getBa().setBalance(customer.get().getBa().getBalance() - subscription.getQuantity() * subscription.getSubscription().getPrice());
@@ -61,8 +61,7 @@ public class SubtractionServiceImpl {
                             activeSubscriptionService.deleteActiveSubscriptionById(subscription.getId());
                         } else {
                             subscription.setQuantity(quantity);
-                            subscription.setActivationDate(new Date());
-
+                            subscription.setLastEditDate(newEditedDate);
                             customer.get().getBa().setBalance(balance);
                             log.info("Amount: " + customer.get().getBa().getBalance().toString());
                             billingAccountService.addAmountOnBa(customer.get().getBa());

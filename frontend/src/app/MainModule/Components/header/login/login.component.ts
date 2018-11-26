@@ -53,7 +53,6 @@ export class LoginModalComponent {
 
         });
         this.onChange.emit();
-        // this.bsModalRef.hide()
       },
       () => {
         this.isNotHidden = true;

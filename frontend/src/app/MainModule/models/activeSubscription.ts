@@ -3,7 +3,7 @@ import {SubscriptionModel} from "./subscriptionModel";
 export class ActiveSubscription {
 
   id: string;
-  date: string;
+  lastEditDate: number;
   customerId: number;
   subscription: SubscriptionModel;
   quantity: number;

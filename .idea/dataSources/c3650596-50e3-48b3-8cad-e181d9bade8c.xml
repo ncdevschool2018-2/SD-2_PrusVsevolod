@@ -1145,9 +1145,9 @@
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="293" parent="280" name="activation_date">
+    <column id="293" parent="280" name="last_edit_date">
       <Position>5</Position>
-      <DataType>timestamp|0s</DataType>
+      <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
@@ -1525,7 +1525,7 @@ subscription_id</ColNames>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="362" parent="286" name="status">
+    <column id="362" parent="286" name="name">
       <Position>2</Position>
       <DataType>varchar(45)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
@@ -1536,7 +1536,7 @@ subscription_id</ColNames>
       <Type>btree</Type>
     </index>
     <index id="364" parent="286" name="status_UNIQUE">
-      <ColNames>status</ColNames>
+      <ColNames>name</ColNames>
       <Unique>1</Unique>
       <Type>btree</Type>
     </index>
@@ -1550,7 +1550,7 @@ subscription_id</ColNames>
       <UnderlyingIndexName>id_UNIQUE</UnderlyingIndexName>
     </key>
     <key id="367" parent="286" name="status_UNIQUE">
-      <ColNames>status</ColNames>
+      <ColNames>name</ColNames>
       <UnderlyingIndexName>status_UNIQUE</UnderlyingIndexName>
     </key>
     <column id="368" parent="287" name="id">

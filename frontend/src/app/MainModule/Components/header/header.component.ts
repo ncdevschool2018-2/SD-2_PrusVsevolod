@@ -1,4 +1,4 @@
-import {Component, Input, TemplateRef} from '@angular/core';
+import {Component, Input, OnInit, TemplateRef} from '@angular/core';
 import {BsModalRef, BsModalService} from "ngx-bootstrap";
 import {WalletModalComponent} from "./wallet/wallet.component";
 import {AuthService} from "../../../services/auth.service";
@@ -11,7 +11,7 @@ import {SbService} from "../../../services/sb.service";
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent{
+export class HeaderComponent implements OnInit{
 
   public bsModalRef: BsModalRef;
   currentUser: User;
@@ -66,6 +66,10 @@ export class HeaderComponent{
         return "/404";
       }
     }
+  }
+
+  ngOnInit(): void {
+    console.log("Qwe");
   }
 
 }
