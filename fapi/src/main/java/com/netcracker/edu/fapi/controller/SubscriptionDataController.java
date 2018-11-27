@@ -17,14 +17,14 @@ public class SubscriptionDataController {
     @Autowired
     private SubscriptionDataService subscriptionDataService;
 
-//    @RequestMapping
-//    public ResponseEntity<List<SubscriptionViewModel>> getAllSubscriptions() {
-//        return ResponseEntity.ok(subscriptionDataService.getAll());
-//    }
+    @RequestMapping(params = {"page", "size"})
+    public ResponseEntity<Content> findAll(@RequestParam("page") int page, @RequestParam("size") int size) {
+        return ResponseEntity.ok(subscriptionDataService.findAll(page, size));
+    }
 
-    @RequestMapping(params = { "page", "size" })
-    public ResponseEntity<Content> findAll(@RequestParam( "page" ) int page, @RequestParam( "size" ) int size) {
-        return ResponseEntity.ok(subscriptionDataService.findAll(page,size));
+    @RequestMapping(value = "/search", params = {"name", "page", "size"})
+    public ResponseEntity<Content> findByNameLike(@RequestParam("name") String name, @RequestParam("page") int page, @RequestParam("size") int size) {
+        return ResponseEntity.ok(subscriptionDataService.findByNameLike(name, page, size));
     }
 
     @RequestMapping(value = "/owner/{ownerId}")

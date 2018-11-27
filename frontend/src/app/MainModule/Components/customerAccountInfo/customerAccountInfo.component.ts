@@ -6,7 +6,7 @@ import {Customer} from "../../models/customer";
 import {BaService} from "../../../services/ba.service";
 import {ActiveSubscription} from "../../models/activeSubscription";
 import {ActiveSubscriptionService} from "../../../services/activeSubscription.service";
-import {SbService} from "../../../services/sb.service";
+import {BasketItemService} from "../../../services/basketItem.service";
 
 @Component({
   selector: 'app-customerAccountInfo',
@@ -20,7 +20,7 @@ export class CustomerAccountInfoComponent implements OnInit{
   itemsCounter: number;
   public customer: Customer = new Customer();
   public activeSubs: ActiveSubscription[] = [];
-  constructor(private modalService: BsModalService, private loadingService: Ng4LoadingSpinnerService,  private sbService: SbService, private customersService: CustomerService, private baService: BaService, private ASService: ActiveSubscriptionService) {
+  constructor(private modalService: BsModalService, private loadingService: Ng4LoadingSpinnerService, private sbService: BasketItemService, private customersService: CustomerService, private baService: BaService, private ASService: ActiveSubscriptionService) {
   }
 
   openModal(template: TemplateRef<any>) {

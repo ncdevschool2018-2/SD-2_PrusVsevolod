@@ -3,8 +3,8 @@ import {SubscriptionService} from "../../../services/subscription.service";
 import {Ng4LoadingSpinnerService} from "ng4-loading-spinner";
 import {SubscriptionModel} from "../../models/subscriptionModel";
 import {BsModalRef, BsModalService, PageChangedEvent} from "ngx-bootstrap";
-import {SbService} from "../../../services/sb.service";
-import {Sb} from "../../models/sb";
+import {BasketItemService} from "../../../services/basketItem.service";
+import {BasketItem} from "../../models/basketItem";
 
 @Component({
   selector: 'app-main',
@@ -13,7 +13,7 @@ import {Sb} from "../../models/sb";
 })
 export class MainComponent implements OnInit {
   // public  content: Content;
-  public shoppingList: Sb[] = [];
+  public shoppingList: BasketItem[] = [];
   public subs: SubscriptionModel[];
   public bsModalRef: BsModalRef;
   public value: number[] = [];
@@ -21,7 +21,7 @@ export class MainComponent implements OnInit {
   public totalElements: number;
   itemsCounter: number;
 
-  constructor(private loadingService: Ng4LoadingSpinnerService, private subscriptionsService: SubscriptionService, private sbService: SbService, private modalService: BsModalService) {
+  constructor(private loadingService: Ng4LoadingSpinnerService, private subscriptionsService: SubscriptionService, private sbService: BasketItemService, private modalService: BsModalService) {
   }
 
   // Calls on component init
@@ -58,7 +58,7 @@ export class MainComponent implements OnInit {
     let i: number = 0;
     for (let sub of this.subs) {
       if (this.value[i] > 0) {
-        this.shoppingList.push(new Sb(localStorage.getItem('customerId'), sub, this.value[i]));
+        this.shoppingList.push(new BasketItem(localStorage.getItem('customerId'), sub, this.value[i]));
       }
       i++;
     }
@@ -96,4 +96,12 @@ export class MainComponent implements OnInit {
       this.bsModalRef = this.modalService.show(template, {class: 'modal-sm'});
   }
 
+  search(searchValue: string){
+    this.loadingService.show();
+    this.subscriptionsService.getSubscriptionsByNameLike(searchValue, 0, this.size).subscribe(source =>{
+      this.subs = source.content as SubscriptionModel[];
+      this.totalElements = source.totalElements;
+      this.loadingService.hide();
+    })
+  }
 }

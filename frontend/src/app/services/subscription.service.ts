@@ -12,9 +12,6 @@ export class SubscriptionService {
   constructor(private http: HttpClient) {
   }
 
-  getSubscriptions(): Observable<SubscriptionModel[]> {
-    return this.http.get<SubscriptionModel[]>('/api/subscriptions');
-  }
   getSubscriptionsPaged(page: number, size: number): Observable<Content<SubscriptionModel>> {
     return this.http.get<Content<SubscriptionModel>>('/api/subscriptions?page=' + page + '&size=' + size);
   }
@@ -24,10 +21,12 @@ export class SubscriptionService {
   saveSubscription(subscription: SubscriptionModel): Observable<SubscriptionModel>{
     return this.http.post<SubscriptionModel>('/api/subscriptions', subscription);
   }
-  saveEditedSubscription(subscription: SubscriptionModel): Observable<SubscriptionModel>{
-    return this.http.put<SubscriptionModel>('/api/subscriptions', subscription);
+  // saveEditedSubscription(subscription: SubscriptionModel): Observable<SubscriptionModel>{
+  //   return this.http.put<SubscriptionModel>('/api/subscriptions', subscription);
+  // }
+  getSubscriptionsByNameLike(name: string, page: number, size: number): Observable<Content<SubscriptionModel>>{
+    return this.http.get<Content<SubscriptionModel>>('/api/subscriptions/search?name=' + name + "&page=" + page + "&size=" + size);
   }
-
   deleteSubscription(id: string): Observable<void> {
     return this.http.delete<void>('/api/subscriptions/' + id);
   }

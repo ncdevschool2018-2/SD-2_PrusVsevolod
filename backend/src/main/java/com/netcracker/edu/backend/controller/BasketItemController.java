@@ -1,7 +1,7 @@
 package com.netcracker.edu.backend.controller;
 
-import com.netcracker.edu.backend.entity.ShoppingBasket;
-import com.netcracker.edu.backend.service.ShoppingBasketService;
+import com.netcracker.edu.backend.entity.BasketItem;
+import com.netcracker.edu.backend.service.BasketItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,24 +10,24 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/sb")
-public class ShoppingBasketController {
+@RequestMapping("/api/basket_item")
+public class BasketItemController {
 
-    private ShoppingBasketService shoppingBasketService;
+    private BasketItemService basketItemService;
 
     @Autowired
-    public ShoppingBasketController(ShoppingBasketService shoppingBasketService){
-        this.shoppingBasketService = shoppingBasketService;
+    public BasketItemController(BasketItemService shoppingBasketService){
+        this.basketItemService = shoppingBasketService;
     }
 
     @RequestMapping(value = "/count/{id}", method = RequestMethod.GET)
     public ResponseEntity<Long> getCount(@PathVariable(name = "id") Long id) {
-        return ResponseEntity.ok(shoppingBasketService.getCount(id));
+        return ResponseEntity.ok(basketItemService.getCount(id));
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<ShoppingBasket> getSbById(@PathVariable(name = "id") Long id) {
-        Optional<ShoppingBasket> sb = shoppingBasketService.getShoppingBasketById(id);
+    public ResponseEntity<BasketItem> getBasketItemById(@PathVariable(name = "id") Long id) {
+        Optional<BasketItem> sb = basketItemService.getBasketItemById(id);
         if (sb.isPresent()) {
             return ResponseEntity.ok(sb.get());
         } else {
@@ -36,15 +36,15 @@ public class ShoppingBasketController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity saveSb(@RequestBody List<ShoppingBasket> Sb){
-        shoppingBasketService.saveSb(Sb);
+    public ResponseEntity saveSb(@RequestBody List<BasketItem> Sb){
+        basketItemService.saveBasketItems(Sb);
         return ResponseEntity.noContent().build();
 
     }
 
     @RequestMapping(value = "/customer/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Iterable<ShoppingBasket>> getSbByCustomerId(@PathVariable(name = "id") Long id) {
-        Iterable<ShoppingBasket> sb = shoppingBasketService.findByCustomerId(id);
+    public ResponseEntity<Iterable<BasketItem>> getBasketItemByCustomerId(@PathVariable(name = "id") Long id) {
+        Iterable<BasketItem> sb = basketItemService.findByCustomerId(id);
         if (sb != null) {
             return ResponseEntity.ok(sb);
         } else {
@@ -53,13 +53,13 @@ public class ShoppingBasketController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity deleteSbById(@PathVariable(name = "id") Long id){
-        shoppingBasketService.deleteShoppingItem(id);
+    public ResponseEntity deleteBasketItemById(@PathVariable(name = "id") Long id){
+        basketItemService.deleteBasketItem(id);
         return ResponseEntity.noContent().build();
     }
     @RequestMapping(value = "/customer/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity deleteAllSbByCustomerId(@PathVariable(name = "id") Long id){
-        shoppingBasketService.deleteAllShoppingItemsByCustomerId(id);
+    public ResponseEntity deleteAllBasketItemsByCustomerId(@PathVariable(name = "id") Long id){
+        basketItemService.deleteAllBasketItemsByCustomerId(id);
         return ResponseEntity.noContent().build();
     }
 }

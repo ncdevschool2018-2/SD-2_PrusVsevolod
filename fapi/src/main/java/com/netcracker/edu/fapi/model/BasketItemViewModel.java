@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ShoppingBasketViewModel {
+public class BasketItemViewModel {
 
     @Null(groups = {New.class})
     private Long id;
@@ -25,10 +25,10 @@ public class ShoppingBasketViewModel {
     @Max(groups = {New.class, Exist.class}, value = 99)
     private Integer quantity;
 
-    public ShoppingBasketViewModel() {
+    public BasketItemViewModel() {
     }
 
-    public ShoppingBasketViewModel(Long id, long customerId, SubscriptionViewModel subscription, Integer quantity) {
+    public BasketItemViewModel(Long id, long customerId, SubscriptionViewModel subscription, Integer quantity) {
         this.id = id;
         this.customerId = customerId;
         this.subscription = subscription;

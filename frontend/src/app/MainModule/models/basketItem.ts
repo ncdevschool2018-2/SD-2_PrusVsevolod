@@ -1,6 +1,6 @@
 import {SubscriptionModel} from "./subscriptionModel";
 
-export class Sb {
+export class BasketItem {
 
   id: string;
   customerId: string;

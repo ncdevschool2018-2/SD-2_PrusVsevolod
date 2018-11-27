@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <img src="https://pbs.twimg.com/profile_images/378800000095820479/c7b2e53c69f3dcbc8966fd52d234ace4_400x400.png"
-       width="30" height="30" class="d-inline-block align-top mr-2" alt="">
+       width="30" height="30" class="d-inline-block align-top mr-2">
   <span class="navbar-brand">Simple Charging Service</span>
   <div class="collapse navbar-collapse" id="navbarText">
 
@@ -24,20 +24,23 @@
       </li>
     </ul>
 
-      <a class="btn btn-light mx-2" href="shoppingList"
-         [hidden]="!userIsPresent() || userRole() == 'owner' || userRole() == 'admin'">
-        <fa [name]="'cart-arrow-down'"></fa>
-        {{itemsCounter}}
-      </a>
-    <form class="form-inline my-2">
-      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-      <ul class="navbar-nav mr-auto">
+    <a class="btn btn-light mx-2" href="shoppingList"
+       [hidden]="!userIsPresent() || userRole() == 'owner' || userRole() == 'admin'">
+      <fa name="cart-arrow-down"></fa>
+      {{itemsCounter}}
+    </a>
+    <div class="form-inline my-2">
+      <div [hidden]="notMainPage()">
+        <input class="form-control mr-sm-2" placeholder="Search" [(ngModel)]="searchValue">
+        <button class="btn btn-outline-success my-2 my-sm-0" (click)="search()">Search</button>
+      </div>
+      <ul class="navbar-nav">
         <li class="nav-item">
           <a class="nav-link" [hidden]="!userIsPresent()" (click)="logout()">Logout</a>
         </li>
       </ul>
-    </form>
+    </div>
+
   </div>
 </nav>
 

@@ -1,23 +1,25 @@
-import {Component, Input, OnInit, TemplateRef} from '@angular/core';
+import {Component, EventEmitter, Input, Output, TemplateRef} from '@angular/core';
 import {BsModalRef, BsModalService} from "ngx-bootstrap";
 import {WalletModalComponent} from "./wallet/wallet.component";
 import {AuthService} from "../../../services/auth.service";
 import {User} from "../../models/user";
 import {Router} from "@angular/router";
-import {SbService} from "../../../services/sb.service";
+import {BasketItemService} from "../../../services/basketItem.service";
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit{
+export class HeaderComponent{
 
   public bsModalRef: BsModalRef;
   currentUser: User;
   @Input() itemsCounter: number;
+  @Output() onSearch = new EventEmitter<string>();
+  searchValue: string = '';
 
-  constructor(private modalService: BsModalService, private authService: AuthService, private router: Router, private sbService: SbService) {
+  constructor(private modalService: BsModalService, private authService: AuthService, private router: Router, private sbService: BasketItemService) {
   }
 
   openModalWithLogin(template: TemplateRef<any>) {
@@ -68,8 +70,11 @@ export class HeaderComponent implements OnInit{
     }
   }
 
-  ngOnInit(): void {
-    console.log("Qwe");
+  notMainPage():boolean{
+    return this.router.url != '/';
   }
 
+  search(): void{
+    this.onSearch.emit(this.searchValue);
+  }
 }

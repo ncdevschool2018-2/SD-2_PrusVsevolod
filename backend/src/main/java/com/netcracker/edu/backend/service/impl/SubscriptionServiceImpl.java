@@ -5,6 +5,7 @@ import com.netcracker.edu.backend.repository.SubscriptionRepository;
 import com.netcracker.edu.backend.service.SubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -20,8 +21,8 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
-    public Iterable<Subscription> findAll(int page, int size) {
-        return repository.findAll(PageRequest.of(page,size));
+    public Iterable<Subscription> findAllWithSorting(int page, int size, Sort sort) {
+        return repository.findAll(PageRequest.of(page,size, sort));
     }
 
     @Override
@@ -30,9 +31,10 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
-    public Iterable<Subscription> getAllSubscriptions() {
-        return repository.findAll();
+    public Iterable<Subscription> findByNameContaining(String name, int page, int size) {
+        return repository.findByNameContaining(name, PageRequest.of(page,size));
     }
+
 
     @Override
     public Iterable<Subscription> getByOwnerId(Long id) {

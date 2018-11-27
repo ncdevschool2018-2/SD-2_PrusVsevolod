@@ -7,7 +7,8 @@ import java.util.List;
 
 public interface SubscriptionDataService {
 
-    Content<SubscriptionViewModel> findAll(int page, int sie);
+    Content<SubscriptionViewModel> findAll(int page, int size);
+    Content<SubscriptionViewModel> findByNameLike(String name, int page, int size);
     List<SubscriptionViewModel> getAll();
     SubscriptionViewModel getSubscriptionById(Long id);
     List<SubscriptionViewModel>findByOwnerId(Long id);

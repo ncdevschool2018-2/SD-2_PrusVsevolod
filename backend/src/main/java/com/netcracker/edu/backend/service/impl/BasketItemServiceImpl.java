@@ -1,8 +1,8 @@
 package com.netcracker.edu.backend.service.impl;
 
-import com.netcracker.edu.backend.entity.ShoppingBasket;
-import com.netcracker.edu.backend.repository.ShoppingBasketRepository;
-import com.netcracker.edu.backend.service.ShoppingBasketService;
+import com.netcracker.edu.backend.entity.BasketItem;
+import com.netcracker.edu.backend.repository.BasketItemRepository;
+import com.netcracker.edu.backend.service.BasketItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,12 +12,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
-public class ShoppingBasketServiceImpl implements ShoppingBasketService {
+public class BasketItemServiceImpl implements BasketItemService {
 
-    private ShoppingBasketRepository repository;
+    private BasketItemRepository repository;
 
     @Autowired
-    public ShoppingBasketServiceImpl(ShoppingBasketRepository repository) {
+    public BasketItemServiceImpl(BasketItemRepository repository) {
         this.repository = repository;
     }
 
@@ -28,16 +28,16 @@ public class ShoppingBasketServiceImpl implements ShoppingBasketService {
     }
 
     @Override
-    public Iterable<ShoppingBasket> findByCustomerId(Long id) {
+    public Iterable<BasketItem> findByCustomerId(Long id) {
         return repository.findByCustomerId(id);
     }
 
     @Override
-    public void saveSb(List<ShoppingBasket> Sb) {
-        List<ShoppingBasket> sameItems = new ArrayList<>();
-        List<ShoppingBasket> basket = (List<ShoppingBasket>)repository.findByCustomerId(Sb.get(0).getCustomerId());
-        for(ShoppingBasket basketItem: basket){
-            for(ShoppingBasket sbItem: Sb){
+    public void saveBasketItems(List<BasketItem> Sb) {
+        List<BasketItem> sameItems = new ArrayList<>();
+        List<BasketItem> basket = (List<BasketItem>)repository.findByCustomerId(Sb.get(0).getCustomerId());
+        for(BasketItem basketItem: basket){
+            for(BasketItem sbItem: Sb){
                 if(sbItem.getSubscription().getId() == basketItem.getSubscription().getId() && sbItem.getCustomerId() == basketItem.getCustomerId()){
 
                     basketItem.setQuantity(basketItem.getQuantity()+sbItem.getQuantity());
@@ -52,18 +52,18 @@ public class ShoppingBasketServiceImpl implements ShoppingBasketService {
     }
 
     @Override
-    public Optional<ShoppingBasket> getShoppingBasketById(Long id) {
+    public Optional<BasketItem> getBasketItemById(Long id) {
         return repository.findById(id);
     }
 
     @Override
-    public void deleteShoppingItem(Long id) {
+    public void deleteBasketItem(Long id) {
         repository.deleteById(id);
     }
 
     @Transactional// Все методы кроме read(find) которые мы переопределяем должны быть transactional0
     @Override
-    public void deleteAllShoppingItemsByCustomerId(Long id) {
+    public void deleteAllBasketItemsByCustomerId(Long id) {
         repository.deleteByCustomerId(id);
     }
 }

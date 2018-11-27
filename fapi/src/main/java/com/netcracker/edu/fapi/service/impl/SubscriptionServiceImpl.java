@@ -17,13 +17,17 @@ public class SubscriptionServiceImpl implements SubscriptionDataService {
     @Value("${backend.server.url}")
     private String backendServerUrl;
 
-
-
     @Override
     public Content<SubscriptionViewModel> findAll(int page, int size) {
         RestTemplate restTemplate = new RestTemplate();
         Content<SubscriptionViewModel> subscriptionsViewModelContent = restTemplate.getForObject(backendServerUrl + "/api/subscriptions?page=" + page + "&size=" + size, Content.class);
         return subscriptionsViewModelContent;
+    }
+
+    @Override
+    public Content<SubscriptionViewModel> findByNameLike(String name, int page, int size) {
+        RestTemplate restTemplate = new RestTemplate();
+        return restTemplate.getForObject(backendServerUrl + "/api/subscriptions/search?name=" + name + "&page=" + page + "&size=" + size, Content.class);
     }
 
     @Override

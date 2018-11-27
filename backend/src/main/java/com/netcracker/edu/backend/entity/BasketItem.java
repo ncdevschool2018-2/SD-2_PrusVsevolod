@@ -4,8 +4,8 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "shopping_basket")
-public class ShoppingBasket {
+@Table(name = "basket_item")
+public class BasketItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,10 +17,10 @@ public class ShoppingBasket {
     private Subscription subscription;
     private int quantity;
 
-    public ShoppingBasket() {
+    public BasketItem() {
     }
 
-    public ShoppingBasket(long customerId, Subscription subscription, int quantity) {
+    public BasketItem(long customerId, Subscription subscription, int quantity) {
         this.customerId = customerId;
         this.subscription = subscription;
         this.quantity = quantity;
@@ -62,7 +62,7 @@ public class ShoppingBasket {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ShoppingBasket that = (ShoppingBasket) o;
+        BasketItem that = (BasketItem) o;
         return id == that.id &&
                 customerId == that.customerId &&
                 quantity == that.quantity &&
@@ -76,7 +76,7 @@ public class ShoppingBasket {
 
     @Override
     public String toString() {
-        return "ShoppingBasket{" +
+        return "BasketItem{" +
                 "id=" + id +
                 ", customerId=" + customerId +
                 ", subscription=" + subscription +

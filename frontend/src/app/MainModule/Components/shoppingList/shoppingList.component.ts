@@ -1,7 +1,7 @@
 import {Component, OnInit, TemplateRef} from '@angular/core';
 import {Ng4LoadingSpinnerService} from "ng4-loading-spinner";
-import {Sb} from "../../models/sb";
-import {SbService} from "../../../services/sb.service";
+import {BasketItem} from "../../models/basketItem";
+import {BasketItemService} from "../../../services/basketItem.service";
 import {ActiveSubscription} from "../../models/activeSubscription";
 import {ActiveSubscriptionService} from "../../../services/activeSubscription.service";
 import {Router} from "@angular/router";
@@ -14,13 +14,13 @@ import {BsModalRef, BsModalService} from "ngx-bootstrap";
 })
 export class ShoppingListComponent implements OnInit{
 
-  public shoppingBasket: Sb[] = [];
+  public shoppingBasket: BasketItem[] = [];
   private subscriptions: ActiveSubscription[] = [];
   public total: number = 0;
   itemsCounter: number;
   public bsModalRef: BsModalRef;
 
-  constructor(private loadingService: Ng4LoadingSpinnerService, private sbService: SbService, private activeSubscriptionService: ActiveSubscriptionService, private router: Router, private modalService: BsModalService) {
+  constructor(private loadingService: Ng4LoadingSpinnerService, private sbService: BasketItemService, private activeSubscriptionService: ActiveSubscriptionService, private router: Router, private modalService: BsModalService) {
   }
 
   ngOnInit(): void {
@@ -36,7 +36,7 @@ export class ShoppingListComponent implements OnInit{
   loadShoppingBasket(): void {
     this.loadingService.show();
     this.sbService.getSbByCustomerId().subscribe(shoppingBasket => {
-      this.shoppingBasket = shoppingBasket as Sb[];
+      this.shoppingBasket = shoppingBasket as BasketItem[];
       this.updateItemsCounter();
       this.totalCount();
       this.loadingService.hide();
