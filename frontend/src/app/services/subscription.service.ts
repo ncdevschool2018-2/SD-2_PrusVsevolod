@@ -18,6 +18,9 @@ export class SubscriptionService {
   getSubscriptionsByOwnerId(id: string): Observable<SubscriptionModel[]>{
     return this.http.get<SubscriptionModel[]>('/api/subscriptions/owner/' + id);
   }
+  getSubscriptionByCategoryId(id: string, page: number, size: number): Observable<Content<SubscriptionModel>>{
+    return this.http.get<Content<SubscriptionModel>>('/api/subscriptions/category/' + id + '?page=' + page + '&size=' + size);
+  }
   saveSubscription(subscription: SubscriptionModel): Observable<SubscriptionModel>{
     return this.http.post<SubscriptionModel>('/api/subscriptions', subscription);
   }

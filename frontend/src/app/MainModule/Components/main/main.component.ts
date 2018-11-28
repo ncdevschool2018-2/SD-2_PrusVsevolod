@@ -5,6 +5,8 @@ import {SubscriptionModel} from "../../models/subscriptionModel";
 import {BsModalRef, BsModalService, PageChangedEvent} from "ngx-bootstrap";
 import {BasketItemService} from "../../../services/basketItem.service";
 import {BasketItem} from "../../models/basketItem";
+import {Category} from "../../models/category";
+import {CategoryService} from "../../../services/category.service";
 
 @Component({
   selector: 'app-main',
@@ -20,13 +22,15 @@ export class MainComponent implements OnInit {
   public size: number = 12;
   public totalElements: number;
   itemsCounter: number;
+  categories: Category[] = [];
 
-  constructor(private loadingService: Ng4LoadingSpinnerService, private subscriptionsService: SubscriptionService, private sbService: BasketItemService, private modalService: BsModalService) {
+  constructor(private loadingService: Ng4LoadingSpinnerService, private subscriptionsService: SubscriptionService, private sbService: BasketItemService, private modalService: BsModalService, private categoryService: CategoryService) {
   }
 
   // Calls on component init
   ngOnInit() {
     this.loadSubscriptions(0);
+    this.loadCategories();
     if (localStorage.getItem('currentUserRole') == 'customer') {
       this.updateItemsCounter();
     }
@@ -78,7 +82,7 @@ export class MainComponent implements OnInit {
   cantAdd(): boolean {
     if (localStorage.getItem('wallet') == null) return true;
     for (let value of this.value) {
-      if (value > 0) return false;
+      if (value > 0 && value < 1000) return false;
     }
     return true;
   }
@@ -103,5 +107,24 @@ export class MainComponent implements OnInit {
       this.totalElements = source.totalElements;
       this.loadingService.hide();
     })
+  }
+
+  loadCategories():void{
+    this.categoryService.getCategories().subscribe(categories =>{
+      this.categories = categories as Category[];
+    })
+  }
+
+  loadSubscriptionsByCategoryId(id: string):void{
+    this.loadingService.show();
+    this.subscriptionsService.getSubscriptionByCategoryId(id, 0, this.size).subscribe(source =>{
+      this.subs = source.content as SubscriptionModel[];
+      this.totalElements = source.totalElements;
+      this.loadingService.hide();
+    })
+  }
+
+  loadAll():void{
+    this.loadSubscriptions(0);
   }
 }

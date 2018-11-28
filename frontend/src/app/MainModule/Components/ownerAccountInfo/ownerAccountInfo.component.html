@@ -59,7 +59,7 @@
                     </tr>
                     </tbody>
                   </table>
-                  <button type="button" class="btn btn-primary mx-1" (click)="openAddSubscriptionModal(editSubscription)">Add subscription</button>
+                  <button type="button" class="btn btn-primary mx-1" (click)="openAddSubscriptionModal(editSubscription)" [disabled]="!walletIsPresent()">Add subscription</button>
                 </tab>
                 <tab class="mt-4" heading="Wallet" *ngIf="walletIsPresent()">
                   <div class="row">

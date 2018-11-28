@@ -1,38 +1,55 @@
 <div class="modal-body text-center">
-  <form [formGroup]="subscriptionForm">
-  <div class="container">
-    <div class="row">
-      <div class="col-3">
-        <input class="form-control" placeholder="Subscription name" [(ngModel)]="editableSubscription.name" minlength="4" maxlength="20" formControlName="name" pattern="^[a-zA-Z0-9_]+( [a-zA-Z0-9_]+)*$">
-        <div class="alert alert-danger"
-             *ngIf="subscriptionForm.controls['name'].dirty && subscriptionForm.controls['name'].invalid && subscriptionForm.controls['name'].touched">
-          Wrong subscription name.
+  <form [formGroup]="subscriptionForm" novalidate>
+    <div class="container">
+      <div class="row">
+        <div class="col-3">
+          <input class="form-control" placeholder="Subscription name" [(ngModel)]="editableSubscription.name"
+                 formControlName="name">
+          <div class="alert alert-danger"
+               *ngIf="subscriptionForm.controls['name'].dirty && subscriptionForm.controls['name'].invalid && subscriptionForm.controls['name'].touched">
+            Wrong subscription name.
+          </div>
+        </div>
+        <div class="col-2 px-0">
+          <input class="form-control" type="number" placeholder="Price" [(ngModel)]="editableSubscription.price"
+                 formControlName="price">
+          <div class="alert alert-danger"
+               *ngIf="subscriptionForm.controls['price'].dirty && subscriptionForm.controls['price'].invalid && subscriptionForm.controls['price'].touched">
+            Invalid price.
+          </div>
+        </div>
+        <div class="col-7">
+          <input class="form-control" placeholder="Img-url" [(ngModel)]="editableSubscription.imageUrl"
+                 formControlName="imageUrl">
         </div>
       </div>
-      <div class="col-2 px-0">
-        <input class="form-control" type="number" placeholder="Price" [(ngModel)]="editableSubscription.price" min="1" maxlength="3" formControlName="price" pattern="^[0-9]+$">
-        <div class="alert alert-danger"
-             *ngIf="subscriptionForm.controls['price'].dirty && subscriptionForm.controls['price'].invalid && subscriptionForm.controls['price'].touched">
-         Invalid price.
+      <div class="row mt-3">
+        <div class="col-12">
+          <textarea class="form-control" placeholder="Description" [(ngModel)]="editableSubscription.description"
+                    formControlName="description"></textarea>
+          <div class="alert alert-danger"
+               *ngIf="subscriptionForm.controls['description'].dirty && subscriptionForm.controls['description'].invalid && subscriptionForm.controls['description'].touched">
+            Wrong description.
+          </div>
         </div>
       </div>
-      <div class="col-7">
-        <input class="form-control" placeholder="Img-url" [(ngModel)]="editableSubscription.imageUrl" formControlName="imageUrl">
+      <div class="row mt-3">
+        <div class="col-3">
+          <!--[selected]="equalSubscriptionCategory(category)" -->
+          <select class="form-control" formControlName="category">
+            <option *ngFor="let category of categories" [selected]="equalSubscriptionCategory(category)">
+              {{category.name}}
+            </option>
+          </select>
+        </div>
       </div>
     </div>
-    <div class="row mt-3">
-      <div class="col-12">
-        <textarea class="form-control" placeholder="Description" [(ngModel)]="editableSubscription.description" formControlName="description" minlength="6" maxlength="100"></textarea>
-        <div class="alert alert-danger"
-             *ngIf="subscriptionForm.controls['description'].dirty && subscriptionForm.controls['description'].invalid && subscriptionForm.controls['description'].touched">
-          Wrong description.
-        </div>
-      </div>
-    </div>
-  </div>
+
   </form>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-primary" [disabled]="subscriptionForm.invalid" (click)="submit()">Submit</button>
+  <button type="button" class="btn btn-primary" [disabled]="subscriptionForm.invalid"
+          (click)="submit()">Submit
+  </button>
   <button type="button" class="btn btn-secondary" (click)="close()">Close</button>
 </div>

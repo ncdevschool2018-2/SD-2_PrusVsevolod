@@ -56,7 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(corsFilter(), SessionManagementFilter.class) //adds my custom CORSFilter
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/token/*", "/api/subscriptions/**", "/api/users", "/api/owners", "/api/customers").permitAll()
+                .antMatchers("/api/token/*", "/api/subscriptions/**", "/api/users", "/api/owners", "/api/customers", "/api/category").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()

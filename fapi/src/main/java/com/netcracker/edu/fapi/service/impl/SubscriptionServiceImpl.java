@@ -31,6 +31,12 @@ public class SubscriptionServiceImpl implements SubscriptionDataService {
     }
 
     @Override
+    public Content<SubscriptionViewModel> findByCategoryId(Long id, int page, int size) {
+        RestTemplate restTemplate = new RestTemplate();
+        return restTemplate.getForObject(backendServerUrl + "/api/subscriptions/category/" + id + "?page=" + page + "&size=" + size, Content.class);
+    }
+
+    @Override
     public List<SubscriptionViewModel> getAll() {
         RestTemplate restTemplate = new RestTemplate();
         SubscriptionViewModel[] subscriptionViewModelsResponse = restTemplate.getForObject(backendServerUrl + "/api/subscriptions/", SubscriptionViewModel[].class);

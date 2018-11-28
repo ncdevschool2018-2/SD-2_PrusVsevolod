@@ -23,7 +23,17 @@
         <a class="nav-link" routerLink="/adminPanel" [hidden]="userRole() != 'admin'">Administrator panel</a>
       </li>
     </ul>
-
+    <!--<div class="btn-group mx-3" dropdown [hidden]="notMainPage()">-->
+      <!--<button dropdownToggle type="button" class="btn btn-info dropdown-toggle"-->
+              <!--aria-controls="dropdown-basic">-->
+        <!--Categories <span class="caret"></span>-->
+      <!--</button>-->
+      <!--<ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"-->
+          <!--role="menu" aria-labelledby="button-basic">-->
+        <!--<li role="menuitem"><a class="dropdown-item" href="#" *ngFor="let category of categories">{{category.name}}</a>-->
+        <!--</li>-->
+      <!--</ul>-->
+    <!--</div>-->
     <a class="btn btn-light mx-2" href="shoppingList"
        [hidden]="!userIsPresent() || userRole() == 'owner' || userRole() == 'admin'">
       <fa name="cart-arrow-down"></fa>

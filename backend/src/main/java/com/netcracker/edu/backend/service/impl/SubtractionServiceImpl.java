@@ -2,6 +2,7 @@ package com.netcracker.edu.backend.service.impl;
 
 import com.netcracker.edu.backend.entity.ActiveSubscription;
 import com.netcracker.edu.backend.entity.Customer;
+import com.netcracker.edu.backend.entity.Owner;
 import com.netcracker.edu.backend.service.ActiveSubscriptionService;
 import com.netcracker.edu.backend.service.BillingAccountService;
 import com.netcracker.edu.backend.service.CustomerService;
@@ -17,12 +18,14 @@ import java.util.Optional;
 @Component
 public class SubtractionServiceImpl {
 
-    private static final int CYCLE_TIME = 60000;//В миллисекундах, 1 минута
+    private static final int CYCLE_TIME = 10000;//В миллисекундах, 1 минута
 
     @Autowired
     private ActiveSubscriptionService activeSubscriptionService;
     @Autowired
     private CustomerService customerService;
+//    @Autowired
+//    private OwnerService ownerService;
     @Autowired
     private BillingAccountService billingAccountService;
     @Autowired
@@ -38,7 +41,7 @@ public class SubtractionServiceImpl {
             long newEditedDate = System.currentTimeMillis();
             long deltaTime = newEditedDate - subscription.getLastEditDate();//Находится разница во времени
             int amount = (int) deltaTime / CYCLE_TIME; //Находится количество условных единиц которые мы должны вычесть с quantity и умножить на price и вычесть с кошелька.
-            log.info("Разница во времени: " + ((Long)deltaTime).toString());
+            log.info("Разница во времени: " + ((Long) deltaTime).toString());
             if (amount > 0) {
                 Optional<Customer> customer = customerService.getCustomerById(subscription.getCustomerId());
                 if (customer.get().getStatus().getName().equals("valid")) {//Если аккаунт не заблокирован
@@ -53,9 +56,19 @@ public class SubtractionServiceImpl {
 
                         int quantity = subscription.getQuantity() - amount;
 
+                        Owner owner = subscription.getSubscription().getOwner();
+                        Integer ownerBalance = owner.getba().getBalance();
+
                         if (quantity < 1) {//Если у нас сервис не запускался долгое время то кол-во дней может быть отрицательным, в таком случае надо просто вычесть все оставшиеся дни
-                            customer.get().getBa().setBalance(customer.get().getBa().getBalance() - subscription.getQuantity() * subscription.getSubscription().getPrice());
-                            log.info(customer.get().getBa().getBalance().toString());
+                            Integer fullPrice = subscription.getQuantity() * subscription.getSubscription().getPrice();
+                            customer.get().getBa().setBalance(customer.get().getBa().getBalance() - fullPrice);
+                            log.info("Last amount: " + customer.get().getBa().getBalance().toString());
+
+                            ownerBalance += fullPrice;
+                            owner.getba().setBalance(ownerBalance);
+                            billingAccountService.addAmountOnBa(owner.getba());
+
+                            log.info("Owner amount: " + ownerBalance);
 
                             billingAccountService.addAmountOnBa(customer.get().getBa());
                             activeSubscriptionService.deleteActiveSubscriptionById(subscription.getId());
@@ -64,11 +77,19 @@ public class SubtractionServiceImpl {
                             subscription.setLastEditDate(newEditedDate);
                             customer.get().getBa().setBalance(balance);
                             log.info("Amount: " + customer.get().getBa().getBalance().toString());
+
+                            ownerBalance += subtractMoney;
+                            log.info(String.valueOf(subtractMoney));
+                            log.info("Owner amount: " + ownerBalance);
+
+                            owner.getba().setBalance(ownerBalance);
+                            billingAccountService.addAmountOnBa(owner.getba());
+
                             billingAccountService.addAmountOnBa(customer.get().getBa());
                             activeSubscriptionService.saveActiveSubscription(subscription);
                         }
                     }
-                } else if(customer.get().getBa().getBalance() > -100){
+                } else if (customer.get().getBa().getBalance() > -100) {
                     customer.get().setStatus(statusService.getStatusById(Long.valueOf(1)).get());
                     customerService.saveEditedCustomer(customer.get());
                 }

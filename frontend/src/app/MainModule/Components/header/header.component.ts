@@ -18,6 +18,7 @@ export class HeaderComponent{
   @Input() itemsCounter: number;
   @Output() onSearch = new EventEmitter<string>();
   searchValue: string = '';
+  // categories: Category[] = [];
 
   constructor(private modalService: BsModalService, private authService: AuthService, private router: Router, private sbService: BasketItemService) {
   }
@@ -77,4 +78,14 @@ export class HeaderComponent{
   search(): void{
     this.onSearch.emit(this.searchValue);
   }
+
+  // ngOnInit(): void {
+  //   this.loadCategories();
+  // }
+
+  // loadCategories():void{
+  //   this.categoryService.getCategories().subscribe(categories =>{
+  //     this.categories = categories as Category[];
+  //   })
+  // }
 }

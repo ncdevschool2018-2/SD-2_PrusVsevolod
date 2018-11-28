@@ -1,16 +1,33 @@
-<ng4-loading-spinner> </ng4-loading-spinner>
+<ng4-loading-spinner></ng4-loading-spinner>
 
-<app-header [itemsCounter] = "itemsCounter" (onSearch)="search($event)" ></app-header>
+<app-header [itemsCounter]="itemsCounter" (onSearch)="search($event)"></app-header>
 
 <div class="container-fluid" style="position: relative;">
   <div class="row justify-content-end" style="position: absolute; margin-left: 90%">
     <div class="col-md-auto">
-      <button id="submitSubs" class="btn btn-primary" (click)="openConfirmModal(confirmDialog)" [hidden]="adminOrOwner()" [disabled]="cantAdd()">Add to Cart</button>
+      <button id="submitSubs" class="btn btn-primary" (click)="openConfirmModal(confirmDialog)"
+              [hidden]="adminOrOwner()" [disabled]="cantAdd()">Add to Cart
+      </button>
     </div>
   </div>
   <div class="row mt-2">
     <div class="col-auto">
       <pagination [totalItems]="totalElements" [itemsPerPage]="size" (pageChanged)="pageChanged($event)"></pagination>
+    </div>
+    <div class="col-auto">
+      <div class="btn-group mx-3" dropdown>
+        <button dropdownToggle type="button" class="btn btn-info dropdown-toggle"
+                aria-controls="dropdown-basic">
+          Categories <span class="caret"></span>
+        </button>
+        <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+            role="menu" aria-labelledby="button-basic">
+          <li role="menuitem"><a class="dropdown-item" (click)="loadAll()">All</a>
+          <li role="menuitem"><a class="dropdown-item" (click)="loadSubscriptionsByCategoryId(category.id)"
+                                 *ngFor="let category of categories">{{category.name}}</a>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
   <div class="row justify-content-center">
@@ -29,12 +46,14 @@
       <div class="col-md-1 align-self-center px-1 ml-3 mr-5 text-center">
         <div class="row">
           <div class="col-3 px-0">
-            <button type="button" class="btn btn-danger btn-number" (click)="value[i]=value[i]-1" [disabled]="value[i] < 1">
+            <button type="button" class="btn btn-danger btn-number" (click)="value[i]=value[i]-1"
+                    [disabled]="value[i] < 1">
               <span class="fa fa-minus"></span>
             </button>
           </div>
           <div class="col-md-6 px-0">
-            <input class="form-control" type="number" min="0" [(ngModel)]="value[i] == undefined ? value[i] = 0 : value[i]" pattern="^[1-9]\d*$">
+            <input class="form-control" type="number" min="0"
+                   [(ngModel)]="value[i] == undefined ? value[i] = 0 : value[i]">
           </div>
           <div class="col-3 px-0">
             <button type="button" class="btn btn-primary btn-number" (click)="value[i]=value[i]+1">

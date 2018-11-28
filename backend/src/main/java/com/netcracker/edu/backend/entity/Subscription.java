@@ -19,16 +19,20 @@ public class Subscription {
     @ManyToOne
     @JoinColumn(name = "owner_id", nullable = false)
     private Owner owner;
+    @OneToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 
-    public Subscription(String name, String imageUrl, String description, int price, Owner owner) {
+    public Subscription() {
+    }
+
+    public Subscription(String name, String imageUrl, String description, int price, Owner owner, Category category) {
         this.name = name;
         this.imageUrl = imageUrl;
         this.description = description;
         this.price = price;
         this.owner = owner;
-    }
-
-    public Subscription() {
+        this.category = category;
     }
 
     public long getId() {
@@ -79,6 +83,14 @@ public class Subscription {
         this.owner = owner;
     }
 
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -89,12 +101,13 @@ public class Subscription {
                 Objects.equals(name, that.name) &&
                 Objects.equals(imageUrl, that.imageUrl) &&
                 Objects.equals(description, that.description) &&
-                Objects.equals(owner, that.owner);
+                Objects.equals(owner, that.owner) &&
+                Objects.equals(category, that.category);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, imageUrl, description, price, owner);
+        return Objects.hash(id, name, imageUrl, description, price, owner, category);
     }
 
     @Override
@@ -105,7 +118,8 @@ public class Subscription {
                 ", imageUrl='" + imageUrl + '\'' +
                 ", description='" + description + '\'' +
                 ", price=" + price +
-                ", owner_id=" + owner +
+                ", owner=" + owner +
+                ", category=" + category +
                 '}';
     }
 }

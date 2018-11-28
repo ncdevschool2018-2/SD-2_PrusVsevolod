@@ -42,6 +42,11 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
+    public Iterable<Subscription> getByCategoryId(Long id, int page, int size) {
+        return repository.findByCategoryId(id, PageRequest.of(page, size));
+    }
+
+    @Override
     public Subscription saveSubscription(Subscription subscription) {
         return repository.save(subscription);
     }

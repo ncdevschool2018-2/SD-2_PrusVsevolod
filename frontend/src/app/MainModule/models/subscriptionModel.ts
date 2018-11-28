@@ -1,4 +1,5 @@
 import {Owner} from "./owner";
+import {Category} from "./category";
 
 export class SubscriptionModel {
   id: string;
@@ -7,6 +8,7 @@ export class SubscriptionModel {
   description: string;
   price: number;
   owner: Owner;
+  category: Category;
 
   static cloneSubscription(subscription: SubscriptionModel): SubscriptionModel {
     let clonedSubscription: SubscriptionModel = new SubscriptionModel();
@@ -16,6 +18,7 @@ export class SubscriptionModel {
     clonedSubscription.description = subscription.description;
     clonedSubscription.price = subscription.price;
     clonedSubscription.owner = Owner.cloneOwner(subscription.owner);
+    clonedSubscription.category = Category.cloneCategory(subscription.category);
     return clonedSubscription;
   }
 }

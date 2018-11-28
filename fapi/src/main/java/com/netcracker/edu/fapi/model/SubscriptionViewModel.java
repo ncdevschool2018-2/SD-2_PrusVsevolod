@@ -28,17 +28,19 @@ public class SubscriptionViewModel {
     @NotNull(groups = {New.class, Exist.class})
     @Valid
     private OwnerViewModel owner;
+    private CategoryViewModel category;
 
     public SubscriptionViewModel() {
     }
 
-    public SubscriptionViewModel(Long id, String name, String imageUrl, String description, int price, OwnerViewModel owner) {
+    public SubscriptionViewModel(Long id, String name, String imageUrl, String description,  int price, OwnerViewModel owner, CategoryViewModel category) {
         this.id = id;
         this.name = name;
         this.imageUrl = imageUrl;
         this.description = description;
         this.price = price;
         this.owner = owner;
+        this.category = category;
     }
 
     public Long getId() {
@@ -87,5 +89,13 @@ public class SubscriptionViewModel {
 
     public void setOwner(OwnerViewModel owner) {
         this.owner = owner;
+    }
+
+    public CategoryViewModel getCategory() {
+        return category;
+    }
+
+    public void setCategory(CategoryViewModel category) {
+        this.category = category;
     }
 }

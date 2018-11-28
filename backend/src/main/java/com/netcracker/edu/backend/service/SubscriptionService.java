@@ -10,6 +10,7 @@ public interface SubscriptionService {
     Optional<Subscription> getSubscriptionById(Long id);
     Iterable<Subscription> findByNameContaining(String name, int page, int size);
     Iterable<Subscription> getByOwnerId(Long id);
+    Iterable<Subscription> getByCategoryId(Long id, int page, int size);
     Subscription saveSubscription(Subscription subscription);
     void deleteSubscription(Long id);
 }

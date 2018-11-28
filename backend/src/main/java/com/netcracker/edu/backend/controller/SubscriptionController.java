@@ -66,4 +66,8 @@ public class SubscriptionController {
         return subscriptionService.findByNameContaining(name, page, size);
     }
 
+    @RequestMapping(value = "/category/{id}", params = {"page", "size"}, method = RequestMethod.GET)
+    public Iterable<Subscription> findByCategoryId(@PathVariable("id") Long id, @RequestParam("page") int page, @RequestParam("size") int size) {
+        return subscriptionService.getByCategoryId(id, page, size);
+    }
 }

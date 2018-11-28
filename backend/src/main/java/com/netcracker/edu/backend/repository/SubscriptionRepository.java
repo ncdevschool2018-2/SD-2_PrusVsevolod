@@ -11,6 +11,7 @@ public interface SubscriptionRepository extends CrudRepository<Subscription, Lon
     Iterable<Subscription> findAll(Pageable pageable);
     Iterable<Subscription> findByOwnerId(Long id);
     Page<Subscription> findByNameContaining(String name, Pageable pageable); //%name% т.е. ищем имя которое содержит наш запрос
+    Page<Subscription> findByCategoryId(Long id, Pageable pageable);
 //    @Query(value = "SELECT * FROM subscription WHERE subscription.name = ?1", nativeQuery = true)
 //    Iterable<Subscription>test(String name);
 }
