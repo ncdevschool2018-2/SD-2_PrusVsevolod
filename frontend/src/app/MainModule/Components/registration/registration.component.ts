@@ -7,6 +7,7 @@ import {OwnerService} from "../../../services/owner.service";
 import {UserService} from "../../../services/user.service";
 import {Ng4LoadingSpinnerService} from "ng4-loading-spinner";
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-registration',
@@ -27,7 +28,7 @@ export class RegistrationComponent {
   public newCustomer: Customer = new Customer();
   public newOwner: Owner = new Owner();
 
-  constructor(private loadingService: Ng4LoadingSpinnerService, private usersService: UserService, private customersService: CustomerService, private ownersService: OwnerService, private formBuilder: FormBuilder) {
+  constructor(private loadingService: Ng4LoadingSpinnerService, private usersService: UserService, private customersService: CustomerService, private ownersService: OwnerService, private formBuilder: FormBuilder, private router: Router) {
     this.passwordForm = formBuilder.group({
       password: ['', Validators.required],
       confirmPassword: ['', Validators.required]
@@ -53,6 +54,7 @@ export class RegistrationComponent {
       this.passwordForm.reset();
       this.othersForm.reset();
       this.loadingService.hide();
+      this.router.navigateByUrl('/');
     });
   }
 
@@ -67,6 +69,7 @@ export class RegistrationComponent {
       this.passwordForm.reset();
       this.othersForm.reset();
       this.loadingService.hide();
+      this.router.navigateByUrl('/');
     });
   }
 

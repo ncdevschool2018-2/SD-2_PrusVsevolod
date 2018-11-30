@@ -64,7 +64,7 @@
                       <td>{{activeSub.subscription.name}}</td>
                       <td>{{activeSub.quantity}}</td>
                       <td>
-                        <button type="button" class="btn btn-danger" (click)="delete(activeSub.id)">Delete</button>
+                        <button type="button" class="btn btn-danger" (click)="delete(activeSub.id)">Unsubscribe</button>
                       </td>
                     </tr>
                     </tbody>
@@ -113,7 +113,7 @@
     </div>
   </div>
   <div class="modal-footer">
-    <button type="submit" class="btn btn-primary" [disabled]="amountIsNegative()" (click)="fillUp()">Fill up</button>
+    <button type="submit" class="btn btn-primary" [disabled]="amountIsNegative() || amount == 0" (click)="fillUp()">Fill up</button>
     <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Close</button>
   </div>
 </ng-template>

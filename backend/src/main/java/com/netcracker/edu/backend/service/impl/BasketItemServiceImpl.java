@@ -32,6 +32,7 @@ public class BasketItemServiceImpl implements BasketItemService {
         return repository.findByCustomerId(id);
     }
 
+    @Transactional
     @Override
     public void saveBasketItems(List<BasketItem> Sb) {
         List<BasketItem> sameItems = new ArrayList<>();

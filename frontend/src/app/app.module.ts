@@ -38,11 +38,12 @@ import {TokenStorage} from "./services/token.storage";
 import {Interceptor} from "./services/interceptor.service.";
 //Guards
 import {AdminPanelGuard} from "./MainModule/Components/adminPanel/adminPanel.guard";
+import {RegistrationGuard} from "./MainModule/Components/registration/registration.guard";
 
 // определение маршрутов
 const appRoutes: Routes =[
   { path: '', component: MainComponent},
-  { path: 'registration', component: RegistrationComponent},
+  { path: 'registration', component: RegistrationComponent, canActivate: [RegistrationGuard]},
   { path: 'shoppingList', component: ShoppingListComponent},
   { path: 'ownerAccountInfo/:id', component: OwnerAccountInfoComponent},
   { path: 'customerAccountInfo/:id', component: CustomerAccountInfoComponent},
@@ -94,7 +95,8 @@ const appRoutes: Routes =[
       useClass: Interceptor,
       multi: true
     },
-    AdminPanelGuard
+    AdminPanelGuard,
+    RegistrationGuard
   ],
   bootstrap: [AppComponent],
   entryComponents: [LoginModalComponent, WalletModalComponent, EditOwnerModalComponent, EditCustomerModalComponent, EditSubscriptionModalComponent] //Массив entryComponents используется для определения только тех компонентов,

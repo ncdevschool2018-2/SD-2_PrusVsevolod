@@ -6,6 +6,7 @@ import com.netcracker.edu.backend.service.ActiveSubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -35,6 +36,7 @@ public class ActiveSubscriptionServiceImpl implements ActiveSubscriptionService 
         return repository.findAll();
     }
 
+    @Transactional
     @Override
     public Iterable<ActiveSubscription> saveActiveSubscriptions(List<ActiveSubscription> activeSubscription) {
         List<ActiveSubscription> sameItems = new ArrayList<>();

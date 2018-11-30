@@ -63,7 +63,8 @@ export class CustomerAccountInfoComponent implements OnInit{
     this.customer.ba.balance += this.amount;
     this.baService.saveEditedBa(this.customer.ba).subscribe(()=>{
       this.loadCustomer();
-      this.modalRef.hide()
+      this.amount = 0;
+      this.modalRef.hide();
     });
   }
 

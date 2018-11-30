@@ -7,6 +7,7 @@ import com.netcracker.edu.backend.service.OwnerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Component
@@ -32,6 +33,7 @@ public class OwnerServiceImpl implements OwnerService {
         return ownerRepository.findAll();
     }
 
+    @Transactional
     @Override
     public Owner saveOwner(Owner owner) {
         userRepository.save(owner.getuser());

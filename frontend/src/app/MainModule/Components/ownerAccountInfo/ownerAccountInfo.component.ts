@@ -1,7 +1,6 @@
 import {Component, OnInit, TemplateRef} from '@angular/core';
 import {BsModalRef, BsModalService} from "ngx-bootstrap";
 import {ActivatedRoute} from "@angular/router";
-import {Subscription} from "rxjs";
 import {Ng4LoadingSpinnerService} from "ng4-loading-spinner";
 import {Owner} from "../../models/owner";
 import {OwnerService} from "../../../services/owner.service";
@@ -9,7 +8,6 @@ import {User} from "../../models/user";
 import {SubscriptionService} from "../../../services/subscription.service";
 import {SubscriptionModel} from "../../models/subscriptionModel";
 import {BaService} from "../../../services/ba.service";
-import {EditSubscriptionModalComponent} from "./editSubscriptionModal/editSubscriptionModal.component";
 
 @Component({
   selector: 'app-ownerAccountInfo',
@@ -90,7 +88,8 @@ export class OwnerAccountInfoComponent implements OnInit {
     this.owner.ba.balance += this.amount;
     this.baService.saveEditedBa(this.owner.ba).subscribe(() => {
       this.loadOwner();
-      this.modalRef.hide()
+      this.amount = 0;
+      this.modalRef.hide();
     });
   }
 

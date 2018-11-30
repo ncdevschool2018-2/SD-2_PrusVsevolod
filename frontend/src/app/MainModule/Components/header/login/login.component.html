@@ -5,9 +5,9 @@
          src="https://pbs.twimg.com/profile_images/378800000095820479/c7b2e53c69f3dcbc8966fd52d234ace4_400x400.png"
          alt="" width="72" height="72">
     <h1 class="h3 mb-3 font-weight-normal">Please, enter</h1>
-    <input type="email" class="form-control" placeholder="Login" [(ngModel)]="loginUser.login"
+    <input type="email" class="form-control my-3" placeholder="Login" [(ngModel)]="loginUser.login"
            required autofocus maxlength="25">
-    <input type="password" class="form-control" placeholder="Password" [(ngModel)]="loginUser.password"
+    <input type="password" class="form-control my-3" placeholder="Password" [(ngModel)]="loginUser.password"
            required maxlength="25">
     <div class="alert alert-danger" *ngIf="isNotHidden">
       Wrong login or password.

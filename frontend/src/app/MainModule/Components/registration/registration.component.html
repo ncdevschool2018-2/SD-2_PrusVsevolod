@@ -35,36 +35,36 @@
   </div>
   <div class="row justify-content-center">
     <div class="col-6">
-      <div class="row">
-        <div class="col-12"><label>Login</label>
-        </div>
-        <div class="col-1 pr-0">
-          <span class="input-group-text">@</span></div>
-        <div class="col-11 pl-0">
-          <form [formGroup]="othersForm">
-            <input class="form-control" formControlName="login" placeholder="Login" maxlength="20"
-                   [(ngModel)]="newUser.login"
-                   minlength="6" pattern="^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]+$">
-          </form>
-          <div class="alert alert-danger"
-               *ngIf="othersForm.controls['login'].invalid && othersForm.controls['login'].touched && othersForm.controls['login'].dirty">
-            Incorrect email.
-          </div>
-        </div>
-
+      <label>Login</label>
+      <form [formGroup]="othersForm">
+        <input class="form-control" formControlName="login" placeholder="Login" maxlength="20"
+               [(ngModel)]="newUser.login"
+               minlength="6" pattern="^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]+$">
+      </form>
+      <div class="alert alert-danger"
+           *ngIf="othersForm.controls['login'].invalid && othersForm.controls['login'].touched && othersForm.controls['login'].dirty">
+        Incorrect login.
       </div>
     </div>
   </div>
   <div class="row justify-content-center">
     <div class="col-6">
-      <label>Email</label>
-      <form [formGroup]="othersForm">
-        <input class="form-control" formControlName="email" placeholder="you@example.com" minlength="6" maxlength="25"
-               [(ngModel)]="newUser.email" email>
-      </form>
-      <div class="alert alert-danger"
-           *ngIf="othersForm.controls['email'].invalid && othersForm.controls['email'].touched && othersForm.controls['email'].dirty">
-        Incorrect email.
+      <div class="row">
+        <div class="col-12">
+          <label>Email</label>
+        </div>
+        <div class="col-1 pr-0"><span class="input-group-text">@</span></div>
+        <div class="col-11 pl-0">
+          <form [formGroup]="othersForm">
+            <input class="form-control" formControlName="email" placeholder="you@example.com" minlength="6"
+                   maxlength="25"
+                   [(ngModel)]="newUser.email" email>
+          </form>
+          <div class="alert alert-danger"
+               *ngIf="othersForm.controls['email'].invalid && othersForm.controls['email'].touched && othersForm.controls['email'].dirty">
+            Incorrect email.
+          </div>
+        </div>
       </div>
     </div>
   </div>

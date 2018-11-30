@@ -18,14 +18,12 @@ import java.util.Optional;
 @Component
 public class SubtractionServiceImpl {
 
-    private static final int CYCLE_TIME = 10000;//В миллисекундах, 1 минута
+    private static final int CYCLE_TIME = 60000;//В миллисекундах, 1 минута
 
     @Autowired
     private ActiveSubscriptionService activeSubscriptionService;
     @Autowired
     private CustomerService customerService;
-//    @Autowired
-//    private OwnerService ownerService;
     @Autowired
     private BillingAccountService billingAccountService;
     @Autowired
@@ -79,7 +77,7 @@ public class SubtractionServiceImpl {
                             log.info("Amount: " + customer.get().getBa().getBalance().toString());
 
                             ownerBalance += subtractMoney;
-                            log.info(String.valueOf(subtractMoney));
+//                            log.info(String.valueOf(subtractMoney));
                             log.info("Owner amount: " + ownerBalance);
 
                             owner.getba().setBalance(ownerBalance);
@@ -94,7 +92,10 @@ public class SubtractionServiceImpl {
                     customerService.saveEditedCustomer(customer.get());
                 }
             }
+            log.info("------------------------------------");
         }
         log.info("Cycle is done.");
+        log.info("------------------------------------");
+
     }
 }

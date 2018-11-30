@@ -1,6 +1,8 @@
 package com.netcracker.edu.fapi.config;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -62,4 +64,10 @@ public class JwtTokenUtil implements Serializable {
                         && !isTokenExpired(token));
     }
 
+//    public Claims revokeToken(String token){
+//        return Jwts.parser()
+//                .setSigningKey(SIGNING_KEY)
+//                .parseClaimsJws(token)
+//                .getBody();
+//    }
 }

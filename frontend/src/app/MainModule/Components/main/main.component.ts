@@ -14,7 +14,7 @@ import {CategoryService} from "../../../services/category.service";
   styleUrls: ['./main.component.css']
 })
 export class MainComponent implements OnInit {
-  // public  content: Content;
+
   public shoppingList: BasketItem[] = [];
   public subs: SubscriptionModel[];
   public bsModalRef: BsModalRef;
@@ -23,6 +23,9 @@ export class MainComponent implements OnInit {
   public totalElements: number;
   itemsCounter: number;
   categories: Category[] = [];
+  searchValue: string;
+  currentCategoryId: string;
+  loadOption: number = 1;
 
   constructor(private loadingService: Ng4LoadingSpinnerService, private subscriptionsService: SubscriptionService, private sbService: BasketItemService, private modalService: BsModalService, private categoryService: CategoryService) {
   }
@@ -53,7 +56,21 @@ export class MainComponent implements OnInit {
   }
 
   pageChanged(event: PageChangedEvent): void {
-    this.loadSubscriptions(event.page - 1);
+
+    switch (this.loadOption) {
+      case 1:{
+        this.loadSubscriptions(event.page -1);
+        break;
+      }
+      case 2:{
+        this.loadSubscriptionsByNameLike(event.page - 1);
+        break;
+      }
+      case 3:{
+        this.loadSubscriptionsByCategoryId(event.page - 1);
+        break;
+      }
+    }
     this.value = [];
   }
 
@@ -101,8 +118,14 @@ export class MainComponent implements OnInit {
   }
 
   search(searchValue: string){
+    this.searchValue = searchValue;
+    this.loadOption = 2;
+    this.loadSubscriptionsByNameLike(0);
+  }
+
+  loadSubscriptionsByNameLike(page: number):void{
     this.loadingService.show();
-    this.subscriptionsService.getSubscriptionsByNameLike(searchValue, 0, this.size).subscribe(source =>{
+    this.subscriptionsService.getSubscriptionsByNameLike(this.searchValue, page, this.size).subscribe(source =>{
       this.subs = source.content as SubscriptionModel[];
       this.totalElements = source.totalElements;
       this.loadingService.hide();
@@ -110,21 +133,32 @@ export class MainComponent implements OnInit {
   }
 
   loadCategories():void{
+    this.loadingService.show();
     this.categoryService.getCategories().subscribe(categories =>{
       this.categories = categories as Category[];
+      this.loadingService.hide();
     })
   }
 
-  loadSubscriptionsByCategoryId(id: string):void{
+  filter(id: string):void{
+    this.currentCategoryId = id;
+    this.loadOption = 3;
+    this.loadSubscriptionsByCategoryId(0);
+  }
+
+  loadSubscriptionsByCategoryId(page: number):void{
     this.loadingService.show();
-    this.subscriptionsService.getSubscriptionByCategoryId(id, 0, this.size).subscribe(source =>{
+    this.subscriptionsService.getSubscriptionByCategoryId(this.currentCategoryId, page, this.size).subscribe(source =>{
       this.subs = source.content as SubscriptionModel[];
       this.totalElements = source.totalElements;
       this.loadingService.hide();
     })
   }
 
+
+
   loadAll():void{
+    this.loadOption = 1;
     this.loadSubscriptions(0);
   }
 }

@@ -49,7 +49,7 @@ public class SubscriptionDataController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<SubscriptionViewModel> saveSubscription(@RequestBody SubscriptionViewModel subscription) {
         OwnerViewModel owner = ownerDataService.getOwnerByUserId(Long.valueOf(userDataService.findByLogin(SecurityContextHolder.getContext().getAuthentication().getName()).getId()));
-        if(owner.getBa() == null) return ResponseEntity.badRequest().build();
+        if (owner.getBa() == null) return ResponseEntity.badRequest().build();
         return ResponseEntity.ok(subscriptionDataService.saveSubscription(subscription));
     }
 

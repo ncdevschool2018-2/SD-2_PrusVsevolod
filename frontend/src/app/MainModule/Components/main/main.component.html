@@ -11,9 +11,9 @@
     </div>
   </div>
   <div class="row mt-2">
-    <div class="col-auto">
-      <pagination [totalItems]="totalElements" [itemsPerPage]="size" (pageChanged)="pageChanged($event)"></pagination>
-    </div>
+    <!--<div class="col-auto">-->
+      <!--<pagination [totalItems]="totalElements" [itemsPerPage]="size" (pageChanged)="pageChanged($event)"></pagination>-->
+    <!--</div>-->
     <div class="col-auto">
       <div class="btn-group mx-3" dropdown>
         <button dropdownToggle type="button" class="btn btn-info dropdown-toggle"
@@ -23,7 +23,7 @@
         <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
             role="menu" aria-labelledby="button-basic">
           <li role="menuitem"><a class="dropdown-item" (click)="loadAll()">All</a>
-          <li role="menuitem"><a class="dropdown-item" (click)="loadSubscriptionsByCategoryId(category.id)"
+          <li role="menuitem"><a class="dropdown-item" (click)="filter(category.id)"
                                  *ngFor="let category of categories">{{category.name}}</a>
           </li>
         </ul>
@@ -61,12 +61,18 @@
             </button>
           </div>
         </div>
-        <span>{{sub.price}}$/Day</span>
+        <h4>{{sub.price}}$/Day</h4>
 
       </div>
 
       <div class="w-100" *ngIf="(i+1)%4==0"></div>
     </ng-container>
+  </div>
+
+  <div class="row" [hidden]="totalElements < size">
+    <div class="col-auto">
+      <pagination [totalItems]="totalElements" [itemsPerPage]="size" (pageChanged)="pageChanged($event)"></pagination>
+    </div>
   </div>
 
 </div>
