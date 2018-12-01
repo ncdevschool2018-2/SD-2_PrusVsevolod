@@ -50,3 +50,26 @@ footer.text-muted {
 /*#submitSubs{*/
   /*position: absolute;*/
 /*}*/
+/*alert a{*/
+  /*line-height: 1;*/
+  /*display: inline-block;*/
+  /*color: #2c2c2c;*/
+/*}*/
+
+/*alert a:hover{*/
+  /*cursor: pointer;*/
+/*}*/
+
+/*alert a:after{*/
+  /*display: block;*/
+  /*content: "";*/
+  /*height: 2px;*/
+  /*width: 0;*/
+  /*background-color: #000000;*/
+  /*transition: width .3s ease-in-out;*/
+/*}*/
+
+/*alert a:hover:after,*/
+/*alert a:focus:after {*/
+  /*width: 100%;*/
+/*}*/

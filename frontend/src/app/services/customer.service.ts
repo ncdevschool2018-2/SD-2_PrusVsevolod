@@ -34,6 +34,9 @@ export class CustomerService {
   saveBa(ba: Ba): Observable<Ba>{
     return this.http.post<Ba>('/api/customers/ba', ba);
   }
+  addMoneyOnBa(money: number): Observable<Ba>{
+    return this.http.put<Ba>('/api/customers/ba/' + money, '');
+  }
   getCustomerByUserId(): Observable<Customer>{
     return this.http.get<Customer>('/api/customers/user/');
   }

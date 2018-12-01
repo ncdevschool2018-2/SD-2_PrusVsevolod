@@ -18,7 +18,6 @@ export class HeaderComponent{
   @Input() itemsCounter: number;
   @Output() onSearch = new EventEmitter<string>();
   searchValue: string = '';
-  // categories: Category[] = [];
 
   constructor(private modalService: BsModalService, private authService: AuthService, private router: Router, private sbService: BasketItemService) {
   }
@@ -88,4 +87,10 @@ export class HeaderComponent{
   //     this.categories = categories as Category[];
   //   })
   // }
+
+  keyDownFunction(event) {
+    if(event.keyCode == 13) {
+      this.search();
+    }
+  }
 }

@@ -41,7 +41,7 @@
     </a>
     <div class="form-inline my-2">
       <div [hidden]="notMainPage()">
-        <input class="form-control mr-sm-2" placeholder="Search" [(ngModel)]="searchValue">
+        <input class="form-control mr-sm-2" placeholder="Search" [(ngModel)]="searchValue" (keydown)="keyDownFunction($event)">
         <button class="btn btn-outline-success my-2 my-sm-0" (click)="search()">Search</button>
       </div>
       <ul class="navbar-nav">

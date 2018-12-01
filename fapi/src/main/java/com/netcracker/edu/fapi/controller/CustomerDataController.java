@@ -1,7 +1,9 @@
 package com.netcracker.edu.fapi.controller;
 
 import com.netcracker.edu.fapi.model.BaViewModel;
+import com.netcracker.edu.fapi.model.Constants;
 import com.netcracker.edu.fapi.model.CustomerViewModel;
+import com.netcracker.edu.fapi.service.BaDataService;
 import com.netcracker.edu.fapi.service.CustomerDataService;
 import com.netcracker.edu.fapi.service.UserDataService;
 import com.netcracker.edu.fapi.transfer.Exist;
@@ -26,6 +28,8 @@ public class CustomerDataController {
     private UserDataService userDataService;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private BaDataService baDataService;
 
     @PreAuthorize("hasAnyAuthority('admin')")
     @RequestMapping
@@ -51,7 +55,7 @@ public class CustomerDataController {
 
     @PreAuthorize("hasAnyAuthority('admin')")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<CustomerViewModel> getCustomerById(@PathVariable(name = "id") Long id){
+    public ResponseEntity<CustomerViewModel> getCustomerById(@PathVariable(name = "id") Long id) {
         CustomerViewModel customer = customerDataService.getCustomerById(id);
         if (customer != null) {
             return ResponseEntity.ok(customer);
@@ -62,7 +66,7 @@ public class CustomerDataController {
 
     @PreAuthorize("hasAnyAuthority('admin', 'customer')")
     @RequestMapping(value = "/user/", method = RequestMethod.GET)
-    public ResponseEntity<CustomerViewModel> getCustomerByUserId(){
+    public ResponseEntity<CustomerViewModel> getCustomerByUserId() {
         CustomerViewModel customer = customerDataService.getCustomerByUserId(Long.valueOf(userDataService.findByLogin(SecurityContextHolder.getContext().getAuthentication().getName()).getId()));
         if (customer != null) {
             return ResponseEntity.ok(customer);
@@ -86,5 +90,23 @@ public class CustomerDataController {
             return ResponseEntity.ok(customerDataService.saveCustomerBa(customer).getBa());
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @PreAuthorize("hasAnyAuthority('customer')")
+    @RequestMapping(value = "/ba/{value}", method = RequestMethod.PUT)
+    public ResponseEntity<BaViewModel> saveEditedBa(@PathVariable(name = "value") int value) {
+//        System.out.println(value);
+        CustomerViewModel customer = customerDataService.getCustomerByUserId(Long.valueOf(userDataService.findByLogin(SecurityContextHolder.getContext().getAuthentication().getName()).getId()));
+        if (customer.getBa() == null || value <= 0) {
+            return ResponseEntity.badRequest().build();
+        }
+        customer.getBa().setBalance(customer.getBa().getBalance() + value);
+        baDataService.saveEditedBa(customer.getBa());
+        if(customer.getStatus().getName().equals("blocked") && customer.getBa().getBalance() > Constants.THRESHOLD){//Проверяем пополнил ли кастомер кошелек и если закрыл долг то делаем valid
+            customer.getStatus().setId(1);
+            customerDataService.saveEditedCustomer(customer);
+        }
+
+        return ResponseEntity.ok().build();
     }
 }

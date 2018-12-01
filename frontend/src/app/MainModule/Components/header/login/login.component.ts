@@ -45,6 +45,7 @@ export class LoginModalComponent {
           if (user.role.name == 'customer') {
             this.customersService.getCustomerByUserId().subscribe(customer => {
               localStorage.setItem('customerId', customer.id);
+              localStorage.setItem('status', customer.status.name);
               if (customer.ba) {
                 localStorage.setItem('wallet', customer.ba.id);
               }

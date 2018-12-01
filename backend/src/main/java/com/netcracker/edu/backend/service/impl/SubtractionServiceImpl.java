@@ -1,12 +1,10 @@
 package com.netcracker.edu.backend.service.impl;
 
+import com.netcracker.edu.backend.constants.Constants;
 import com.netcracker.edu.backend.entity.ActiveSubscription;
 import com.netcracker.edu.backend.entity.Customer;
 import com.netcracker.edu.backend.entity.Owner;
-import com.netcracker.edu.backend.service.ActiveSubscriptionService;
-import com.netcracker.edu.backend.service.BillingAccountService;
-import com.netcracker.edu.backend.service.CustomerService;
-import com.netcracker.edu.backend.service.StatusService;
+import com.netcracker.edu.backend.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +14,10 @@ import org.springframework.stereotype.Component;
 import java.util.Optional;
 
 @Component
-public class SubtractionServiceImpl {
+public class SubtractionServiceImpl implements SubtractionService {
 
-    private static final int CYCLE_TIME = 60000;//В миллисекундах, 1 минута
+    private static final int CYCLE_TIME = 10000;//В миллисекундах, 1 минута
+    private static final Logger log = LoggerFactory.getLogger(SubscriptionServiceImpl.class);
 
     @Autowired
     private ActiveSubscriptionService activeSubscriptionService;
@@ -29,11 +28,10 @@ public class SubtractionServiceImpl {
     @Autowired
     private StatusService statusService;
 
-    private static final Logger log = LoggerFactory.getLogger(SubscriptionServiceImpl.class);
-
+    @Override
     @Scheduled(fixedDelay = CYCLE_TIME)
     //fixedRate выполняется каждую минуту, fixedDelay - выполняется через интервал после завершения работы прошлого треда.
-    public void Subtract() {
+    public void subtract() {
         Iterable<ActiveSubscription> activeSubscriptions = activeSubscriptionService.getAllActiveSubscriptions();
         for (ActiveSubscription subscription : activeSubscriptions) {//Цикл переборки всех активных подписок
             long newEditedDate = System.currentTimeMillis();
@@ -42,33 +40,30 @@ public class SubtractionServiceImpl {
             log.info("Разница во времени: " + ((Long) deltaTime).toString());
             if (amount > 0) {
                 Optional<Customer> customer = customerService.getCustomerById(subscription.getCustomerId());
+
                 if (customer.get().getStatus().getName().equals("valid")) {//Если аккаунт не заблокирован
                     int subtractMoney = amount * subscription.getSubscription().getPrice();
                     Integer balance = customer.get().getBa().getBalance() - subtractMoney;
 
-                    if (customer.get().getBa().getBalance() < -100) {//Если баланс кошелька привысил какое-то кол-во денег то блокируем пользователя
-                        customer.get().setStatus(statusService.getStatusById(Long.valueOf(2)).get());
-
-                        customerService.saveEditedCustomer(customer.get());
-                    } else {
-
                         int quantity = subscription.getQuantity() - amount;
-
                         Owner owner = subscription.getSubscription().getOwner();
                         Integer ownerBalance = owner.getba().getBalance();
 
-                        if (quantity < 1) {//Если у нас сервис не запускался долгое время то кол-во дней может быть отрицательным, в таком случае надо просто вычесть все оставшиеся дни
-                            Integer fullPrice = subscription.getQuantity() * subscription.getSubscription().getPrice();
-                            customer.get().getBa().setBalance(customer.get().getBa().getBalance() - fullPrice);
-                            log.info("Last amount: " + customer.get().getBa().getBalance().toString());
+                        if (quantity < 0) {//Если у нас сервис не запускался долгое время то кол-во дней может быть отрицательным, в таком случае мы просто меняем дату так как проблема на стороне сервера.
+                            subscription.setLastEditDate(newEditedDate);
+                            activeSubscriptionService.saveActiveSubscription(subscription);
+                        }//Если у нас сервис не запускался долгое время то кол-во дней может быть отрицательным, в таком случае мы просто меняем дату так как проблема на стороне сервера.
+                        else if (quantity == 0) {
+                            customer.get().getBa().setBalance(balance);
+                            log.info("Amount: " + customer.get().getBa().getBalance().toString());
 
-                            ownerBalance += fullPrice;
-                            owner.getba().setBalance(ownerBalance);
-                            billingAccountService.addAmountOnBa(owner.getba());
-
+                            ownerBalance += subtractMoney;
                             log.info("Owner amount: " + ownerBalance);
 
+                            owner.getba().setBalance(ownerBalance);
+                            billingAccountService.addAmountOnBa(owner.getba());
                             billingAccountService.addAmountOnBa(customer.get().getBa());
+
                             activeSubscriptionService.deleteActiveSubscriptionById(subscription.getId());
                         } else {
                             subscription.setQuantity(quantity);
@@ -77,7 +72,6 @@ public class SubtractionServiceImpl {
                             log.info("Amount: " + customer.get().getBa().getBalance().toString());
 
                             ownerBalance += subtractMoney;
-//                            log.info(String.valueOf(subtractMoney));
                             log.info("Owner amount: " + ownerBalance);
 
                             owner.getba().setBalance(ownerBalance);
@@ -86,11 +80,15 @@ public class SubtractionServiceImpl {
                             billingAccountService.addAmountOnBa(customer.get().getBa());
                             activeSubscriptionService.saveActiveSubscription(subscription);
                         }
+                    if (customer.get().getBa().getBalance() < Constants.THRESHOLD) {//Если баланс кошелька привысил какое-то кол-во денег то блокируем пользователя
+                        customer.get().setStatus(statusService.getStatusById(Long.valueOf(2)).get());
+                        customerService.saveEditedCustomer(customer.get());
                     }
-                } else if (customer.get().getBa().getBalance() > -100) {
-                    customer.get().setStatus(statusService.getStatusById(Long.valueOf(1)).get());
-                    customerService.saveEditedCustomer(customer.get());
+                } else {
+                    subscription.setLastEditDate(newEditedDate);
+                    activeSubscriptionService.saveActiveSubscription(subscription);
                 }
+
             }
             log.info("------------------------------------");
         }
@@ -98,4 +96,5 @@ public class SubtractionServiceImpl {
         log.info("------------------------------------");
 
     }
+
 }

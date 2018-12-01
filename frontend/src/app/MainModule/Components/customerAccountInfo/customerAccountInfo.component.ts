@@ -39,6 +39,7 @@ export class CustomerAccountInfoComponent implements OnInit{
     this.customersService.getCustomerByUserId().subscribe(customer => {
       // Parse json response into local array
       this.customer = customer as Customer;
+      localStorage.setItem('status', customer.status.name);
       this.loadingService.hide();
     });
   }
@@ -60,8 +61,8 @@ export class CustomerAccountInfoComponent implements OnInit{
   }
 
   fillUp():void{
-    this.customer.ba.balance += this.amount;
-    this.baService.saveEditedBa(this.customer.ba).subscribe(()=>{
+    // this.customer.ba.balance += this.amount;
+    this.customersService.addMoneyOnBa(this.amount).subscribe(()=>{
       this.loadCustomer();
       this.amount = 0;
       this.modalRef.hide();

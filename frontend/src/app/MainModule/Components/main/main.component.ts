@@ -55,18 +55,26 @@ export class MainComponent implements OnInit {
     });
   }
 
+  walletIsPresent(): boolean {
+    if (this.adminOrOwner()) return true;
+    if (localStorage.getItem('wallet')) {
+      return true;
+    }
+    return false;
+  }
+
   pageChanged(event: PageChangedEvent): void {
 
     switch (this.loadOption) {
-      case 1:{
-        this.loadSubscriptions(event.page -1);
+      case 1: {
+        this.loadSubscriptions(event.page - 1);
         break;
       }
-      case 2:{
+      case 2: {
         this.loadSubscriptionsByNameLike(event.page - 1);
         break;
       }
-      case 3:{
+      case 3: {
         this.loadSubscriptionsByCategoryId(event.page - 1);
         break;
       }
@@ -97,7 +105,7 @@ export class MainComponent implements OnInit {
   }
 
   cantAdd(): boolean {
-    if (localStorage.getItem('wallet') == null) return true;
+    if (localStorage.getItem('wallet') == null || localStorage.getItem('status') == 'blocked') return true;
     for (let value of this.value) {
       if (value > 0 && value < 1000) return false;
     }
@@ -113,52 +121,60 @@ export class MainComponent implements OnInit {
     this.bsModalRef.hide();
   }
 
-  openConfirmModal(template: TemplateRef<any>){
-      this.bsModalRef = this.modalService.show(template, {class: 'modal-sm'});
+  openConfirmModal(template: TemplateRef<any>) {
+    this.bsModalRef = this.modalService.show(template, {class: 'modal-sm'});
   }
 
-  search(searchValue: string){
+  search(searchValue: string) {
     this.searchValue = searchValue;
     this.loadOption = 2;
     this.loadSubscriptionsByNameLike(0);
   }
 
-  loadSubscriptionsByNameLike(page: number):void{
+  loadSubscriptionsByNameLike(page: number): void {
     this.loadingService.show();
-    this.subscriptionsService.getSubscriptionsByNameLike(this.searchValue, page, this.size).subscribe(source =>{
+    this.subscriptionsService.getSubscriptionsByNameLike(this.searchValue, page, this.size).subscribe(source => {
       this.subs = source.content as SubscriptionModel[];
       this.totalElements = source.totalElements;
       this.loadingService.hide();
     })
   }
 
-  loadCategories():void{
+  loadCategories(): void {
     this.loadingService.show();
-    this.categoryService.getCategories().subscribe(categories =>{
+    this.categoryService.getCategories().subscribe(categories => {
       this.categories = categories as Category[];
       this.loadingService.hide();
     })
   }
 
-  filter(id: string):void{
+  filter(id: string): void {
     this.currentCategoryId = id;
     this.loadOption = 3;
     this.loadSubscriptionsByCategoryId(0);
   }
 
-  loadSubscriptionsByCategoryId(page: number):void{
+  loadSubscriptionsByCategoryId(page: number): void {
     this.loadingService.show();
-    this.subscriptionsService.getSubscriptionByCategoryId(this.currentCategoryId, page, this.size).subscribe(source =>{
+    this.subscriptionsService.getSubscriptionByCategoryId(this.currentCategoryId, page, this.size).subscribe(source => {
       this.subs = source.content as SubscriptionModel[];
       this.totalElements = source.totalElements;
       this.loadingService.hide();
     })
   }
 
-
-
-  loadAll():void{
+  loadAll(): void {
     this.loadOption = 1;
     this.loadSubscriptions(0);
   }
+
+  userIsNotBlocked(): boolean {
+    if (this.adminOrOwner()) return true;
+    return localStorage.getItem('status') == 'valid';
+  }
+
+  userIsPresent(): boolean {
+    return (localStorage.getItem('currentUser') != null);
+  }
+
 }

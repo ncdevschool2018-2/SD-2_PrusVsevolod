@@ -10,24 +10,29 @@
       </button>
     </div>
   </div>
+
   <div class="row mt-2">
-    <!--<div class="col-auto">-->
-      <!--<pagination [totalItems]="totalElements" [itemsPerPage]="size" (pageChanged)="pageChanged($event)"></pagination>-->
-    <!--</div>-->
     <div class="col-auto">
-      <div class="btn-group mx-3" dropdown>
-        <button dropdownToggle type="button" class="btn btn-info dropdown-toggle"
-                aria-controls="dropdown-basic">
-          Categories <span class="caret"></span>
-        </button>
-        <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
-            role="menu" aria-labelledby="button-basic">
-          <li role="menuitem"><a class="dropdown-item" (click)="loadAll()">All</a>
-          <li role="menuitem"><a class="dropdown-item" (click)="filter(category.id)"
-                                 *ngFor="let category of categories">{{category.name}}</a>
-          </li>
-        </ul>
+      <div>
+        <tabset>
+          <tab heading="All" (select)="loadAll()"></tab>
+          <tab *ngFor="let category of categories" heading="{{category.name}}" (select)="filter(category.id)"></tab>
+        </tabset>
       </div>
+    </div>
+  </div>
+  <div class="row justify-content-center my-0" [hidden]="!userIsPresent() || userIsNotBlocked()">
+    <div class="col-4 text-center">
+      <alert type="danger">
+        <strong>Warning!</strong> You where blocked. You have a <strong>negative wallet balance</strong> and your status is blocked. Fill up your wallet.
+      </alert>
+    </div>
+  </div>
+  <div class="row justify-content-center my-0" [hidden]="!userIsPresent() || walletIsPresent()">
+    <div class="col-4 text-center">
+      <alert type="warning">
+        <strong>Warning!</strong> You need to register a <strong>wallet</strong> first if you want to subscribe.
+      </alert>
     </div>
   </div>
   <div class="row justify-content-center">

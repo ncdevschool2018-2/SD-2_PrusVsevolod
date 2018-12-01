@@ -40,9 +40,18 @@
 
                 </tab>
                 <tab class="mt-4" heading="Services">
-                  <!--<p class="font-weight-light">Subscription status: <span style="color: crimson">active</span></p>-->
-
-                  <table class="table">
+                  <div class="row justify-content-center my-0" [hidden]="walletIsPresent()">
+                    <div class="col-12 text-center">
+                      <alert type="warning">
+                        <strong>Warning!</strong> You need to register a <strong>wallet</strong> first if you want to add subscriptions.
+                      </alert>
+                    </div>
+                  </div>
+                  <div class="row justify-content-center" *ngIf="subscriptions.length == 0">
+                    <div class="col-12 text-center">It seems you have no subscriptions. But you can add a couple of subscriptions right now, it's simple!
+                    </div>
+                  </div>
+                  <table class="table" *ngIf="subscriptions.length > 0">
                     <thead>
                     <tr>
                       <th>Service name</th>

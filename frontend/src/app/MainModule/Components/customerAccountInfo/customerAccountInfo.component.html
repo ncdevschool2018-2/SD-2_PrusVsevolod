@@ -1,6 +1,6 @@
-<ng4-loading-spinner> </ng4-loading-spinner>
+<ng4-loading-spinner></ng4-loading-spinner>
 
-<app-header [itemsCounter] = "itemsCounter"></app-header>
+<app-header [itemsCounter]="itemsCounter"></app-header>
 
 <div class="container">
   <div class="row justify-content-center">
@@ -10,8 +10,10 @@
           <div class="card-title mb-4">
             <div class="d-flex justify-content-start">
               <div class="userData ml-3">
-                <h2 class="d-block" style="font-size: 1.5rem; font-weight: bold">Customer login: {{customer.user.login}}</h2>
-                <p class="font-weight-light">Account status: <span style="color: crimson">{{customer.status.name}}</span></p>
+                <h2 class="d-block" style="font-size: 1.5rem; font-weight: bold">Customer login:
+                  {{customer.user.login}}</h2>
+                <p class="font-weight-light">Account status: <span
+                  style="color: crimson">{{customer.status.name}}</span></p>
               </div>
             </div>
           </div>
@@ -39,7 +41,6 @@
                   </div>
                   <hr/>
 
-
                   <div class="row">
                     <div class="col-sm-3 col-md-3 col-5">
                       <label style="font-weight:bold;">Address</label>
@@ -51,7 +52,12 @@
                   <hr/>
                 </tab>
                 <tab class="mt-4" heading="Subscriptions">
-                  <table class="table">
+                  <div class="row justify-content-center" *ngIf="activeSubs.length == 0">
+                    <div class="col-12 text-center">It seems you have no subscriptions at all :( . Rather, go to the <a href="/">landing
+                      page</a> and buy a couple of subscriptions.
+                    </div>
+                  </div>
+                  <table class="table" *ngIf="activeSubs.length > 0">
                     <thead>
                     <tr>
                       <th>Service name</th>
@@ -107,13 +113,17 @@
   <div class="modal-body text-center">
     <div class="container">
 
-      <input type="number" class="form-control" placeholder="Refill amount" min="0"
+      <input type="number" class="form-control" placeholder="Refill amount" min="0" #amountInput="ngModel"
              required autofocus [(ngModel)]="amount">
-
+      <!--<div [hidden]="name.valid || name.untouched" class="alert alert-danger">-->
+        <!--Не указано имя-->
+      <!--</div>-->
     </div>
   </div>
   <div class="modal-footer">
-    <button type="submit" class="btn btn-primary" [disabled]="amountIsNegative() || amount == 0" (click)="fillUp()">Fill up</button>
+    <button type="submit" class="btn btn-primary" [disabled]="amountIsNegative() || amount == 0 || amountInput.invalid" (click)="fillUp()">Fill
+      up
+    </button>
     <button type="button" class="btn btn-secondary" (click)="modalRef.hide()">Close</button>
   </div>
 </ng-template>
