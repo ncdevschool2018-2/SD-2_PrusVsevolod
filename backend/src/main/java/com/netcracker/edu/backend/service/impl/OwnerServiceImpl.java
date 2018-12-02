@@ -2,8 +2,9 @@ package com.netcracker.edu.backend.service.impl;
 
 import com.netcracker.edu.backend.entity.Owner;
 import com.netcracker.edu.backend.repository.OwnerRepository;
-import com.netcracker.edu.backend.repository.UserRepository;
+import com.netcracker.edu.backend.service.BillingAccountService;
 import com.netcracker.edu.backend.service.OwnerService;
+import com.netcracker.edu.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,13 +14,15 @@ import java.util.Optional;
 @Component
 public class OwnerServiceImpl implements OwnerService {
 
-    private UserRepository userRepository;
+    private UserService userService;
     private OwnerRepository ownerRepository;
+    private BillingAccountService billingAccountService;
 
     @Autowired
-    public OwnerServiceImpl(UserRepository userRepository, OwnerRepository repository) {
-        this.userRepository = userRepository;
+    public OwnerServiceImpl(UserService userService, OwnerRepository repository, BillingAccountService billingAccountService) {
+        this.userService = userService;
         this.ownerRepository = repository;
+        this.billingAccountService = billingAccountService;
     }
 
 
@@ -36,15 +39,18 @@ public class OwnerServiceImpl implements OwnerService {
     @Transactional
     @Override
     public Owner saveOwner(Owner owner) {
-        userRepository.save(owner.getuser());
+        userService.saveUser(owner.getuser());
         return ownerRepository.save(owner);
     }
 
     @Override
     public void deleteOwner(Long id) {
-        Long UserId = getOwnerById(id).get().getuser().getId();
-//        ownersRepository.deleteById(id);
-        userRepository.deleteById(UserId);
+        Owner deletedOwner = getOwnerById(id).get();
+        Long UserId = deletedOwner.getuser().getId();
+        if (deletedOwner.getba() != null) {
+            billingAccountService.deleteBa(deletedOwner.getba());
+        }
+        userService.deleteUser(UserId);
     }
 
     @Override

@@ -1303,6 +1303,7 @@ subscription_id</ColNames>
     <column id="321" parent="282" name="balance">
       <Position>5</Position>
       <DataType>int(11)|0s</DataType>
+      <DefaultExpression>&apos;0&apos;</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
     <index id="322" parent="282" name="id_UNIQUE">

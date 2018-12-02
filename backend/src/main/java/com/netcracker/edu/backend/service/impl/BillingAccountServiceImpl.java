@@ -20,8 +20,13 @@ public class BillingAccountServiceImpl implements BillingAccountService {
 
     @Override
     public BillingAccount saveBa(BillingAccount ba) {
-        ba.setBalance(0);
+//        ba.setBalance(0);
         return this.repository.save(ba);
+    }
+
+    @Override
+    public void deleteBa(BillingAccount ba) {
+        repository.delete(ba);
     }
 
     @Override

@@ -2,9 +2,10 @@ package com.netcracker.edu.backend.service.impl;
 
 import com.netcracker.edu.backend.entity.Customer;
 import com.netcracker.edu.backend.repository.CustomerRepository;
-import com.netcracker.edu.backend.repository.StatusRepository;
-import com.netcracker.edu.backend.repository.UserRepository;
+import com.netcracker.edu.backend.service.BillingAccountService;
 import com.netcracker.edu.backend.service.CustomerService;
+import com.netcracker.edu.backend.service.StatusService;
+import com.netcracker.edu.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,15 +15,17 @@ import java.util.Optional;
 @Component
 public class CustomerServiceImpl implements CustomerService {
 
-    private UserRepository userRepository;
+    private UserService userService;
     private CustomerRepository customerRepository;
-    private StatusRepository statusRepository;
+    private StatusService statusService;
+    private BillingAccountService billingAccountService;
 
     @Autowired
-    public CustomerServiceImpl(UserRepository userRepository, CustomerRepository repository, StatusRepository statusRepository) {
-        this.userRepository = userRepository;
+    public CustomerServiceImpl(UserService userService, CustomerRepository repository, StatusService statusService, BillingAccountService billingAccountService) {
+        this.userService = userService;
         this.customerRepository = repository;
-        this.statusRepository = statusRepository;
+        this.statusService = statusService;
+        this.billingAccountService = billingAccountService;
     }
 
 
@@ -39,8 +42,8 @@ public class CustomerServiceImpl implements CustomerService {
     @Transactional
     @Override
     public Customer saveCustomer(Customer customer) {
-        customer.setStatus(statusRepository.findById(Long.valueOf(1)).get());
-        userRepository.save(customer.getUser());
+        customer.setStatus(statusService.getStatusById(Long.valueOf(1)).get());
+        userService.saveUser(customer.getUser());
         return customerRepository.save(customer);
     }
 
@@ -51,9 +54,12 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void deleteCustomer(Long id) {
-        Long UserId = getCustomerById(id).get().getUser().getId();
-//        customersRepository.deleteById(id);
-        userRepository.deleteById(UserId);
+        Customer deletedCustomer = getCustomerById(id).get();
+        Long UserId = deletedCustomer.getUser().getId();
+        if (deletedCustomer.getBa() != null) {
+            billingAccountService.deleteBa(deletedCustomer.getBa());
+        }
+        userService.deleteUser(UserId);
     }
 
     @Override

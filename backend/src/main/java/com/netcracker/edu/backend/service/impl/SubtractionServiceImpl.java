@@ -16,7 +16,7 @@ import java.util.Optional;
 @Component
 public class SubtractionServiceImpl implements SubtractionService {
 
-    private static final int CYCLE_TIME = 10000;//В миллисекундах, 1 минута
+    private static final int CYCLE_TIME = 60000;//В миллисекундах, 1 минута
     private static final Logger log = LoggerFactory.getLogger(SubscriptionServiceImpl.class);
 
     @Autowired

@@ -95,7 +95,6 @@ public class CustomerDataController {
     @PreAuthorize("hasAnyAuthority('customer')")
     @RequestMapping(value = "/ba/{value}", method = RequestMethod.PUT)
     public ResponseEntity<BaViewModel> saveEditedBa(@PathVariable(name = "value") int value) {
-//        System.out.println(value);
         CustomerViewModel customer = customerDataService.getCustomerByUserId(Long.valueOf(userDataService.findByLogin(SecurityContextHolder.getContext().getAuthentication().getName()).getId()));
         if (customer.getBa() == null || value <= 0) {
             return ResponseEntity.badRequest().build();
