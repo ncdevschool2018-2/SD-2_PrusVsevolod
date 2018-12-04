@@ -32,9 +32,9 @@ public class CustomerController {
         }
     }
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
-    public Iterable<Customer> getAllCustomers() {
-        return customerService.getAllCustomers();
+    @RequestMapping(params = {"page", "size"})
+    public Iterable<Customer> getAllCustomers(@RequestParam("page") int page, @RequestParam("size") int size) {
+        return customerService.getAllCustomers(page, size);
     }
 
     @RequestMapping(method = RequestMethod.POST)

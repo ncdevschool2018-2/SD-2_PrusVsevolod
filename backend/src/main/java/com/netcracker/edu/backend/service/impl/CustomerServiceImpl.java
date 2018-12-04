@@ -7,6 +7,7 @@ import com.netcracker.edu.backend.service.CustomerService;
 import com.netcracker.edu.backend.service.StatusService;
 import com.netcracker.edu.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
@@ -35,8 +36,8 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Iterable<Customer> getAllCustomers() {
-        return customerRepository.findAll();
+    public Iterable<Customer> getAllCustomers(int page, int size) {
+        return customerRepository.findAll(PageRequest.of(page,size));
     }
 
     @Transactional

@@ -1,14 +1,11 @@
 package com.netcracker.edu.fapi.service.impl;
 
+import com.netcracker.edu.fapi.model.Content;
 import com.netcracker.edu.fapi.model.CustomerViewModel;
 import com.netcracker.edu.fapi.service.CustomerDataService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 @Service
 public class CustomerServiceImpl implements CustomerDataService {
@@ -17,10 +14,10 @@ public class CustomerServiceImpl implements CustomerDataService {
     private String backendServerUrl;
 
     @Override
-    public List<CustomerViewModel> getAll() {
+    public Content<CustomerViewModel> getAll(int page, int size) {
         RestTemplate restTemplate = new RestTemplate();
-        CustomerViewModel[] customerViewModelsResponse = restTemplate.getForObject(backendServerUrl + "/api/customers/", CustomerViewModel[].class);
-        return customerViewModelsResponse == null ? Collections.emptyList() : Arrays.asList(customerViewModelsResponse);
+        Content<CustomerViewModel> customerViewModelsResponse = restTemplate.getForObject(backendServerUrl + "/api/customers?page=" + page + "&size=" + size, Content.class);
+        return customerViewModelsResponse;
     }
 
     @Override

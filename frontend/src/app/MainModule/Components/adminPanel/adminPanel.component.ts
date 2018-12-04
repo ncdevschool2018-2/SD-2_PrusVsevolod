@@ -1,10 +1,8 @@
 import {Component, OnInit, TemplateRef} from '@angular/core';
 import {Ng4LoadingSpinnerService} from "ng4-loading-spinner";
 import {Customer} from "../../models/customer";
-import {Owner} from "../../models/owner";
 import {CustomerService} from "../../../services/customer.service";
-import {OwnerService} from "../../../services/owner.service";
-import {BsModalRef, BsModalService} from "ngx-bootstrap";
+import {BsModalRef, BsModalService, PageChangedEvent} from "ngx-bootstrap";
 
 @Component({
   selector: 'app-adminPanel',
@@ -13,63 +11,39 @@ import {BsModalRef, BsModalService} from "ngx-bootstrap";
 })
 export class AdminPanelComponent implements OnInit {
 
-  public bsModalRef: BsModalRef;
-  isCollapsed = false;
+  bsModalRef: BsModalRef;
+  isCollapsed: boolean = false;
 
-  public customers: Customer[] = [];
-  public owners: Owner[] = [];
-  public editableOwner: Owner;
-  public editableCustomer: Customer;
+  customers: Customer[] = [];
+  editableCustomer: Customer;
+  size: number = 10;
+  totalElements: number = 0;
+  page: number = 0;
 
   // private subUsers: Subscription[] = [];
 
-  constructor(private loadingService: Ng4LoadingSpinnerService, private customersService: CustomerService, private ownersService: OwnerService, private modalService: BsModalService) {
+  constructor(private loadingService: Ng4LoadingSpinnerService, private customersService: CustomerService, private modalService: BsModalService) {
   }
 
   // Calls on component init
   ngOnInit() {
-    this.loadCustomers();
-    this.loadOwners();
+    this.loadCustomers(this.page, this.size);
   }
 
-
-  private loadCustomers(): void {
+  private loadCustomers(page: number, size: number): void {
     this.loadingService.show();
-    this.customersService.getCustomers().subscribe(customer => {
+    this.customersService.getCustomers(page, size).subscribe(source => {
       // Parse json response into local array
-      this.customers = customer as Customer[];
+      this.customers = source.content as Customer[];
+      this.totalElements = source.totalElements;
       this.loadingService.hide();
-    });
-  }
-
-  private loadOwners(): void {
-    this.loadingService.show();
-    this.ownersService.getOwners().subscribe(owner => {
-      this.owners = owner as Owner[];
-      this.loadingService.hide();
-    });
-  }
-
-  public deleteOwner(id: string): void {
-    this.ownersService.deleteOwner(id).subscribe(() => {
-      this.loadOwners();
     });
   }
 
   public deleteCustomer(id: string): void {
     this.customersService.deleteCustomer(id).subscribe(() => {
-      this.loadCustomers();
+      this.loadCustomers(this.page, this.size);
     });
-  }
-
-  openOwnerEditModal(template: TemplateRef<any>, owner: Owner) {
-    this.editableOwner = Owner.cloneOwner(owner);
-    this.bsModalRef = this.modalService.show(template, {class: 'modal-lg'});
-  }
-
-  closeEditOwnerModal(): void {
-    this.loadOwners();
-    this.bsModalRef.hide();
   }
 
   openCustomerEditModal(template: TemplateRef<any>, customer: Customer) {
@@ -78,7 +52,7 @@ export class AdminPanelComponent implements OnInit {
   }
 
   closeEditCustomerModal(): void {
-    this.loadCustomers();
+    this.loadCustomers(this.page, this.size);
     this.bsModalRef.hide();
   }
 
@@ -87,18 +61,20 @@ export class AdminPanelComponent implements OnInit {
     this.bsModalRef.hide();
   }
 
-
-  confirmDeleteOwner(id: string) {
-    this.deleteOwner(id);
-    this.bsModalRef.hide();
-  }
-
   decline() {
     this.bsModalRef.hide();
   }
 
-  openConfirmModal(template: TemplateRef<any>){
+  openConfirmModal(template: TemplateRef<any>) {
     this.bsModalRef = this.modalService.show(template, {class: 'modal-sm'});
   }
 
+  pageChanged(event: PageChangedEvent): void {
+    this.page = event.page -1;
+    this.loadCustomers(this.page, this.size);
+  }
+
+  collapse(isCollapsed: boolean):void{
+    this.isCollapsed = isCollapsed;
+  }
 }

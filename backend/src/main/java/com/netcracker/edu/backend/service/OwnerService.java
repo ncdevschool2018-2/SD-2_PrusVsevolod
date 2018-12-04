@@ -7,7 +7,7 @@ import java.util.Optional;
 public interface OwnerService {
 
     Optional<Owner> getOwnerById(Long id);
-    Iterable<Owner> getAllOwners();
+    Iterable<Owner> getAllOwners(int page, int size);
     Owner saveOwner(Owner owner);
     void deleteOwner(Long id);
     Owner findByUserId(Long id);

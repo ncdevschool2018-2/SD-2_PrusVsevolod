@@ -1,12 +1,12 @@
 package com.netcracker.edu.fapi.service;
 
+import com.netcracker.edu.fapi.model.Content;
 import com.netcracker.edu.fapi.model.OwnerViewModel;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface OwnerDataService {
-    List<OwnerViewModel> getAll();
+    Content<OwnerViewModel> getAll(int page, int size);
     Optional<OwnerViewModel> getOwnerById(Long id);
     OwnerViewModel getOwnerByUserId(Long id);
     OwnerViewModel saveOwner(OwnerViewModel owner);

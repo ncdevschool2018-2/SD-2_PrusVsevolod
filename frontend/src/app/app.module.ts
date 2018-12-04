@@ -39,6 +39,9 @@ import {Interceptor} from "./services/interceptor.service.";
 //Guards
 import {AdminPanelGuard} from "./MainModule/Components/adminPanel/adminPanel.guard";
 import {RegistrationGuard} from "./MainModule/Components/registration/registration.guard";
+import {AdminNavBarComponent} from "./MainModule/Components/adminPanel/adminNavBar/adminNavBar.component";
+import {OwnersListComponent} from "./MainModule/Components/adminPanel/ownersList/ownersList.component";
+import {AdminSideBarComponent} from "./MainModule/Components/adminPanel/adminSideBar/adminSideBar.component";
 
 // определение маршрутов
 const appRoutes: Routes =[
@@ -48,6 +51,7 @@ const appRoutes: Routes =[
   { path: 'ownerAccountInfo/:id', component: OwnerAccountInfoComponent},
   { path: 'customerAccountInfo/:id', component: CustomerAccountInfoComponent},
   { path: 'adminPanel', component: AdminPanelComponent, canActivate: [AdminPanelGuard]},
+  { path: 'adminPanel/Owners', component: OwnersListComponent, canActivate: [AdminPanelGuard]},
   { path: 'login', component: LoginModalComponent},
   { path: '**', component: notFoundComponent }
 ];
@@ -68,7 +72,10 @@ const appRoutes: Routes =[
     WalletModalComponent,
     OwnerAccountInfoComponent,
     CustomerAccountInfoComponent,
-    ConfirmModalComponent
+    ConfirmModalComponent,
+    AdminNavBarComponent,
+    OwnersListComponent,
+    AdminSideBarComponent
   ],
   imports: [
     BrowserModule,

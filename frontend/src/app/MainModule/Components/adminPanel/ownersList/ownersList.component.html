@@ -10,8 +10,11 @@
     <app-adminNavBar (onCollapse)="collapse($event)"></app-adminNavBar>
 
     <div class="container">
+
+
       <div class="row">
-        <h1>List of all customers</h1>
+
+        <h1>List of all owners</h1>
 
         <div class="col-md-10 col-md-offset-1">
 
@@ -22,28 +25,25 @@
                 <tr>
                   <th class="hidden-xs">ID</th>
                   <th>Name</th>
-                  <th>Address</th>
                   <th>Login</th>
                   <th>Email</th>
                   <th><em class="fa fa-cog"></em></th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr *ngFor="let customer of customers">
-                  <ng-template #confirmCustomerDialog>
-                    <modal-confirm (onConfirm)="confirmDeleteCustomer(customer.id)"
-                                   (onDecline)="decline()"></modal-confirm>
+                <tr *ngFor="let owner of owners">
+                  <ng-template #confirmOwnerDialog>
+                    <modal-confirm (onConfirm)="confirmDeleteOwner(owner.id)" (onDecline)="decline()"></modal-confirm>
                   </ng-template>
-                  <td class="hidden-xs">{{customer.id}}</td>
-                  <td>{{customer.name}}</td>
-                  <td>{{customer.address}}</td>
-                  <td>{{customer.user.login}}</td>
-                  <td>{{customer.user.email}}</td>
+                  <td class="hidden-xs">{{owner.id}}</td>
+                  <td>{{owner.name}}</td>
+                  <td>{{owner.user.login}}</td>
+                  <td>{{owner.user.email}}</td>
                   <td>
-                    <a class="btn btn-danger mx-1" (click)="openConfirmModal(confirmCustomerDialog)"><i
+                    <a class="btn btn-danger mx-1" (click)="openConfirmModal(confirmOwnerDialog)"><i
                       class="fa fa-trash"></i></a>
-                    <a class="btn btn-info mx-1"><i class="fa fa-edit "
-                                                    (click)="openCustomerEditModal(editCustomer,customer)"></i></a>
+                    <a class="btn btn-info mx-1" (click)="openOwnerEditModal(editOwner,owner)"><i
+                      class="fa fa-edit"></i></a>
                   </td>
                 </tr>
                 </tbody>
@@ -55,7 +55,6 @@
 
         </div>
       </div>
-
       <div class="row" [hidden]="totalElements < size">
         <div class="col-auto">
           <pagination [totalItems]="totalElements" [itemsPerPage]="size"
@@ -66,7 +65,6 @@
   </div>
 </div>
 
-<ng-template #editCustomer>
-  <modal-editCustomerMenu [editableCustomer]="editableCustomer"
-                          (onChanged)="closeEditCustomerModal()"></modal-editCustomerMenu>
+<ng-template #editOwner>
+  <modal-editOwnerMenu [editableOwner]="editableOwner" (onChanged)="closeEditOwnerModal()"></modal-editOwnerMenu>
 </ng-template>

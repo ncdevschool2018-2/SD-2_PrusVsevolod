@@ -17,16 +17,16 @@ import {Router} from "@angular/router";
 export class RegistrationComponent {
   radioModel = 'Customer';
   isOpen = false;
-  public password = 'password';
-  public confirmPassword = 'password';
+  password = 'password';
+  confirmPassword = 'password';
 
   passwordForm: FormGroup;
   othersForm: FormGroup;
   // private subCustomer: Subscription[] = [];
   // private subOwner: Subscription[] = [];
-  public newUser: User = new User();
-  public newCustomer: Customer = new Customer();
-  public newOwner: Owner = new Owner();
+  newUser: User = new User();
+  newCustomer: Customer = new Customer();
+  newOwner: Owner = new Owner();
 
   constructor(private loadingService: Ng4LoadingSpinnerService, private usersService: UserService, private customersService: CustomerService, private ownersService: OwnerService, private formBuilder: FormBuilder, private router: Router) {
     this.passwordForm = formBuilder.group({

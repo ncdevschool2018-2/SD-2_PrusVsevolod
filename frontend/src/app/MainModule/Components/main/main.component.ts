@@ -15,12 +15,12 @@ import {CategoryService} from "../../../services/category.service";
 })
 export class MainComponent implements OnInit, DoCheck {
 
-  public shoppingList: BasketItem[] = [];
-  public subs: SubscriptionModel[];
-  public bsModalRef: BsModalRef;
-  public value: number[] = [];
-  public size: number = 12;
-  public totalElements: number;
+  shoppingList: BasketItem[] = [];
+  subs: SubscriptionModel[];
+  bsModalRef: BsModalRef;
+  value: number[] = [];
+  size: number = 12;
+  totalElements: number;
   itemsCounter: number;
   categories: Category[] = [];
   searchValue: string;

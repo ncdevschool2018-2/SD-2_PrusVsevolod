@@ -14,11 +14,11 @@ import {BsModalRef, BsModalService} from "ngx-bootstrap";
 })
 export class ShoppingListComponent implements OnInit{
 
-  public shoppingBasket: BasketItem[] = [];
+  shoppingBasket: BasketItem[] = [];
   private subscriptions: ActiveSubscription[] = [];
-  public total: number = 0;
+  total: number = 0;
   itemsCounter: number;
-  public bsModalRef: BsModalRef;
+  bsModalRef: BsModalRef;
 
   constructor(private loadingService: Ng4LoadingSpinnerService, private sbService: BasketItemService, private activeSubscriptionService: ActiveSubscriptionService, private router: Router, private modalService: BsModalService) {
   }

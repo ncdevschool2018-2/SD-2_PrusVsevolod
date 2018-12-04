@@ -3,6 +3,7 @@ import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Customer} from "../MainModule/models/customer";
 import {Ba} from "../MainModule/models/ba";
+import {Content} from "../MainModule/models/content";
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +13,8 @@ export class CustomerService {
   constructor(private http: HttpClient) {
   }
 
-  getCustomers(): Observable<Customer[]> {
-    return this.http.get<Customer[]>('/api/customers');
+  getCustomers(page: number, size: number): Observable<Content<Customer>> {
+    return this.http.get<Content<Customer>>('/api/customers?page=' + page + '&size=' + size);
   }
 
   saveEditedCustomer(customer: Customer): Observable<Customer>{

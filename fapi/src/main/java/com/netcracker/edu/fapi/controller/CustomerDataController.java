@@ -2,6 +2,7 @@ package com.netcracker.edu.fapi.controller;
 
 import com.netcracker.edu.fapi.model.BaViewModel;
 import com.netcracker.edu.fapi.model.Constants;
+import com.netcracker.edu.fapi.model.Content;
 import com.netcracker.edu.fapi.model.CustomerViewModel;
 import com.netcracker.edu.fapi.service.BaDataService;
 import com.netcracker.edu.fapi.service.CustomerDataService;
@@ -15,8 +16,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/customers")
@@ -32,9 +31,9 @@ public class CustomerDataController {
     private BaDataService baDataService;
 
     @PreAuthorize("hasAnyAuthority('admin')")
-    @RequestMapping
-    public ResponseEntity<List<CustomerViewModel>> getAllCustomers() {
-        return ResponseEntity.ok(customerDataService.getAll());
+    @RequestMapping(params = {"page", "size"})
+    public ResponseEntity<Content> getAllCustomers(@RequestParam("page") int page, @RequestParam("size") int size) {
+        return ResponseEntity.ok(customerDataService.getAll(page, size));
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -101,7 +100,7 @@ public class CustomerDataController {
         }
         customer.getBa().setBalance(customer.getBa().getBalance() + value);
         baDataService.saveEditedBa(customer.getBa());
-        if(customer.getStatus().getName().equals("blocked") && customer.getBa().getBalance() > Constants.THRESHOLD){//Проверяем пополнил ли кастомер кошелек и если закрыл долг то делаем valid
+        if (customer.getStatus().getName().equals("blocked") && customer.getBa().getBalance() > Constants.THRESHOLD) {//Проверяем пополнил ли кастомер кошелек и если закрыл долг то делаем valid
             customer.getStatus().setId(1);
             customerDataService.saveEditedCustomer(customer);
         }

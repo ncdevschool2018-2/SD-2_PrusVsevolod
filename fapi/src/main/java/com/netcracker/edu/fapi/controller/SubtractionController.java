@@ -1,6 +1,7 @@
-package com.netcracker.edu.backend.controller;
+package com.netcracker.edu.fapi.controller;
 
-import com.netcracker.edu.backend.constants.Constants;
+import com.netcracker.edu.fapi.model.Constants;
+import com.netcracker.edu.fapi.service.SubtractionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,19 +13,23 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/subtraction")
 public class SubtractionController {
 
-
     @Autowired
-    public SubtractionController() {
-    }
+    private SubtractionService subtractionService;
 
     @RequestMapping(value = "/threshold/{value}", method = RequestMethod.PUT)
-    public ResponseEntity<Integer> editThreshold(@PathVariable(name = "value") Integer threshold) {
+    public ResponseEntity<?> editThreshold(@PathVariable(name = "value") Integer threshold) {
         if (threshold < 0) {
             Constants.THRESHOLD = threshold;
-            return ResponseEntity.ok(Constants.THRESHOLD);
+            subtractionService.editThreshold(Constants.THRESHOLD);
+            return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.badRequest().build();
         }
+    }
+
+    @RequestMapping(value = "/threshold")
+    public ResponseEntity<Integer> getThreshold() {
+            return ResponseEntity.ok(Constants.THRESHOLD);
     }
 
 }

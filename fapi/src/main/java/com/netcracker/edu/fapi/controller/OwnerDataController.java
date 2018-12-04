@@ -1,6 +1,7 @@
 package com.netcracker.edu.fapi.controller;
 
 import com.netcracker.edu.fapi.model.BaViewModel;
+import com.netcracker.edu.fapi.model.Content;
 import com.netcracker.edu.fapi.model.OwnerViewModel;
 import com.netcracker.edu.fapi.service.OwnerDataService;
 import com.netcracker.edu.fapi.service.UserDataService;
@@ -14,7 +15,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -29,9 +29,9 @@ public class OwnerDataController {
     private PasswordEncoder passwordEncoder;
 
     @PreAuthorize("hasAnyAuthority('admin')")
-    @RequestMapping
-    public ResponseEntity<List<OwnerViewModel>> getAllOwners() {
-        return ResponseEntity.ok(ownerDataService.getAll());
+    @RequestMapping(params = {"page", "size"})
+    public ResponseEntity<Content> getAllOwners(@RequestParam("page") int page, @RequestParam("size") int size) {
+        return ResponseEntity.ok(ownerDataService.getAll(page,size));
     }
 
 

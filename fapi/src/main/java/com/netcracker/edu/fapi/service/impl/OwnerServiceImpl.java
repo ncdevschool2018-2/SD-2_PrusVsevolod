@@ -1,14 +1,12 @@
 package com.netcracker.edu.fapi.service.impl;
 
+import com.netcracker.edu.fapi.model.Content;
 import com.netcracker.edu.fapi.model.OwnerViewModel;
 import com.netcracker.edu.fapi.service.OwnerDataService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -18,10 +16,10 @@ public class OwnerServiceImpl implements OwnerDataService {
     private String backendServerUrl;
 
     @Override
-    public List<OwnerViewModel> getAll() {
+    public Content<OwnerViewModel> getAll(int page, int size) {
         RestTemplate restTemplate = new RestTemplate();
-        OwnerViewModel[] ownerViewModelsResponse = restTemplate.getForObject(backendServerUrl + "/api/owners/", OwnerViewModel[].class);
-        return ownerViewModelsResponse == null ? Collections.emptyList() : Arrays.asList(ownerViewModelsResponse);
+        Content<OwnerViewModel> ownerViewModelsResponse = restTemplate.getForObject(backendServerUrl + "/api/owners?page=" + page + "&size=" + size, Content.class);
+        return ownerViewModelsResponse;
     }
 
     @Override

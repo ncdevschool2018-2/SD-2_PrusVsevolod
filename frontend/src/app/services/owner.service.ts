@@ -4,6 +4,7 @@ import {Observable} from "rxjs";
 import {Owner} from "../MainModule/models/owner";
 import {Ba} from "../MainModule/models/ba";
 import {Customer} from "../MainModule/models/customer";
+import {Content} from "../MainModule/models/content";
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +14,8 @@ export class OwnerService {
   constructor(private http: HttpClient) {
   }
 
-  getOwners(): Observable<Owner[]> {
-    return this.http.get<Owner[]>('/api/owners');
+  getOwners(page: number, size: number): Observable<Content<Owner>> {
+    return this.http.get<Content<Owner>>('/api/owners?page=' + page + '&size=' + size);
   }
 
   saveEditedOwner(owner: Owner): Observable<Owner>{

@@ -6,6 +6,7 @@ import com.netcracker.edu.backend.service.BillingAccountService;
 import com.netcracker.edu.backend.service.OwnerService;
 import com.netcracker.edu.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
@@ -32,8 +33,8 @@ public class OwnerServiceImpl implements OwnerService {
     }
 
     @Override
-    public Iterable<Owner> getAllOwners() {
-        return ownerRepository.findAll();
+    public Iterable<Owner> getAllOwners(int page, int size) {
+        return ownerRepository.findAll(PageRequest.of(page,size));
     }
 
     @Transactional

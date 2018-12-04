@@ -18,8 +18,8 @@ export class CustomerAccountInfoComponent implements OnInit{
   amount: number = 0;
   modalRef: BsModalRef;
   itemsCounter: number;
-  public customer: Customer = new Customer();
-  public activeSubs: ActiveSubscription[] = [];
+  customer: Customer = new Customer();
+  activeSubs: ActiveSubscription[] = [];
   constructor(private modalService: BsModalService, private loadingService: Ng4LoadingSpinnerService, private sbService: BasketItemService, private customersService: CustomerService, private baService: BaService, private ASService: ActiveSubscriptionService) {
   }
 

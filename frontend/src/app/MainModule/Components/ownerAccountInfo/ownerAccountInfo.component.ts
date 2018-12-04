@@ -19,11 +19,11 @@ export class OwnerAccountInfoComponent implements OnInit {
   id: string;
   modalRef: BsModalRef;
   amount: number = 0;
-  public owner: Owner = new Owner();
-  public subscriptions: SubscriptionModel[] = [];
+  owner: Owner = new Owner();
+  subscriptions: SubscriptionModel[] = [];
   // private subOwner: Subscription[] = [];
   // private subs: Subscription[] = [];
-  public editableSubscription: SubscriptionModel;
+  editableSubscription: SubscriptionModel;
 
   constructor(private modalService: BsModalService, private activateRoute: ActivatedRoute, private loadingService: Ng4LoadingSpinnerService, private ownersService: OwnerService, private subscriptionsService: SubscriptionService, private baService: BaService) {
     this.id = activateRoute.snapshot.params['id'];

@@ -32,9 +32,9 @@ public class OwnerController {
         }
     }
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
-    public Iterable<Owner> getAllOwners() {
-        return ownerService.getAllOwners();
+    @RequestMapping(params = {"page", "size"})
+    public Iterable<Owner> getAllOwners(@RequestParam("page") int page, @RequestParam("size") int size) {
+        return ownerService.getAllOwners(page, size);
     }
 
     @RequestMapping(method = RequestMethod.POST)
