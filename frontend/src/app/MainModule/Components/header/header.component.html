@@ -16,7 +16,7 @@
         <a class="nav-link" (click)="openModalWithLogin(modalLogin)" [hidden]="userIsPresent()">Login</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" [hidden]="!userIsPresent() || userRole() == 'admin'" href="{{accountInfo()}}">Account
+        <a class="nav-link" [hidden]="!userIsPresent() || userRole() == 'admin'" routerLink="{{accountInfo()}}">Account
           Info</a>
       </li>
       <li class="nav-item">
