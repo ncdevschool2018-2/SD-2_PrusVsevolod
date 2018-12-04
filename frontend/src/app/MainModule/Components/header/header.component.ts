@@ -2,7 +2,6 @@ import {Component, EventEmitter, Input, Output, TemplateRef} from '@angular/core
 import {BsModalRef, BsModalService} from "ngx-bootstrap";
 import {WalletModalComponent} from "./wallet/wallet.component";
 import {AuthService} from "../../../services/auth.service";
-import {User} from "../../models/user";
 import {Router} from "@angular/router";
 import {BasketItemService} from "../../../services/basketItem.service";
 
@@ -13,8 +12,7 @@ import {BasketItemService} from "../../../services/basketItem.service";
 })
 export class HeaderComponent{
 
-  public bsModalRef: BsModalRef;
-  currentUser: User;
+  private bsModalRef: BsModalRef;
   @Input() itemsCounter: number;
   @Output() onSearch = new EventEmitter<string>();
   searchValue: string = '';
@@ -36,9 +34,11 @@ export class HeaderComponent{
   }
 
   closeLoginModal():void{
-    this.sbService.getCount().subscribe(count => {
-      this.itemsCounter = count;
-    });
+    if (localStorage.getItem('currentUserRole') == 'customer') {
+      this.sbService.getCount().subscribe(count => {
+        this.itemsCounter = count;
+      });
+    }
     this.bsModalRef.hide();
   }
   userIsPresent(): boolean{
@@ -46,7 +46,7 @@ export class HeaderComponent{
   }
 
   walletIsPresent(): boolean{
-    if (localStorage.getItem('wallet')) {
+    if (localStorage.getItem('wallet') != 'unregistered') {
       return true;
     }
     return false;
@@ -77,16 +77,6 @@ export class HeaderComponent{
   search(): void{
     this.onSearch.emit(this.searchValue);
   }
-
-  // ngOnInit(): void {
-  //   this.loadCategories();
-  // }
-
-  // loadCategories():void{
-  //   this.categoryService.getCategories().subscribe(categories =>{
-  //     this.categories = categories as Category[];
-  //   })
-  // }
 
   keyDownFunction(event) {
     if(event.keyCode == 13) {

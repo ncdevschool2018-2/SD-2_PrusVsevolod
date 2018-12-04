@@ -1,4 +1,4 @@
-import {Component, OnInit, TemplateRef} from '@angular/core';
+import {Component, DoCheck, OnInit, TemplateRef} from '@angular/core';
 import {SubscriptionService} from "../../../services/subscription.service";
 import {Ng4LoadingSpinnerService} from "ng4-loading-spinner";
 import {SubscriptionModel} from "../../models/subscriptionModel";
@@ -13,7 +13,7 @@ import {CategoryService} from "../../../services/category.service";
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.css']
 })
-export class MainComponent implements OnInit {
+export class MainComponent implements OnInit, DoCheck {
 
   public shoppingList: BasketItem[] = [];
   public subs: SubscriptionModel[];
@@ -26,6 +26,8 @@ export class MainComponent implements OnInit {
   searchValue: string;
   currentCategoryId: string;
   loadOption: number = 1;
+  isBlocked = true;
+  isNotRegisteredWallet = true;
 
   constructor(private loadingService: Ng4LoadingSpinnerService, private subscriptionsService: SubscriptionService, private sbService: BasketItemService, private modalService: BsModalService, private categoryService: CategoryService) {
   }
@@ -37,6 +39,7 @@ export class MainComponent implements OnInit {
     if (localStorage.getItem('currentUserRole') == 'customer') {
       this.updateItemsCounter();
     }
+
   }
 
   private updateItemsCounter(): void {
@@ -53,14 +56,6 @@ export class MainComponent implements OnInit {
       this.totalElements = source.totalElements;
       this.loadingService.hide();
     });
-  }
-
-  walletIsPresent(): boolean {
-    if (this.adminOrOwner()) return true;
-    if (localStorage.getItem('wallet')) {
-      return true;
-    }
-    return false;
   }
 
   pageChanged(event: PageChangedEvent): void {
@@ -168,13 +163,26 @@ export class MainComponent implements OnInit {
     this.loadSubscriptions(0);
   }
 
+  customerWalletIsPresent(): boolean {
+    if (this.adminOrOwner()) return true;
+    if (localStorage.getItem('wallet') == null) return true;
+    return (localStorage.getItem('wallet') != 'unregistered');
+  }
+
+
   userIsNotBlocked(): boolean {
     if (this.adminOrOwner()) return true;
+    if (localStorage.getItem('status') == null) return true;
     return localStorage.getItem('status') == 'valid';
   }
 
-  userIsPresent(): boolean {
-    return (localStorage.getItem('currentUser') != null);
+  userIsNotPresent(): boolean {
+    return (localStorage.getItem('currentUser') == null);
+  }
+
+  ngDoCheck(): void {
+    (this.userIsNotPresent() || this.userIsNotBlocked()) ? this.isBlocked = true : this.isBlocked = false;
+    (this.userIsNotPresent() || this.customerWalletIsPresent()) ? this.isNotRegisteredWallet = true : this.isNotRegisteredWallet = false;
   }
 
 }

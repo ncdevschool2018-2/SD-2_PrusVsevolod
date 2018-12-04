@@ -21,14 +21,14 @@
       </div>
     </div>
   </div>
-  <div class="row justify-content-center my-0" [hidden]="!userIsPresent() || userIsNotBlocked()">
+  <div class="row justify-content-center my-0" [hidden]="isBlocked">
     <div class="col-4 text-center">
       <alert type="danger">
         <strong>Warning!</strong> You where blocked. You have a <strong>negative wallet balance</strong> and your status is blocked. Fill up your wallet.
       </alert>
     </div>
   </div>
-  <div class="row justify-content-center my-0" [hidden]="!userIsPresent() || walletIsPresent()">
+  <div class="row justify-content-center my-0" [hidden]="isNotRegisteredWallet">
     <div class="col-4 text-center">
       <alert type="warning">
         <strong>Warning!</strong> You need to register a <strong>wallet</strong> first if you want to subscribe.

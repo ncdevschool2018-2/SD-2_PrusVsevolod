@@ -34,11 +34,10 @@ export class LoginModalComponent {
 
           if (user.role.name == 'owner') {
             this.ownersService.getOwnerByUserId().subscribe(owner => {
-              // console.log(owner);
               localStorage.setItem('ownerId', owner.id);
               if (owner.ba) {
                 localStorage.setItem('wallet', owner.ba.id);
-              }
+              } else localStorage.setItem('wallet', 'unregistered');
             });
           }
 
@@ -48,7 +47,7 @@ export class LoginModalComponent {
               localStorage.setItem('status', customer.status.name);
               if (customer.ba) {
                 localStorage.setItem('wallet', customer.ba.id);
-              }
+              } else localStorage.setItem('wallet', 'unregistered');
             });
           }
 
@@ -62,7 +61,7 @@ export class LoginModalComponent {
 
   }
 
-  close(){
+  close() {
     this.onChange.emit();
   }
 

@@ -54,7 +54,7 @@ export class CustomerAccountInfoComponent implements OnInit{
   }
 
   walletIsPresent(): boolean{
-    if (localStorage.getItem('wallet')) {
+    if (localStorage.getItem('wallet') != 'unregistered') {
       return true;
     }
     return false;

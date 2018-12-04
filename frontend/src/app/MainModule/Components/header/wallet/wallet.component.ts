@@ -4,6 +4,7 @@ import {Ba} from "../../../models/ba";
 import {CustomerService} from "../../../../services/customer.service";
 import {OwnerService} from "../../../../services/owner.service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'modal-wallet',
@@ -17,7 +18,7 @@ export class WalletModalComponent implements OnInit{
 
   walletForm: FormGroup;
   newBa: Ba = new Ba();
-  constructor(private customersService: CustomerService, private ownersService: OwnerService, public bsModalRef: BsModalRef, private formBuilder: FormBuilder) {
+  constructor(private customersService: CustomerService, private ownersService: OwnerService, public bsModalRef: BsModalRef, private formBuilder: FormBuilder, private router: Router) {
   }
 
   register(){
@@ -35,6 +36,7 @@ export class WalletModalComponent implements OnInit{
       );
     }
     this.bsModalRef.hide();
+    this.router.navigateByUrl('/');
   }
 
   ngOnInit(): void {
