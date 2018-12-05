@@ -43,14 +43,14 @@ export class OwnerAccountInfoComponent implements OnInit {
     this.owner.user = new User();
     this.ownersService.getOwnerByUserId().subscribe(owner => {
       // Parse json response into local array
-      this.owner = owner as Owner;
+      this.owner = owner;
       this.loadSubscriptions();
     });
   }
 
   private loadSubscriptions(): void {
     this.subscriptionsService.getSubscriptionsByOwnerId(this.owner.id).subscribe(subscriptions => {
-        this.subscriptions = subscriptions as SubscriptionModel[];
+        this.subscriptions = subscriptions;
         this.loadingService.hide();
       }
     );

@@ -6,6 +6,7 @@ import {ActiveSubscription} from "../../models/activeSubscription";
 import {ActiveSubscriptionService} from "../../../services/activeSubscription.service";
 import {Router} from "@angular/router";
 import {BsModalRef, BsModalService} from "ngx-bootstrap";
+import {WrapperList} from "../../models/wrapperList";
 
 @Component({
   selector: 'app-shoppingList',
@@ -27,6 +28,10 @@ export class ShoppingListComponent implements OnInit{
     this.loadShoppingBasket();
   }
 
+  userIsNotBlocked(): boolean {
+    return localStorage.getItem('status') == 'valid';
+  }
+
   private updateItemsCounter():void{
     this.sbService.getCount().subscribe(count => {
       this.itemsCounter = count;
@@ -36,7 +41,7 @@ export class ShoppingListComponent implements OnInit{
   loadShoppingBasket(): void {
     this.loadingService.show();
     this.sbService.getSbByCustomerId().subscribe(shoppingBasket => {
-      this.shoppingBasket = shoppingBasket as BasketItem[];
+      this.shoppingBasket = shoppingBasket;
       this.updateItemsCounter();
       this.totalCount();
       this.loadingService.hide();
@@ -61,7 +66,7 @@ export class ShoppingListComponent implements OnInit{
     this.shoppingBasket.forEach(item => {
       this.subscriptions.push(new ActiveSubscription(item.subscription, item.quantity));
     });
-    this.activeSubscriptionService.saveAS(this.subscriptions).subscribe(() => {
+    this.activeSubscriptionService.saveAS(new WrapperList<ActiveSubscription>(this.subscriptions)).subscribe(() => {
       this.subscriptions = [];
       this.sbService.deleteAllSbByCustomerId().subscribe(() => {
         // this.loadShoppingBasket();

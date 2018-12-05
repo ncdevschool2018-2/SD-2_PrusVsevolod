@@ -7,16 +7,6 @@ export class User {
   password: string;
   role: Role = new Role();
 
-  // static cloneBase(user: User): User {
-  //   let clonedUser: User = new User();
-  //   clonedUser.id = user.id;
-  //   clonedUser.login = user.login;
-  //   clonedUser.email = user.email;
-  //   clonedUser.password = user.password;
-  //   clonedUser.role = user.role;
-  //   return clonedUser;
-  // }
-
   static cloneUser(user: User): User{
       let clonedUser: User = new User();
       clonedUser.id = user.id;

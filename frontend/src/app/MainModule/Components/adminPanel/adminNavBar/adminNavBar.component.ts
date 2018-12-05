@@ -7,7 +7,7 @@ import {SubtractionService} from "../../../../services/subtraction.service";
   templateUrl: './adminNavBar.component.html',
   styleUrls: ['./adminNavBar.component.css']
 })
-export class AdminNavBarComponent implements OnInit{
+export class AdminNavBarComponent implements OnInit {
 
   @Output() isCollapsed: boolean = false;
   @Output() onCollapse = new EventEmitter<boolean>();
@@ -18,28 +18,28 @@ export class AdminNavBarComponent implements OnInit{
   constructor(private modalService: BsModalService, private subtractionService: SubtractionService) {
   }
 
-  change():void{
+  change(): void {
     this.isCollapsed = !this.isCollapsed;
     this.onCollapse.emit(this.isCollapsed);
   }
 
-  openEditModal(template: TemplateRef<any>):void{
+  openEditModal(template: TemplateRef<any>): void {
     this.bsModalRef = this.modalService.show(template);
   }
 
-  confirm():void{
-    this.subtractionService.editThreshold(this.inputValue).subscribe(() =>{
+  confirm(): void {
+    this.subtractionService.editThreshold(this.inputValue).subscribe(() => {
       this.threshold = this.inputValue;
       this.inputValue = null;
       this.close();
     })
   }
 
-  close():void{
+  close(): void {
     this.bsModalRef.hide();
   }
 
-  loadThreshold():void{
+  loadThreshold(): void {
     this.subtractionService.getThreshold().subscribe(value => {
       this.threshold = value;
     })

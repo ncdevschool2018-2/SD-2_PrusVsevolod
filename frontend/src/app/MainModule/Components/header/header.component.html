@@ -16,26 +16,16 @@
         <a class="nav-link" (click)="openModalWithLogin(modalLogin)" [hidden]="userIsPresent()">Login</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" [hidden]="!userIsPresent() || userRole() == 'admin'" routerLink="{{accountInfo()}}">Account
+        <a class="nav-link" [hidden]="!userIsPresent() || userRole() == 'admin'" routerLink="/{{accountInfo()}}">Account
           Info</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" routerLink="/adminPanel" [hidden]="userRole() != 'admin'">Administrator panel</a>
       </li>
     </ul>
-    <!--<div class="btn-group mx-3" dropdown [hidden]="notMainPage()">-->
-      <!--<button dropdownToggle type="button" class="btn btn-info dropdown-toggle"-->
-              <!--aria-controls="dropdown-basic">-->
-        <!--Categories <span class="caret"></span>-->
-      <!--</button>-->
-      <!--<ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"-->
-          <!--role="menu" aria-labelledby="button-basic">-->
-        <!--<li role="menuitem"><a class="dropdown-item" href="#" *ngFor="let category of categories">{{category.name}}</a>-->
-        <!--</li>-->
-      <!--</ul>-->
-    <!--</div>-->
-    <a class="btn btn-light mx-2" href="shoppingList"
-       [hidden]="!userIsPresent() || userRole() == 'owner' || userRole() == 'admin'">
+
+    <a class="btn btn-light mx-2" routerLink="/shoppingList"
+       [hidden]="!(userRole() == 'customer')">
       <fa name="cart-arrow-down"></fa>
       {{itemsCounter}}
     </a>

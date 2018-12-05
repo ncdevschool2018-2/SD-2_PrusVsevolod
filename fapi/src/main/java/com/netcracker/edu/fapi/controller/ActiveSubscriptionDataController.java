@@ -2,6 +2,7 @@ package com.netcracker.edu.fapi.controller;
 
 import com.netcracker.edu.fapi.model.ActiveSubscriptionModel;
 import com.netcracker.edu.fapi.model.CustomerViewModel;
+import com.netcracker.edu.fapi.model.WrapperList;
 import com.netcracker.edu.fapi.service.ActiveSubscriptionDataService;
 import com.netcracker.edu.fapi.service.CustomerDataService;
 import com.netcracker.edu.fapi.service.UserDataService;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -24,13 +26,13 @@ public class ActiveSubscriptionDataController {
     private UserDataService userDataService;
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<List<ActiveSubscriptionModel>> saveActiveSubscription(@RequestBody List<ActiveSubscriptionModel> activeSubscriptionsModel) {
+    public ResponseEntity<List<ActiveSubscriptionModel>> saveActiveSubscription(@Valid @RequestBody WrapperList<ActiveSubscriptionModel> activeSubscriptionModels) {
         CustomerViewModel customer = customerDataService.getCustomerByUserId(Long.valueOf(userDataService.findByLogin(SecurityContextHolder.getContext().getAuthentication().getName()).getId()));
-        for (ActiveSubscriptionModel subscription : activeSubscriptionsModel) {
+        for (ActiveSubscriptionModel subscription : activeSubscriptionModels.getWrapperList()) {
             subscription.setLastEditDate(System.currentTimeMillis());
             subscription.setCustomerId(customer.getId());
         }
-        return ResponseEntity.ok(activeSubscriptionDataService.saveActiveSubscriptions(activeSubscriptionsModel));
+        return ResponseEntity.ok(activeSubscriptionDataService.saveActiveSubscriptions(activeSubscriptionModels.getWrapperList()));
     }
 
     @RequestMapping(value = "/customer", method = RequestMethod.GET)

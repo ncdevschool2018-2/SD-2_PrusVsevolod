@@ -33,7 +33,7 @@ export class OwnersListComponent implements OnInit {
   private loadOwners(page: number, size: number): void {
     this.loadingService.show();
     this.ownersService.getOwners(page, size).subscribe(source => {
-      this.owners = source.content as Owner[];
+      this.owners = source.content;
       this.totalElements = source.totalElements;
       this.loadingService.hide();
     });

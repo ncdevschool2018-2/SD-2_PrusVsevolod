@@ -58,15 +58,6 @@ export class EditSubscriptionModalComponent implements OnInit {
       category: []
     });
 
-
-    // this.subscriptionForm = new FormGroup({
-    //   name: new FormControl('', Validators.required),
-    //   price: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(5)]),
-    //   imageUrl: new FormControl('', Validators.required),
-    //   description: new FormControl('', Validators.required),
-    //   category: new FormControl()
-    // });
-
     if (this.editableSubscription.category != null) {
       this.subscriptionForm.controls['category'].setValue(this.editableSubscription.category.name);
     } else {
@@ -76,7 +67,7 @@ export class EditSubscriptionModalComponent implements OnInit {
 
   loadCategories(): void {
     this.categoryService.getCategories().subscribe(source => {
-      this.categories = source as Category[];
+      this.categories = source;
     })
   }
 

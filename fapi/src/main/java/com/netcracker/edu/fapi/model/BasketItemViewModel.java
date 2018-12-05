@@ -1,11 +1,8 @@
 package com.netcracker.edu.fapi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.netcracker.edu.fapi.transfer.Exist;
-import com.netcracker.edu.fapi.transfer.New;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
@@ -13,16 +10,15 @@ import javax.validation.constraints.Null;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class BasketItemViewModel {
 
-    @Null(groups = {New.class})
+    @Null
     private Long id;
-    @NotNull(groups = {New.class, Exist.class})
+    @NotNull
     private Long customerId;
-    @NotNull(groups = {New.class, Exist.class})
+    @NotNull
     @Valid
     private SubscriptionViewModel subscription;
-    @NotNull(groups = {New.class, Exist.class})
-    @Min(groups = {New.class, Exist.class}, value = 1)
-    @Max(groups = {New.class, Exist.class}, value = 99)
+    @NotNull
+    @Min(value = 1)
     private Integer quantity;
 
     public BasketItemViewModel() {

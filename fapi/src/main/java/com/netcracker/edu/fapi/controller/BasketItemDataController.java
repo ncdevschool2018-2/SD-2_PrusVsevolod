@@ -2,6 +2,7 @@ package com.netcracker.edu.fapi.controller;
 
 import com.netcracker.edu.fapi.model.BasketItemViewModel;
 import com.netcracker.edu.fapi.model.CustomerViewModel;
+import com.netcracker.edu.fapi.model.WrapperList;
 import com.netcracker.edu.fapi.service.BasketItemDataService;
 import com.netcracker.edu.fapi.service.CustomerDataService;
 import com.netcracker.edu.fapi.service.UserDataService;
@@ -11,6 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -26,10 +28,10 @@ public class BasketItemDataController {
 
     @PreAuthorize("hasAnyAuthority('customer')")
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity saveBasketItem(@RequestBody List<BasketItemViewModel> Sb) {
+    public ResponseEntity saveBasketItem(@Valid @RequestBody WrapperList<BasketItemViewModel> Sb) {
         CustomerViewModel customer = customerDataService.getCustomerByUserId(Long.valueOf(userDataService.findByLogin(SecurityContextHolder.getContext().getAuthentication().getName()).getId()));
-        if (customer.getId().equals(Sb.get(0).getCustomerId())) {//Для случая если недобросовестный кастомер захочет добавить в корзину товар другому кастомеру
-            basketItemDataService.saveBasketItem(Sb);
+        if (customer.getId().equals(Sb.getWrapperList().get(0).getCustomerId())) {//Для случая если недобросовестный кастомер захочет добавить в корзину товар другому кастомеру
+            basketItemDataService.saveBasketItem(Sb.getWrapperList());
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();

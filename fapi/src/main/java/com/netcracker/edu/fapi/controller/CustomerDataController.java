@@ -39,10 +39,7 @@ public class CustomerDataController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<CustomerViewModel> saveCustomer(@Validated(New.class) @RequestBody CustomerViewModel customer) {
         customer.getUser().setPassword(passwordEncoder.encode(customer.getUser().getPassword()));
-        if (customer != null) {
-            return ResponseEntity.ok(customerDataService.saveCustomer(customer));
-        }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(customerDataService.saveCustomer(customer));
     }
 
 

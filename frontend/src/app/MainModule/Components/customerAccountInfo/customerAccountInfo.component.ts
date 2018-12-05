@@ -38,7 +38,7 @@ export class CustomerAccountInfoComponent implements OnInit{
     this.loadingService.show();
     this.customersService.getCustomerByUserId().subscribe(customer => {
       // Parse json response into local array
-      this.customer = customer as Customer;
+      this.customer = customer;
       localStorage.setItem('status', customer.status.name);
       this.loadingService.hide();
     });
@@ -47,17 +47,15 @@ export class CustomerAccountInfoComponent implements OnInit{
   private loadActiveSubs():void{
     this.loadingService.show();
     this.ASService.getASByCustomerId().subscribe(activeSubscriptions =>{
-      this.activeSubs = activeSubscriptions as ActiveSubscription[];
+      this.activeSubs = activeSubscriptions;
       this.loadingService.hide();
     });
 
   }
 
   walletIsPresent(): boolean{
-    if (localStorage.getItem('wallet') != 'unregistered') {
-      return true;
-    }
-    return false;
+    return localStorage.getItem('wallet') != 'unregistered';
+
   }
 
   fillUp():void{

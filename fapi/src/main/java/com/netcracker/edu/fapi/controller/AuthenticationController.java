@@ -39,8 +39,6 @@ public class AuthenticationController {
     @RequestMapping(value = "/expDate", method = RequestMethod.GET)
     public ResponseEntity<?> GetExpDate(@RequestHeader(name = "authorization")String token){
         token = token.replace(TOKEN_PREFIX, "");
-//        System.out.println(new Date());
-//        System.out.println(jwtTokenUtil.getExpirationDateFromToken(token));
         return ResponseEntity.ok(jwtTokenUtil.getExpirationDateFromToken(token));
     }
 

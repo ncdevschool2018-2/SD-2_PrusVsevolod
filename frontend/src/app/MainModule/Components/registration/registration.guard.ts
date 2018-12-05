@@ -1,12 +1,21 @@
-import {ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot} from "@angular/router";
+import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from "@angular/router";
 import {Observable} from "rxjs";
 import {Injectable} from "@angular/core";
 
 @Injectable()
-export class RegistrationGuard implements CanActivate{
+export class RegistrationGuard implements CanActivate {
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) : Observable<boolean> | boolean{
-    return (localStorage.getItem('currentUserRole') == null);
+
+  constructor(private router: Router) {
+  }
+
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | boolean {
+    if ((localStorage.getItem('currentUserRole') == null)) {
+      return true;
+    } else {
+      this.router.navigateByUrl('/404');
+    }
+    return false;
   }
 
 }

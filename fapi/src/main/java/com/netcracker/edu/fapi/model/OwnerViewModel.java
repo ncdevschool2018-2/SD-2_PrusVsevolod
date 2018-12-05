@@ -23,6 +23,9 @@ public class OwnerViewModel {
     @NotNull(groups = {New.class, Exist.class})
     @Valid
     private UserViewModel user;
+    @Null(groups = {New.class})
+    @NotNull(groups = {Exist.class})
+    @Valid
     private BaViewModel ba;
 
     public OwnerViewModel() {

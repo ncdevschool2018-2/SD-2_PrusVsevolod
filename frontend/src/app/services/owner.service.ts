@@ -3,7 +3,6 @@ import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Owner} from "../MainModule/models/owner";
 import {Ba} from "../MainModule/models/ba";
-import {Customer} from "../MainModule/models/customer";
 import {Content} from "../MainModule/models/content";
 
 @Injectable({
@@ -37,11 +36,8 @@ export class OwnerService {
   saveBa(ba: Ba): Observable<Ba> {
     return this.http.post<Ba>('/api/owners/ba', ba);
   }
-  // getBa(): Observable<Ba> {
-  //   return this.http.get<Ba>('/api/owners/ba');
-  // }
 
-  getOwnerByUserId(): Observable<Customer> {
-    return this.http.get<Customer>('/api/owners/user/');
+  getOwnerByUserId(): Observable<Owner> {
+    return this.http.get<Owner>('/api/owners/user/');
   }
 }

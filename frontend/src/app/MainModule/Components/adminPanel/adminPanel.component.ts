@@ -34,7 +34,7 @@ export class AdminPanelComponent implements OnInit {
     this.loadingService.show();
     this.customersService.getCustomers(page, size).subscribe(source => {
       // Parse json response into local array
-      this.customers = source.content as Customer[];
+      this.customers = source.content;
       this.totalElements = source.totalElements;
       this.loadingService.hide();
     });

@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {BasketItem} from "../MainModule/models/basketItem";
+import {WrapperList} from "../MainModule/models/wrapperList";
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class BasketItemService {
   constructor(private http: HttpClient) {
   }
 
-  saveSb(basketItem: BasketItem[]): Observable<void> {
+  saveSb(basketItem: WrapperList<BasketItem>): Observable<void> {
     return this.http.post<void>('/api/basket_item', basketItem);
   }
 

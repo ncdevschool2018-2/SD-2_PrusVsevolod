@@ -31,6 +31,7 @@ export class LoginModalComponent {
 
         this.userService.getUser().subscribe(user => {
           localStorage.setItem('currentUserRole', user.role.name);
+          this.onChange.emit();
 
           if (user.role.name == 'owner') {
             this.ownersService.getOwnerByUserId().subscribe(owner => {
@@ -50,9 +51,7 @@ export class LoginModalComponent {
               } else localStorage.setItem('wallet', 'unregistered');
             });
           }
-
         });
-        this.onChange.emit();
       },
       () => {
         this.isNotHidden = true;

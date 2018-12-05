@@ -1,7 +1,6 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Owner} from "../../../models/owner";
 import {OwnerService} from "../../../../services/owner.service";
-import {Subscription} from "rxjs";
 
 @Component({
   selector: 'modal-editOwnerMenu',

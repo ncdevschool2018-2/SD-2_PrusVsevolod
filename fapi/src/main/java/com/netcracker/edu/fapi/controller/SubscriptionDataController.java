@@ -31,7 +31,7 @@ public class SubscriptionDataController {
     }
 
     @RequestMapping(value = "/category/{id}", params = {"page", "size"})
-    public ResponseEntity<Content> findByNameLike(@PathVariable("id") Long id, @RequestParam("page") int page, @RequestParam("size") int size) {
+    public ResponseEntity<Content> findByCategoryId(@PathVariable("id") Long id, @RequestParam("page") int page, @RequestParam("size") int size) {
         return ResponseEntity.ok(subscriptionDataService.findByCategoryId(id, page, size));
     }
 

@@ -4,12 +4,14 @@ import com.netcracker.edu.fapi.model.Constants;
 import com.netcracker.edu.fapi.service.SubtractionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@PreAuthorize("hasAnyAuthority('admin')")
 @RequestMapping("/api/subtraction")
 public class SubtractionController {
 

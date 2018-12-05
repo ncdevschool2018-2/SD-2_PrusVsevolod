@@ -1,4 +1,4 @@
-import {Component, DoCheck, OnInit, TemplateRef} from '@angular/core';
+import {Component, OnInit, TemplateRef} from '@angular/core';
 import {SubscriptionService} from "../../../services/subscription.service";
 import {Ng4LoadingSpinnerService} from "ng4-loading-spinner";
 import {SubscriptionModel} from "../../models/subscriptionModel";
@@ -7,13 +7,15 @@ import {BasketItemService} from "../../../services/basketItem.service";
 import {BasketItem} from "../../models/basketItem";
 import {Category} from "../../models/category";
 import {CategoryService} from "../../../services/category.service";
+import {CustomerService} from "../../../services/customer.service";
+import {WrapperList} from "../../models/wrapperList";
 
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.css']
 })
-export class MainComponent implements OnInit, DoCheck {
+export class MainComponent implements OnInit{
 
   shoppingList: BasketItem[] = [];
   subs: SubscriptionModel[];
@@ -26,10 +28,8 @@ export class MainComponent implements OnInit, DoCheck {
   searchValue: string;
   currentCategoryId: string;
   loadOption: number = 1;
-  isBlocked = true;
-  isNotRegisteredWallet = true;
 
-  constructor(private loadingService: Ng4LoadingSpinnerService, private subscriptionsService: SubscriptionService, private sbService: BasketItemService, private modalService: BsModalService, private categoryService: CategoryService) {
+  constructor(private loadingService: Ng4LoadingSpinnerService, private subscriptionsService: SubscriptionService, private sbService: BasketItemService, private modalService: BsModalService, private categoryService: CategoryService, private customerService: CustomerService) {
   }
 
   // Calls on component init
@@ -37,9 +37,16 @@ export class MainComponent implements OnInit, DoCheck {
     this.loadSubscriptions(0);
     this.loadCategories();
     if (localStorage.getItem('currentUserRole') == 'customer') {
+      this.updateCustomerStatus();
       this.updateItemsCounter();
     }
 
+  }
+
+  private updateCustomerStatus():void{
+    this.customerService.getCustomerByUserId().subscribe(customer =>{
+      localStorage.setItem('status', customer.status.name);
+    })
   }
 
   private updateItemsCounter(): void {
@@ -52,7 +59,7 @@ export class MainComponent implements OnInit, DoCheck {
     this.loadingService.show();
     this.subscriptionsService.getSubscriptionsPaged(page, this.size).subscribe(source => {
       // Parse json response into local array
-      this.subs = source.content as SubscriptionModel[];
+      this.subs = source.content;
       this.totalElements = source.totalElements;
       this.loadingService.hide();
     });
@@ -87,7 +94,7 @@ export class MainComponent implements OnInit, DoCheck {
       i++;
     }
 
-    this.sbService.saveSb(this.shoppingList).subscribe(() => {
+    this.sbService.saveSb(new WrapperList<BasketItem>(this.shoppingList)).subscribe(() => {
       this.updateItemsCounter();
     });
     this.value = [];
@@ -96,7 +103,7 @@ export class MainComponent implements OnInit, DoCheck {
   }
 
   adminOrOwner(): boolean {
-    return (localStorage.getItem('currentUserRole') == 'admin' || localStorage.getItem('currentUserRole') == 'owner');
+    return !(localStorage.getItem('currentUserRole') == 'customer');
   }
 
   cantAdd(): boolean {
@@ -129,7 +136,7 @@ export class MainComponent implements OnInit, DoCheck {
   loadSubscriptionsByNameLike(page: number): void {
     this.loadingService.show();
     this.subscriptionsService.getSubscriptionsByNameLike(this.searchValue, page, this.size).subscribe(source => {
-      this.subs = source.content as SubscriptionModel[];
+      this.subs = source.content;
       this.totalElements = source.totalElements;
       this.loadingService.hide();
     })
@@ -138,7 +145,7 @@ export class MainComponent implements OnInit, DoCheck {
   loadCategories(): void {
     this.loadingService.show();
     this.categoryService.getCategories().subscribe(categories => {
-      this.categories = categories as Category[];
+      this.categories = categories;
       this.loadingService.hide();
     })
   }
@@ -152,7 +159,7 @@ export class MainComponent implements OnInit, DoCheck {
   loadSubscriptionsByCategoryId(page: number): void {
     this.loadingService.show();
     this.subscriptionsService.getSubscriptionByCategoryId(this.currentCategoryId, page, this.size).subscribe(source => {
-      this.subs = source.content as SubscriptionModel[];
+      this.subs = source.content;
       this.totalElements = source.totalElements;
       this.loadingService.hide();
     })
@@ -165,24 +172,15 @@ export class MainComponent implements OnInit, DoCheck {
 
   customerWalletIsPresent(): boolean {
     if (this.adminOrOwner()) return true;
-    if (localStorage.getItem('wallet') == null) return true;
+    if (localStorage.getItem('wallet') == null) return true;//Считаем что пользователь ещё не вошел в систему полностью.
     return (localStorage.getItem('wallet') != 'unregistered');
   }
 
 
-  userIsNotBlocked(): boolean {
+  customerIsNotBlocked(): boolean {
     if (this.adminOrOwner()) return true;
-    if (localStorage.getItem('status') == null) return true;
+    if (localStorage.getItem('status') == null) return true;//Считаем что пользователь ещё не вошел в систему полностью.
     return localStorage.getItem('status') == 'valid';
-  }
-
-  userIsNotPresent(): boolean {
-    return (localStorage.getItem('currentUser') == null);
-  }
-
-  ngDoCheck(): void {
-    (this.userIsNotPresent() || this.userIsNotBlocked()) ? this.isBlocked = true : this.isBlocked = false;
-    (this.userIsNotPresent() || this.customerWalletIsPresent()) ? this.isNotRegisteredWallet = true : this.isNotRegisteredWallet = false;
   }
 
 }

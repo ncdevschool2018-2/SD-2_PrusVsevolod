@@ -31,18 +31,14 @@ public class OwnerDataController {
     @PreAuthorize("hasAnyAuthority('admin')")
     @RequestMapping(params = {"page", "size"})
     public ResponseEntity<Content> getAllOwners(@RequestParam("page") int page, @RequestParam("size") int size) {
-        return ResponseEntity.ok(ownerDataService.getAll(page,size));
+        return ResponseEntity.ok(ownerDataService.getAll(page, size));
     }
 
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<OwnerViewModel> saveOwner(@Validated(New.class) @RequestBody OwnerViewModel owner) {
         owner.getUser().setPassword(passwordEncoder.encode(owner.getUser().getPassword()));
-//        System.out.println(owner.getUser().getPassword());
-        if (owner != null) {
-            return ResponseEntity.ok(ownerDataService.saveOwner(owner));
-        }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(ownerDataService.saveOwner(owner));
     }
 
     @PreAuthorize("hasAnyAuthority('admin')")
@@ -54,7 +50,7 @@ public class OwnerDataController {
 
     @PreAuthorize("hasAnyAuthority('admin')")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public ResponseEntity<OwnerViewModel> getOwnerById(@PathVariable(name = "id") Long id){
+    public ResponseEntity<OwnerViewModel> getOwnerById(@PathVariable(name = "id") Long id) {
         Optional<OwnerViewModel> owner = ownerDataService.getOwnerById(id);
         if (owner.isPresent()) {
             return ResponseEntity.ok(owner.get());
@@ -65,7 +61,7 @@ public class OwnerDataController {
 
     @PreAuthorize("hasAnyAuthority('admin', 'owner')")
     @RequestMapping(value = "/user/", method = RequestMethod.GET)
-    public ResponseEntity<OwnerViewModel> getOwnerByUserId(){
+    public ResponseEntity<OwnerViewModel> getOwnerByUserId() {
         OwnerViewModel owner = ownerDataService.getOwnerByUserId(Long.valueOf(userDataService.findByLogin(SecurityContextHolder.getContext().getAuthentication().getName()).getId()));
         if (owner != null) {
             return ResponseEntity.ok(owner);
@@ -90,13 +86,4 @@ public class OwnerDataController {
         }
         return ResponseEntity.notFound().build();
     }
-//    @PreAuthorize("hasAnyAuthority('owner')")
-//    @RequestMapping(value = "/ba", method = RequestMethod.GET)
-//    public ResponseEntity<BaViewModel> getBa() {
-//        OwnerViewModel owner = ownerDataService.getOwnerByUserId(Long.valueOf(userDataService.findByLogin(SecurityContextHolder.getContext().getAuthentication().getName()).getId()));
-//        if (owner.getBa() != null) {
-//            return ResponseEntity.ok(owner.getBa());
-//        }
-//        return ResponseEntity.notFound().build();
-//    }
 }

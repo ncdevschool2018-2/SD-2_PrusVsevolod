@@ -26,7 +26,11 @@ public class CustomerViewModel {
     @NotNull(groups = {New.class, Exist.class})
     @Valid
     private UserViewModel user;
+    @Null(groups = {New.class})
+    @NotNull(groups = {Exist.class})
+    @Valid
     private BaViewModel ba;
+    @NotNull(groups = {Exist.class})
     private StatusViewModel status;
 
     public CustomerViewModel() {
